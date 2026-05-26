@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smash Club">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Smash Club — Dashboards</title>
+<link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #1a1030;
+  min-height: 100vh;
+  padding-bottom: 32px;
+}
+.header {
+  background: linear-gradient(135deg, #412d7d 0%, #2d1f5e 100%);
+  padding: 32px 20px 24px;
+  text-align: center;
+  border-bottom: 3px solid #f6d01e;
+}
+.logo {
+  font-family: 'Passion One', 'Arial Black', Impact, sans-serif;
+  font-size: 42px;
+  letter-spacing: 6px;
+  color: #f6d01e;
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(246,208,30,0.3);
+}
+.logo-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-top: 6px;
+  display: block;
+}
+.header-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 12px;
+  font-weight: 400;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 24px 16px 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+@media (min-width: 480px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+.card {
+  background: #2a1f50;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  border: 1.5px solid rgba(246,208,30,0.15);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.card:active { transform: scale(0.97); }
+.card:hover { border-color: rgba(246,208,30,0.5); }
+.card-top {
+  padding: 20px 18px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.card-emoji {
+  font-size: 32px;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(246,208,30,0.1);
+}
+.card-title {
+  font-family: 'Passion One', 'Arial Black', sans-serif;
+  font-size: 17px;
+  letter-spacing: 1px;
+  color: #f6d01e;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.card-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 3px;
+  line-height: 1.4;
+  font-weight: 400;
+}
+.card-footer {
+  background: rgba(0,0,0,0.2);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.tag-green { background: rgba(110,189,137,0.15); color: #6ebd89; }
+.tag-yellow { background: rgba(246,208,30,0.15); color: #f6d01e; }
+.tag-purple { background: rgba(100,80,200,0.2); color: #a080ff; }
+.card-arrow { color: rgba(255,255,255,0.3); font-size: 16px; }
+.section-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin: 28px 0 0;
+}
+.footer {
+  text-align: center;
+  padding: 32px 20px 0;
+  color: rgba(255,255,255,0.2);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.footer strong { color: rgba(246,208,30,0.4); }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">SMASH CLUB</div>
+  <span class="logo-sub">Mendoza · Argentina</span>
+  <p class="header-tagline">Panel de control — 2 locales</p>
+</div>
+<p class="section-label">Dashboards</p>
+<div class="grid">
+  <a class="card" href="dashboard-ventas.html">
+    <div class="card-top">
+      <div class="card-emoji">📊</div>
+      <div>
+        <div class="card-title">Ventas</div>
+        <div class="card-desc">Burgers, tamaños, acompañantes, facturación por hora y día</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-tag tag-green">Ciudad · La Puntilla</span>
+      <span class="card-arrow">›</span>
+    </div>
+  </a>
+  <a class="card" href="rentabilidad-burgers.html">
+    <div class="card-top">
+      <div class="card-emoji">💰</div>
+      <div>
+        <div class="card-title">Rentabilidad</div>
+        <div class="card-desc">Costos, márgenes y evolución de precios por burger</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-tag tag-yellow">Actualizado Jun 2026</span>
+      <span class="card-arrow">›</span>
+    </div>
+  </a>
+  <a class="card" href="comparativa-precios.html">
+    <div class="card-top">
+      <div class="card-emoji">🏆</div>
+      <div>
+        <div class="card-title">Comparativa</div>
+        <div class="card-desc">Precios vs 8 competidores de Mendoza — Mayo 2026</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-tag tag-purple">9 locales</span>
+      <span class="card-arrow">›</span>
+    </div>
+  </a>
+  <a class="card" href="monitor-cartas.html">
+    <div class="card-top">
+      <div class="card-emoji">👀</div>
+      <div>
+        <div class="card-title">Monitor Cartas</div>
+        <div class="card-desc">Seguimiento de cambios en cartas de competidores</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-tag tag-green">Actualizado diario</span>
+      <span class="card-arrow">›</span>
+    </div>
+  </a>
+</div>
+<div class="footer">
+  <strong>Smash Club</strong> · Mendoza · Argentina<br>
+  Dashboards generados con IA · 2026
+</div>
+</body>
+</html>
