@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor de Cartas — Smash Club</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Arial Black', Arial, sans-serif; background: #f5f5f5; color: #1a1a1a; padding: 16px; min-height: 100vh; }
+  .header { background: #412d7d; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .header-left h1 { color: #f6d01e; font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+  .header-left p { color: rgba(255,255,255,0.75); font-size: 12px; font-weight: normal; margin-top: 3px; }
+  .last-check { background: rgba(246,208,30,0.15); border: 1px solid rgba(246,208,30,0.4); color: #f6d01e; border-radius: 8px; padding: 6px 12px; font-size: 11px; text-align: center; font-weight: bold; }
+  .last-check span { display: block; font-size: 13px; margin-top: 2px; }
+  .alert-banner { border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 14px; }
+  .alert-banner.ok { background: #e8f8ee; border: 2px solid #6ebd89; color: #2d7a4a; }
+  .alert-banner.danger { background: #ffeaea; border: 2px solid #e05252; color: #c0392b; animation: pulse-border 2s infinite; }
+  @keyframes pulse-border { 0%, 100% { border-color: #e05252; } 50% { border-color: #ff8080; } }
+  .alert-icon { font-size: 24px; flex-shrink: 0; }
+  .section-title { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; margin-top: 4px; }
+  .cards-grid { display: grid; gap: 8px; margin-bottom: 16px; }
+  .card { background: white; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; border: 2px solid transparent; }
+  .card.status-ok { border-color: #e0f0e8; }
+  .card.status-changed { border-color: #e05252; background: #fff5f5; box-shadow: 0 0 0 3px rgba(224,82,82,0.15); }
+  .card.status-manual { border-color: #f0e8c8; background: #fffdf5; }
+  .card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .status-ok .card-icon { background: #e8f8ee; }
+  .status-changed .card-icon { background: #ffeaea; }
+  .status-manual .card-icon { background: #fff3cd; }
+  .card-info { flex: 1; }
+  .card-name { font-size: 14px; font-weight: 900; color: #1a1a1a; }
+  .card-detail { font-size: 11px; color: #888; margin-top: 2px; font-weight: normal; }
+  .status-changed .card-detail { color: #c0392b; font-weight: bold; }
+  .card-badge { font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 20px; flex-shrink: 0; }
+  .badge-ok { background: #e8f8ee; color: #2d7a4a; }
+  .badge-changed { background: #ffeaea; color: #c0392b; }
+  .badge-manual { background: #fff3cd; color: #8a6a00; }
+  .footer { background: #412d7d; border-radius: 10px; padding: 10px 14px; color: rgba(255,255,255,0.6); font-size: 10px; font-weight: normal; text-align: center; line-height: 1.5; }
+  .footer strong { color: #f6d01e; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <h1>🍔 Monitor de Cartas</h1>
+    <p>Smash Club — Competidores Mendoza</p>
+  </div>
+  <div class="last-check">Última verificación<span>20/05/2026 — 09:00</span></div>
+</div>
+<div class="alert-banner ok">
+  <div class="alert-icon">✅</div>
+  <div>Ningún competidor actualizó su carta hoy. Todo igual.</div>
+</div>
+<div class="section-title">Monitoreados automáticamente</div>
+<div class="cards-grid">
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name">Burgang</div>
+      <div class="card-detail">Sin cambios — PDF detectado en Google Drive</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name">Peak</div>
+      <div class="card-detail">Sin cambios — carpeta detectada en Google Drive</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name">Stacy</div>
+      <div class="card-detail">Sin cambios — PDF detectado en Google Drive</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name">TBT</div>
+      <div class="card-detail">Sin cambios — carpeta detectada en Google Drive</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name">Bad Burgers</div>
+      <div class="card-detail">Sin cambios — PDF detectado en Google Drive</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+</div>
+<div class="section-title">Requieren revisión manual</div>
+<div class="cards-grid">
+  <div class="card status-manual"><div class="card-icon">⚠️</div><div class="card-info"><div class="card-name">Bairoleto</div><div class="card-detail">Plataforma Fudo — no scrapeble automáticamente</div></div><div class="card-badge badge-manual">Manual</div></div>
+  <div class="card status-manual"><div class="card-icon">⚠️</div><div class="card-info"><div class="card-name">Burger Shoppe</div><div class="card-detail">Plataforma Fudo — no scrapeble automáticamente</div></div><div class="card-badge badge-manual">Manual</div></div>
+  <div class="card status-manual"><div class="card-icon">⚠️</div><div class="card-info"><div class="card-name">Memphis</div><div class="card-detail">Carta en Instagram — no scrapeble automáticamente</div></div><div class="card-badge badge-manual">Manual</div></div>
+</div>
+<div class="footer">Actualizado automáticamente todos los días a las 9am<br><strong>Recargá esta página</strong> para ver el estado del día</div>
+</body>
+</html>
