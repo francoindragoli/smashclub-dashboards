@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Smash Club">
 <meta name="mobile-web-app-capable" content="yes">
-<title>Smash Club — Dashboard de Ventas</title>
+<title>Smash Club â Dashboard de Ventas</title>
 <link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" crossorigin="anonymous"><\/script>
 <style>
 :root {
   --yellow:#f6d01e; --purple:#412d7d; --green:#6ebd89;
@@ -53,7 +53,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <body>
 <div class="hdr-wrap">
   <div class="hdr">
-    <h1>🍔 SMASH CLUB</h1>
+    <h1>ð SMASH CLUB</h1>
     <small>Dashboard de Ventas</small>
   </div>
   <div class="mes-bar" id="mesBar"></div>
@@ -65,45 +65,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="tab-btn" onclick="switchTab('cons',this)">Consolidado</button>
 </div>
 <div class="tab-pane active" id="tab-ciudad">
-  <div class="section"><div class="stitle">Burgers más vendidas</div><div class="ch-wrap h300"><canvas id="c-burg"></canvas></div></div>
+  <div class="section"><div class="stitle">Burgers mÃ¡s vendidas</div><div class="ch-wrap h300"><canvas id="c-burg"></canvas></div></div>
   <div class="g2">
-    <div class="section"><div class="stitle">Tamaños</div><div class="ch-wrap h180"><canvas id="c-tam"></canvas></div><div class="note" id="c-tam-note"></div></div>
-    <div class="section"><div class="stitle">Acompañante</div><div class="ch-wrap h180"><canvas id="c-acomp"></canvas></div><div class="note" id="c-acomp-note"></div></div>
+    <div class="section"><div class="stitle">TamaÃ±os</div><div class="ch-wrap h180"><canvas id="c-tam"></canvas></div><div class="note" id="c-tam-note"></div></div>
+    <div class="section"><div class="stitle">AcompaÃ±ante</div><div class="ch-wrap h180"><canvas id="c-acomp"></canvas></div><div class="note" id="c-acomp-note"></div></div>
   </div>
   <div class="g2">
     <div class="section"><div class="stitle">Pan</div><div class="ch-wrap h160"><canvas id="c-pan"></canvas></div><div class="note" id="c-pan-note"></div></div>
     <div class="section"><div class="stitle">Salsa Gollum</div><div class="ch-wrap h160" id="c-salsa-wrap"><canvas id="c-salsa"></canvas></div><div id="c-salsa-empty" class="no-data" style="display:none">Dato no disponible</div></div>
   </div>
-  <div class="section"><div class="stitle">Venta por día de la semana</div><div class="ch-wrap h220"><canvas id="c-dias"></canvas></div></div>
+  <div class="section"><div class="stitle">Venta por dÃ­a de la semana</div><div class="ch-wrap h220"><canvas id="c-dias"></canvas></div></div>
   <div class="section"><div class="stitle">Venta por hora (en millones $)</div><div class="ch-wrap h220"><canvas id="c-hora"></canvas></div></div>
   <div class="section"><div class="stitle">Variantes Biggie</div><div class="ch-wrap h160" id="c-biggie-wrap"><canvas id="c-biggie"></canvas></div><div id="c-biggie-empty" class="no-data" style="display:none">Sin datos disponibles</div></div>
   <div class="section" id="c-pagos-section" style="display:none"><div class="stitle">Medios de Pago</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="c-pagos"></canvas></div><div id="c-pagos-list"></div></div></div>
 </div>
 <div class="tab-pane" id="tab-puntilla">
-  <div class="section"><div class="stitle">Burgers más vendidas</div><div class="ch-wrap h300"><canvas id="p-burg"></canvas></div></div>
+  <div class="section"><div class="stitle">Burgers mÃ¡s vendidas</div><div class="ch-wrap h300"><canvas id="p-burg"></canvas></div></div>
   <div class="g2">
-    <div class="section"><div class="stitle">Tamaños</div><div class="ch-wrap h180" id="p-tam-wrap"><canvas id="p-tam"></canvas></div><div id="p-tam-empty" class="no-data" style="display:none">Dato no disponible en este export</div><div class="note" id="p-tam-note"></div></div>
-    <div class="section"><div class="stitle">Acompañante</div><div class="ch-wrap h180" id="p-acomp-wrap"><canvas id="p-acomp"></canvas></div><div id="p-acomp-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
+    <div class="section"><div class="stitle">TamaÃ±os</div><div class="ch-wrap h180" id="p-tam-wrap"><canvas id="p-tam"></canvas></div><div id="p-tam-empty" class="no-data" style="display:none">Dato no disponible en este export</div><div class="note" id="p-tam-note"></div></div>
+    <div class="section"><div class="stitle">AcompaÃ±ante</div><div class="ch-wrap h180" id="p-acomp-wrap"><canvas id="p-acomp"></canvas></div><div id="p-acomp-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
   </div>
   <div class="g2">
     <div class="section"><div class="stitle">Pan</div><div class="ch-wrap h160" id="p-pan-wrap"><canvas id="p-pan"></canvas></div><div id="p-pan-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
     <div class="section"><div class="stitle">Salsa Gollum</div><div class="ch-wrap h160" id="p-salsa-wrap"><canvas id="p-salsa"></canvas></div><div id="p-salsa-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
   </div>
-  <div class="section"><div class="stitle">Venta por día de la semana</div><div class="ch-wrap h220"><canvas id="p-dias"></canvas></div></div>
+  <div class="section"><div class="stitle">Venta por dÃ­a de la semana</div><div class="ch-wrap h220"><canvas id="p-dias"></canvas></div></div>
   <div class="section"><div class="stitle">Venta por hora (en millones $)</div><div class="ch-wrap h220"><canvas id="p-hora"></canvas></div></div>
   <div class="section"><div class="stitle">Variantes Biggie</div><div class="ch-wrap h160" id="p-biggie-wrap"><canvas id="p-biggie"></canvas></div><div id="p-biggie-empty" class="no-data" style="display:none">Sin datos disponibles</div></div>
   <div class="section" id="p-pagos-section" style="display:none"><div class="stitle">Medios de Pago</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="p-pagos"></canvas></div><div id="p-pagos-list"></div></div></div>
 </div>
 <div class="tab-pane" id="tab-cons">
-  <div class="section"><div class="stitle">Burgers — ambos locales</div><div class="ch-wrap h300"><canvas id="k-burg"></canvas></div></div>
+  <div class="section"><div class="stitle">Burgers â ambos locales</div><div class="ch-wrap h300"><canvas id="k-burg"></canvas></div></div>
   <div class="g2">
-    <div class="section"><div class="stitle">Venta por día</div><div class="ch-wrap h220"><canvas id="k-dias"></canvas></div></div>
+    <div class="section"><div class="stitle">Venta por dÃ­a</div><div class="ch-wrap h220"><canvas id="k-dias"></canvas></div></div>
     <div class="section"><div class="stitle">Venta por hora (millones $)</div><div class="ch-wrap h220"><canvas id="k-hora"></canvas></div></div>
   </div>
-  <div clas="section"><div class="stitle">Tamaños combinados</div><div class="ch-wrap h180" id="k-tam-wrap"><canvas id="k-tam"></canvas></div><div id="k-tam-note" class="note"></div></div>
-  <div class="section" id="k-pagos-section" style="display:none"><div class="stitle">Medios de Pago — Consolidado</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="k-pagos"></canvas></div><div id="k-pagos-list"></div></div></div>
+  <div clas="section"><div class="stitle">TamaÃ±os combinados</div><div class="ch-wrap h180" id="k-tam-wrap"><canvas id="k-tam"></canvas></div><div id="k-tam-note" class="note"></div></div>
+  <div class="section" id="k-pagos-section" style="display:none"><div class="stitle">Medios de Pago â Consolidado</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="k-pagos"></canvas></div><div id="k-pagos-list"></div></div></div>
 </div>
-<div class="footer" id="footer-info">Smash Club · Mendoza · Generado por Claude</div>
+<div class="footer" id="footer-info">Smash Club Â· Mendoza Â· Generado por Claude</div>
 <script>
 const MESES = {
   marzo2026: {
@@ -306,7 +306,7 @@ function buildConsolidado(){
   const allHL=[...new Set([...c.horaLabels,...p.horaLabels])].sort((a,b)=>{const na=parseInt(a),nb=parseInt(b);return(na<9?na+24:na)-(nb<9?nb+24:nb);});
   lineHora('k-hora',allHL,allHL.map(l=>(cHMap[l]||0)+(pHMap[l]||0)),C.purple);
   if(!m.puntilla.sizes_incomplete){const jrT=c.jr+p.jr,dobleT=c.doble+p.doble,xlT=c.xl+p.xl;donut('k-tam',['JR','Doble','XL'],[jrT,dobleT,xlT],[C.green,C.purple,C.yellow]);document.getElementById('k-tam-note').textContent=`JR ${jrT} - Doble ${dobleT} - XL ${xlT}`;document.getElementById('k-tam-wrap').style.display='block';}
-  else{document.getElementById('k-tam-note').textContent='Tamaños de La Puntilla no disponibles para este mes.';document.getElementById('ktam-wrap').style.display='none';}
+  else{document.getElementById('k-tam-note').textContent='TamaÃ±os de La Puntilla no disponibles para este mes.';document.getElementById('ktam-wrap').style.display='none';}
   buildFormasPagoConsolidado(c,p);
 }
 function buildTab(tab){if(tab==='ciudad')buildCiudad();else if(tab==='puntilla')buildPuntilla();else buildConsolidado();}
