@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smash Club">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Smash Club — Dashboard de Ventas</title>
+<link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"><\/script>
+<style>
+:root {
+  --yellow:#f6d01e; --purple:#412d7d; --green:#6ebd89;
+  --gray:#f4f4f8; --card:#fff; --border:#e8e8e8; --text:#1e1e2e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray);color:var(--text);min-height:100vh}
+.hdr-wrap{background:var(--purple)}
+.hdr{padding:16px 20px 0;text-align:center}
+.hdr h1{font-family:'Passion One',sans-serif;font-size:30px;letter-spacing:3px;color:var(--yellow);line-height:1}
+.hdr small{font-size:11px;color:rgba(255,255,255,.65);letter-spacing:1.5px;text-transform:uppercase;display:block;margin:3px 0 14px}
+.mes-bar{padding:0 16px 14px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.mes-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;-webkit-tap-highlight-color:transparent}
+.mes-btn.active{background:var(--yellow);color:var(--purple);border-color:var(--yellow)}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px 14px 0}
+.kpi.wide{grid-column:1/-1}
+@media(min-width:560px){.kpis{grid-template-columns:repeat(5,1fr)}.kpi.wide{grid-column:auto}}
+.kpi{background:var(--card);border-radius:12px;padding:14px 10px;text-align:center;border-top:3px solid var(--purple);box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.kpi.g{border-top-color:var(--green)}.kpi.y{border-top-color:var(--yellow)}
+.kv{font-family:'Passion One',sans-serif;font-size:26px;color:var(--purple);line-height:1}
+.kpi.g .kv{color:#2e8b57}.kpi.y .kv{color:#9a7800}
+.kl{font-size:10px;color:#999;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.tab-bar{display:flex;gap:8px;padding:14px 14px 0;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:90px;background:var(--card);border:2px solid var(--border);border-radius:8px;padding:11px 8px;font-size:13px;font-weight:700;color:#999;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;transition:.2s}
+.tab-btn.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.tab-pane{display:none;padding:14px}
+.tab-pane.active{display:block}
+.section{background:var(--card);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.stitle{font-family:'Passion One',sans-serif;font-size:15px;color:var(--purple);letter-spacing:1px;margin-bottom:12px;text-transform:uppercase;border-bottom:2px solid var(--yellow);padding-bottom:6px}
+.g2{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.g2{grid-template-columns:1fr 1fr}}
+.g3{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.g3{grid-template-columns:repeat(3,1fr)}}
+.ch-wrap{position:relative}
+.ch-wrap.h300{height:300px}.ch-wrap.h220{height:220px}.ch-wrap.h180{height:180px}.ch-wrap.h160{height:160px}
+.note{font-size:11px;color:#aaa;font-style:italic;margin-top:6px}
+.no-data{text-align:center;color:#ccc;font-size:13px;padding:28px 0}
+.footer{text-align:center;padding:24px;color:#bbb;font-size:11px}
+</style>
+</head>
+<body>
+<div class="hdr-wrap">
+  <div class="hdr">
+    <h1>🍔 SMASH CLUB</h1>
+    <small>Dashboard de Ventas</small>
+  </div>
+  <div class="mes-bar" id="mesBar"></div>
+</div>
+<div class="kpis" id="kpis"></div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('ciudad',this)">Ciudad</button>
+  <button class="tab-btn" onclick="switchTab('puntilla',this)">La Puntilla</button>
+  <button class="tab-btn" onclick="switchTab('cons',this)">Consolidado</button>
+</div>
+<div class="tab-pane active" id="tab-ciudad">
+  <div class="section"><div class="stitle">Burgers más vendidas</div><div class="ch-wrap h300"><canvas id="c-burg"></canvas></div></div>
+  <div class="g2">
+    <div class="section"><div class="stitle">Tamaños</div><div class="ch-wrap h180"><canvas id="c-tam"></canvas></div><div class="note" id="c-tam-note"></div></div>
+    <div class="section"><div class="stitle">Acompañante</div><div class="ch-wrap h180"><canvas id="c-acomp"></canvas></div><div class="note" id="c-acomp-note"></div></div>
+  </div>
+  <div class="g2">
+    <div class="section"><div class="stitle">Pan</div><div class="ch-wrap h160"><canvas id="c-pan"></canvas></div><div class="note" id="c-pan-note"></div></div>
+    <div class="section"><div class="stitle">Salsa Gollum</div><div class="ch-wrap h160" id="c-salsa-wrap"><canvas id="c-salsa"></canvas></div><div id="c-salsa-empty" class="no-data" style="display:none">Dato no disponible</div></div>
+  </div>
+  <div class="section"><div class="stitle">Venta por día de la semana</div><div class="ch-wrap h220"><canvas id="c-dias"></canvas></div></div>
+  <div class="section"><div class="stitle">Venta por hora (en millones $)</div><div class="ch-wrap h220"><canvas id="c-hora"></canvas></div></div>
+  <div class="section"><div class="stitle">Variantes Biggie</div><div class="ch-wrap h160" id="c-biggie-wrap"><canvas id="c-biggie"></canvas></div><div id="c-biggie-empty" class="no-data" style="display:none">Sin datos disponibles</div></div>
+  <div class="section" id="c-pagos-section" style="display:none"><div class="stitle">Medios de Pago</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="c-pagos"></canvas></div><div id="c-pagos-list"></div></div></div>
+</div>
+<div class="tab-pane" id="tab-puntilla">
+  <div class="section"><div class="stitle">Burgers más vendidas</div><div class="ch-wrap h300"><canvas id="p-burg"></canvas></div></div>
+  <div class="g2">
+    <div class="section"><div class="stitle">Tamaños</div><div class="ch-wrap h180" id="p-tam-wrap"><canvas id="p-tam"></canvas></div><div id="p-tam-empty" class="no-data" style="display:none">Dato no disponible en este export</div><div class="note" id="p-tam-note"></div></div>
+    <div class="section"><div class="stitle">Acompañante</div><div class="ch-wrap h180" id="p-acomp-wrap"><canvas id="p-acomp"></canvas></div><div id="p-acomp-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
+  </div>
+  <div class="g2">
+    <div class="section"><div class="stitle">Pan</div><div class="ch-wrap h160" id="p-pan-wrap"><canvas id="p-pan"></canvas></div><div id="p-pan-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
+    <div class="section"><div class="stitle">Salsa Gollum</div><div class="ch-wrap h160" id="p-salsa-wrap"><canvas id="p-salsa"></canvas></div><div id="p-salsa-empty" class="no-data" style="display:none">Dato no disponible en este export</div></div>
+  </div>
+  <div class="section"><div class="stitle">Venta por día de la semana</div><div class="ch-wrap h220"><canvas id="p-dias"></canvas></div></div>
+  <div class="section"><div class="stitle">Venta por hora (en millones $)</div><div class="ch-wrap h220"><canvas id="p-hora"></canvas></div></div>
+  <div class="section"><div class="stitle">Variantes Biggie</div><div class="ch-wrap h160" id="p-biggie-wrap"><canvas id="p-biggie"></canvas></div><div id="p-biggie-empty" class="no-data" style="display:none">Sin datos disponibles</div></div>
+  <div class="section" id="p-pagos-section" style="display:none"><div class="stitle">Medios de Pago</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="p-pagos"></canvas></div><div id="p-pagos-list"></div></div></div>
+</div>
+<div class="tab-pane" id="tab-cons">
+  <div class="section"><div class="stitle">Burgers — ambos locales</div><div class="ch-wrap h300"><canvas id="k-burg"></canvas></div></div>
+  <div class="g2">
+    <div class="section"><div class="stitle">Venta por día</div><div class="ch-wrap h220"><canvas id="k-dias"></canvas></div></div>
+    <div class="section"><div class="stitle">Venta por hora (millones $)</div><div class="ch-wrap h220"><canvas id="k-hora"></canvas></div></div>
+  </div>
+  <div clas="section"><div class="stitle">Tamaños combinados</div><div class="ch-wrap h180" id="k-tam-wrap"><canvas id="k-tam"></canvas></div><div id="k-tam-note" class="note"></div></div>
+  <div class="section" id="k-pagos-section" style="display:none"><div class="stitle">Medios de Pago — Consolidado</div><div class="g2" style="align-items:start"><div class="ch-wrap h220"><canvas id="k-pagos"></canvas></div><div id="k-pagos-list"></div></div></div>
+</div>
+<div class="footer" id="footer-info">Smash Club · Mendoza · Generado por Claude</div>
+<script>
+const MESES = {
+  marzo2026: {
+    label: 'Marzo 2026', dias: 31, diasCount: [5,5,4,4,4,4,5],
+    ciudad: {
+      burgers: {'Crispy Bliss':847,'Gollum Signature':698,'John Bacon':559,'L.A Americana':391,'Cheese Burger':286,'Sweet Alabama':186,'Burnin Joe':142,'Biggie':97,'Denver':6},
+      jr:1409, doble:1641, xl:162, total:3212,
+      acompanante:{'Con Papas':3040,'Sin Papas':148,'Aros de Cebolla':0},
+      pan:{'Pan Regular':3146,'Pan Sin Gluten':62},
+      salsa:{'Salsa CDL':444,'Cebolla Caramelizada':223,'Sin Salsa / Otra':12},
+      ventaTotal:61466320, totalDocs:0, ticketPromedio:0,
+      ventaDias:[8954832,7813728,5661676,9310498,11073855,8924722,9727009],
+      horaLabels:["9h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","0h","1h"],
+      horaVentas:[0.14,0.483,0.609,2.706,4.657,3.704,2.407,1.796,1.211,1.249,2.21,5.201,13.297,14.717,5.272,1.802,0.006],
+      biggie:{'L.A Americana':20,'Gollum':10,'Sweet Alabama':9,'Crispy Bliss':7,'Cheese Burger':4},
+      formasPago:{'PedidosYa':25022090,'MercadoPago':20662815,'Efectivo':9939555,'Credito':3816310,'Debito':1855350,'Otros':89800,'MasDelivery':80400}
+    },
+    puntilla: {
+      burgers: {'Gollum Signature':1751,'Crispy Bliss':1603,'John Bacon':987,'L.A Americana':780,'Cheese Burger':678,'Burnin Joe':317,'Sweet Alabama':283,'Biggie':99,'Denver':35},
+      jr:6533, doble:0, xl:0, total:6533,
+      acompanante:{'Con Papas':0,'Sin Papas':0,'Aros de Cebolla':0}, acompanante_note:'Dato no disponible en este export',
+      pan:{'Pan Regular':0,'Pan Sin Gluten':0}, pan_note:'Dato no disponible en este export',
+      salsa:null, ventaTotal:104562389, totalDocs:0, ticketPromedio:0,
+      ventaDias:[10583199,12512130,8808880,10670625,19830395,21757420,20399740],
+      horaLabels:["10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","0h"],
+      horaVentas:[0.008,0.068,1.469,7.401,8.033,4.053,1.03,0.392,0.69,1.842,12.084,30.234,23.782,11.261,2.215],
+      formasPago:{'MercadoPago':37920990,'PedidosYa':31256635,'Efectivo':23592970,'Debito':9021620,'Credito':2736180,'Otros':25880,'MasDelivery':11650}
+    }
+  },
+  abril2026: {
+    label: 'Abril 2026', dias: 30, diasCount: [4,4,5,5,4,4,4],
+    ciudad: {
+      burgers: { 'Crispy Bliss':905,'Gollum Signature':691,'John Bacon':506,'L.A Americana':404,'Cheese Burger':272,'Sweet Alabama':160,'Burnin Joe':159,'Hot Honey Ranch':93,'Biggie':90,'Denver':13,'7TH STREET':1},
+      jr:1404, doble:1721, xl:169, total:3294,
+      acompanante:{'Con Papas':2975,'Sin Papas':302,'Aros de Cebolla':0},
+      pan:{'Pan Regular':3182,'Pan Sin Gluten':111},
+      salsa:{'Salsa CDL':450,'Cebolla Caramelizada':210,'Sin Salsa / Otra':13},
+      ventaTotal:60650860, totalDocs:2312, ticketPromedio:26233,
+      ventaDias:[4811800,6063365,8311510,11579920,13015110,9970690,6898465],
+      horaLabels:["9h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","0h","1h"],
+      horaVentas:[0.153,0.265,0.601,2.19,6.019,4.548,1.922,1.236,0.977,1.086,1.772,6.119,14.951,13.236,4.959,0.614,0.002],
+      biggie:{'L.A Americana':36,'Gollum':20,'Sweet Alabama':16,'Crispy Bliss':9,'Cheese Burger':8,'Burnin Joe':1},
+      formasPago:{'PedidosYa':24094600,'MercadoPago':19619590,'Efectivo':9274110,'Credito':3882240,'Debito':2645340,'MasDelivery':1017820,'Otros':117160}
+    },
+    puntilla: {
+      burgers: { 'Gollum Signature':1417,'Crispy Bliss':1390,'John Bacon':1011,'L.A Americana':703,'Cheese Burger':532,'Burnin Joe':290,'Sweet Alabama':252,'Hot Honey Ranch':248,'Biggie':113,'Denver':21},
+      jr:2404, doble:3122, xl:451, total:5977,
+      acompanante:{'Con Papas':5881,'Sin Papas':60,'Aros de Cebolla':0},
+      pan:{'Pan Regular':5872,'Pan Sin Gluten':76},
+      salsa:{'Salsa CDL':931,'Cebolla Caramelizada':403,'Sin Salsa / Otra':18},
+      ventaTotal:99524169, totalDocs:2798, ticketPromedio:35570,
+      ventaDias:[4888325,7870940,13606105,18521569,22105490,20194010,12337730],
+      horaLabels:["10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","0h"],
+      horaVentas:[0.012,0.008,1.89,7.283,6.336,2.587,1.007,0.784,0.656,3.075,12.413,29.958,21.356,10.487,1.672],
+      biggie:{'L.A Americana':43,'Crispy Bliss':29,'Gollum':18,'Sweet Alabama':11,'Cheese Burger':11,'Burnin Joe':1},
+      formasPago:{'MercadoPago':35164890,'PedidosYa':25197309,'Efectivo':22367080,'Debito':11373250,'MasDelivery':4002740,'Credito':1418900}
+    }
+  },
+  mayo2026: {
+    label: 'Mayo 2026 (1-20)', dias: 20, diasCount: [3,2,3,2,3,3,3],
+    ciudad: {
+      burgers: { 'Crispy Bliss':529,'Gollum Signature':376,'John Bacon':294,'L.A Americana':226,'Cheese Burger':160,'Sweet Alabama':114,'Burnin Joe':90,'7TH STREET':86,'Biggie':48,'Denver':4,'Hot Honey Ranch':2},
+      jr:829, doble:999,xl:101, total:1929,
+      acompanante:{'Con Papas':1702,'Sin Papas':188,'Aros de Cebolla':0},
+      pan:{'Pan Regular':1838,'Pan Sin Gluten':57},
+      salsa:{'Salsa CDL':238,'Cebolla Caramelizada':116,'Sin Salsa / Otra':14},
+      ventaTotal:34874325, totalDocs:1459, ticketPromedio:23903,
+      ventaDias:[3358315,3966405,3847170,3392805,8288300,6730310,5291020],
+      horaLabels:["9h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","0h"],
+      horaVentas:[0.108,0.34,0.47,1.436,2.542,1.967,0.918,1.084,0.838,0.96,1.396,4.112,8.108,7.361,2.931,0.304],
+      biggie:{'L.A Americana':21,'Crispy Bliss':9,'Gollum':7,'Sweet Alabama':5,'Cheese Burger':3,'Burnin Joe':3},
+      formasPago:{'PedidosYa':14846460,'MercadoPago':10573920,'Efectivo':4943165,'Credito':1633250,'Debito':1467000,'MasDelivery':1325410,'Otros':85120}
+    },
+    puntilla: {
+      burgers: { 'Crispy Bliss':872,'Gollum Signature':850,'John Bacon':520,'L.A Americana':403,'Cheese Burger':277,'Sweet Alabama':164,'Burnin Joe':163,'7TH STREET':103,'Biggie':69,'Denver':19,'Hot Honey Ranch':1},
+      jr:1342, doble:1837, xl:262, total:3441,
+      acompanante:{'Con Papas':3272,'Sin Papas':97,'Aros de Cebolla':0},
+      pan:{'Pan Regular':3362,'Pan Sin Gluten':33},
+      salsa:{'Salsa CDL':537,'Cebolla Caramelizada':230,'Sin Salsa / Otra':54},
+      ventaTotal:57387551, totalDocs:1793, ticketPromedio:32006,
+      diasLaborales:19,
+      ventaDias:[3967460,5302710,6653997,5050345,11145500,14587560,10679979],
+      horaLabels:["11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","0h"],
+      horaVentas:[0.029,1.309,5.187,3.701,1.716,0.863,0.507,0.477,1.484,8.638,16.235,11.386,5.014,0.841],
+      biggie:{'L.A Americana':18,'Gollum':18,'Crispy Bliss':15,'Sweet Alabama':11,'Cheese Burger':6,'Burnin Joe':1},
+      formasPago:{'MercadoPago':17788965,'PedidosYa':16969381,'Efectivo':10837500,'Debito':6676695,'MasDelivery':4524010,'Credito':591000}
+    }
+  }
+};const DIAS_LABELS = ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'];
+const C = {purple:'#412d7d',yellow:'#f6d01e',green:'#6ebd89',red:'#e05a5a',orange:'#f0943d',blue:'#5b9bd5',teal:'#2ec4b6',pink:'#e884a0'};
+let currentMes = 'mayo2026', currentTab = 'ciudad', charts = {};
+const PAGOS_COLORS = {'PedidosYa':'#f0943d','MercadoPago':'#009ee3','Efectivo':'#6ebd89','Debito':'#2ec4b6','Credito':'#412d7d','MasDelivery':'#e05a5a','Otros':'#aaaaaa'};
+function buildFormasPago(prefix, fp) {
+  const sec = document.getElementById(prefix+'-pagos-section');
+  if(!fp||!Object.keys(fp).length){if(sec)sec.style.display='none';return;}
+  if(sec)sec.style.display='block';
+  const sorted=Object.entries(fp).sort((a,b)=>b[1]-a[1]);
+  const labels=sorted.map(x=>x[0]),values=sorted.map(x=>x[1]);
+  const total=values.reduce((a,b)=>a+b,0),colors=labels.map(l=>PAGOS_COLORS[l]||'#999');
+  makeChart(prefix+'-pagos',{type:'doughnut',data:{labels,datasets:[{data:values,backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:6,boxWidth:11}},
+      tooltip:{callbacks:{label:ctx=>{const pct=(ctx.parsed/total*100).toFixed(1);return ` ${ctx.label}: ${pct}% ($${(ctx.parsed/1e6).toFixed(2)}M)`;}}}}}});
+  const listEl=document.getElementById(prefix+'-pagos-list');
+  if(listEl)listEl.innerHTML=labels.map((l,i)=>{
+    const pct=(values[i]/total*100).toFixed(1),amt='$'+(values[i]/1e6).toFixed(2)+'M';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:12px"><div style="width:11px;height:11px;border-radius:50%;background:${colors[i]};flex-shrink:0"></div><span style="flex:1;color:#444;font-weight:600">${l}</span><span style="font-weight:800;color:#412d7d;min-width:38px;text-align:right">${pct}%</span><span style="color:#888;font-size:10px;min-width:55px;text-align:right">${amt}</span></div>`;
+  }).join('');
+}
+function buildFormasPagoConsolidado(c,p){
+  const combined={};[c.formasPago||{},p.formasPago||{}].forEach(fp=>Object.entries(fp).forEach(([k,v])=>{combined[k]=(combined[k]||0)+v;}));
+  buildFormasPago('k',combined);
+}
+function fmt(n){return n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1000?'$'+(n/1000).toFixed(0)+'K':'$'+n;}
+function fmtN(n){return n.toLocaleString('es-AR');}
+function destroyChart(id){if(charts[id]){try{charts[id].destroy()}catch(e){}delete charts[id];}}
+function makeChart(id,cfg){destroyChart(id);const el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,cfg);}
+function barH(id,rawLabels,rawVals,color){
+  const pairs=rawLabels.map((l,i)=>({l,v:rawVals[i]})).sort((a,b)=>b.v-a.v);
+  makeChart(id,{type:'bar',data:{labels:pairs.map(x=>x.l),datasets:[{data:pairs.map(x=>x.v),backgroundColor:color||C.purple,borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} uds`}}},
+      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#888',font:{size:10}}},y:{ticks:{color:'#444',font:{size:11}}}}}});
+}
+function donut(id,labels,data,colors){
+  const total=data.reduce((a,b)=>a+b,0);if(!total)return null;
+  makeChart(id,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:12}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed} (${(ctx.parsed/total*100).toFixed(1)}%)`}}}}});
+  return true;
+}
+function barVentas(id,labels,values,color){
+  makeChart(id,{type:'bar',data:{labels,datasets:[{data:values,backgroundColor:color||C.purple,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+(ctx.parsed.y/1e6).toFixed(2)+'M'}}},
+      scales:{x:{ticks:{color:'#666',font:{size:10}}},y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}});
+}
+function lineHora(id,labels,values,color){
+  makeChart(id,{type:'line',data:{labels,datasets:[{data:values,borderColor:color||C.purple,backgroundColor:(color||C.purple)+'22',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:color||C.purple}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` $${ctx.parsed.y.toFixed(2)}M`}}},
+      scales:{x:{ticks:{color:'#666',font:{size:9},maxRotation:45}},y:{ticks:{callback:v=>'$'+v.toFixed(1)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}});
+}
+function updateKPIs(){
+  const m=MESES[currentMes],c=m.ciudad,p=m.puntilla;
+  let totalB,totalV,totalDocs,tabLabel;
+  if(currentTab==='ciudad'){totalB=c.total;totalV=c.ventaTotal;totalDocs=c.totalDocs||0;tabLabel='Ciudad';}
+  else if(currentTab==='puntilla'){totalB=p.total;totalV=p.ventaTotal;totalDocs=p.totalDocs||0;tabLabel='La Puntilla';}
+  else{totalB=c.total+p.total;totalV=c.ventaTotal+p.ventaTotal;totalDocs=(c.totalDocs||0)+(p.totalDocs||0);tabLabel='Ambos locales';}
+  const diasRef=currentTab==='ciudad'?(c.diasLaborales||m.dias):currentTab==='puntilla'?(p.diasLaborales||m.dias):m.dias;
+  const ticket=totalDocs>0?Math.round(totalV/totalDocs):Math.round(totalV/totalB);
+  const ticketLabel=totalDocs>0?'Ticket promedio':'Precio prom/burger';
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi g"><div class="kv">${fmt(totalV)}</div><div class="kl">Facturacion total</div></div>
+    <div class="kpi y"><div class="kv">${fmt(Math.round(totalV/diasRef))}</div><div class="kl">Facturacion / dia</div></div>
+    <div class="kpi"><div class="kv">${fmt(ticket)}</div><div class="kl">${ticketLabel}</div></div>
+    <div class="kpi"><div clas="kv">${fmtN(totalB)}</div><div class="kl">Burgers totales</div></div>
+    <div class="kpi wide g"><div class="kv">${Math.round(totalB/diasRef)}</div><div class="kl">Burgers / dia</div></div>`;
+  document.getElementById('footer-info').textContent=`Smash Club - Mendoza - ${m.label} - ${m.dias} dias - ${tabLabel}`;
+}
+function buildCiudad(){
+  const loc=MESESAcurrentMes].ciudad;
+  barH('c-burg',Object.keys(loc.burgers),Object.values(loc.burgers),C.purple);
+  if(loc.jr>0||loc.doble>0||loc.xl>0){donut('c-tam',['JR','Doble','XL'],[loc.jr,loc.doble,loc.xl],[C.green,C.purple,C.yellow]);document.getElementById('c-tam-note').textContent=`JR ${loc.jr} - Doble ${loc.doble} - XL ${loc.xl}`;}
+  const ac=loc.acompanante,acTotal=Object.values(ac).reduce((a,b)=>a+b,0);
+  if(acTotal>0){const acKeys=Object.keys(ac).filter(k=>ac[k]>0);donut('c-acomp',acKeys,acKeys.map(k=>ac[k]),[C.purple,C.yellow,C.green]);document.getElementById('c-acomp-note').textContent=`Con Papas ${ac['Con Papas']} - Sin Papas ${ac['Sin Papas']}`;}
+  else document.getElementById('c-acomp-note').textContent='Dato no disponible en este export';
+  const pan=loc.pan;;donut('c-pan',['Pan Regular','Pan Sin Gluten'],[pan['Pan Regular'],pan['Pan Sin Gluten']],[C.purple,C.green]);document.getElementById('c-pan-note').textContent=`Regular ${pan['Pan Regular']} - Sin Gluten ${pan['Pan Sin Gluten']}`;
+  if(loc.salsa){const s=loc.salsa;donut('c-salsa',['Salsa CDL','Cebolla Caramelizada','Sin Salsa'],[s['Salsa CDL'],s['Cebolla Caramelizada'],s['Sin Salsa / Otra']],[C.purple,C.yellow,C.teal]);document.getElementById('c-salsa-wrap').style.display='block';document.getElementById('c-salsa-empty').style.display='none';}
+  else{document.getElementById('c-salsa-wrap').style.display='none';document.getElementById('c-salsa-empty').style.display='block';}
+  barVentas('c-dias',DIAS_LABELS,loc.ventaDias,C.purple);lineHora('c-hora',loc.horaLabels,loc.horaVentas,C.purple);
+  const bk=Object.keys(loc.biggie||{});
+  if(bk.length>0){barH('c-biggie',bk,bk.map(k=>loc.biggie[k]),C.green);document.getElementById('c-biggie-wrap').style.display='block';document.getElementById('c-biggie-empty').style.display='none';}
+  else{document.getElementById('c-biggie-wrap').style.display='none';document.getElementById('c-biggie-empty').style.display='block';}
+  buildFormasPago('c',loc.formasPago);
+}
+function buildPuntilla(){
+  const loc=MESESAcurrentMes].puntilla;
+  barH('p-burg',Object.keys(loc.burgers),Object.values(loc.burgers),'#5c4ba0');
+  if(!loc.sizes_incomplete&&(loc.jr>0||loc.doble>0)){donut('p-tam',['JR','Doble','XL'],[loc.jr,loc.doble,loc.xl],[C.green,C.purple,C.yellow]);document.getElementById('p-tam-note').textContent=`JR ${loc.jr} - Doble ${loc.doble} - XL ${loc.xl}`;document.getElementById('p-tam-wrap').style.display='block';document.getElementById('p-tam-empty').style.display='none';}
+  else{document.getElementById('p-tam-wrap').style.display='none';document.getElementById('p-tam-empty').style.display='block';}
+  const ac=loc.acompanante,acTotal=Object.values(ac).reduce((a,b)=>a+b,0);
+  if(acTotal>0){const acKeys=Object.keys(ac).filter(k=>ac[k]>0);donut('p-acomp',acKeys,acKeys.map(k=>ac[k]),[C.purple,C.yellow,C.green]);document.getElementById('p-acomp-wrap').style.display='block';document.getElementById('p-acomp-empty').style.display='none';}
+  else{document.getElementById('p-acomp-wrap').style.display='none';document.getElementById('p-acomp-empty').style.display='block';}
+  const pan=loc.pan;
+  if(pan['Pan Regular']>0||pan['Pan Sin Gluten']>0){donut('p-pan',['Pan Regular','Pan Sin Gluten'],[pan['Pan Regular'],pan['Pan Sin Gluten']],[C.purple,C.green]);document.getElementById('p-pan-wrap').style.display='block';document.getElementById('p-pan-empty').style.display='none';}
+  else{document.getElementById('p-pan-wrap').style.display='none';document.getElementById('p-pan-empty').style.display='block';}
+  if(loc.salsa){const s=loc.salsa;donut('p-salsa',['Salsa CDL','Cebolla Caramelizada','Sin Salsa'],[s['Salsa CDL'],s['Cebolla Caramelizada'],s['Sin Salsa / Otra']],[C.purple,C.yellow,C.teal]);document.getElementById('p-salsa-wrap').style.display='block';document.getElementById('p-salsa-empty').style.display='none';}
+  else{document.getElementById('p-salsa-wrap').style.display='none';document.getElementById('p-salsa-empty').style.display='block';}
+  barVentas('p-dias',DIAS_LABELS,loc.ventaDias,'#5c4ba0');lineHora('p-hora',loc.horaLabels,loc.horaVentas,'#5c4ba0');
+  const bk=Object.keys(loc.biggie||{});
+  if(bk.length>0){barH('p-biggie',bk,bk.map(k=>loc.biggie[k]),C.green);document.getElementById('p-biggie-wrap').style.display='block';document.getElementById('p-biggie-empty').style.display='none';}
+  else{document.getElementById('p-biggie-wrap').style.display='none';document.getElementById('p-biggie-empty').style.display='block';}
+  buildFormasPago('p',loc.formasPago);
+}
+function buildConsolidado(){
+  const m=MESES[currentMes],c=m.ciudad,p=m.puntilla;
+  const allB={};Object.entries(c.burgers).forEach(([k,v])=>{allB[k]=(allB[k]||0)+v;});Object.entries(p.burgers).forEach(([k,v])=>{allB[k]=(allB[k]||0)+v;});
+  barH('k-burg',Object.keys(allB),Object.values(allB),C.purple);
+  makeChart('k-dias',{type:'bar',data:{labels:DIAS_LABELS,datasets:[{label:'Ciudad',data:c.ventaDias,backgroundColor:C.purple,borderRadius:3},{label:'Puntilla',data:p.ventaDias,backgroundColor:C.green,borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${(ctx.parsed.y/1e6).toFixed(2)}M`}}},
+      scales:{x:{ticks:{color:'#666',font:{size:9}}},y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}});
+  const cHMap={},pHMap={};c.horaLabels.forEach((l,i)=>{cHMap[l]=c.horaVentas[i];});p.horaLabels.forEach((l,i)=>{pHMap[l]=p.horaVentas[i];});
+  const allHL=[...new Set([...c.horaLabels,...p.horaLabels])].sort((a,b)=>{const na=parseInt(a),nb=parseInt(b);return(na<9?na+24:na)-(nb<9?nb+24:nb);});
+  lineHora('k-hora',allHL,allHL.map(l=>(cHMap[l]||0)+(pHMap[l]||0)),C.purple);
+  if(!m.puntilla.sizes_incomplete){const jrT=c.jr+p.jr,dobleT=c.doble+p.doble,xlT=c.xl+p.xl;donut('k-tam',['JR','Doble','XL'],[jrT,dobleT,xlT],[C.green,C.purple,C.yellow]);document.getElementById('k-tam-note').textContent=`JR ${jrT} - Doble ${dobleT} - XL ${xlT}`;document.getElementById('k-tam-wrap').style.display='block';}
+  else{document.getElementById('k-tam-note').textContent='Tamaños de La Puntilla no disponibles para este mes.';document.getElementById('ktam-wrap').style.display='none';}
+  buildFormasPagoConsolidado(c,p);
+}
+function buildTab(tab){if(tab==='ciudad')buildCiudad();else if(tab==='puntilla')buildPuntilla();else buildConsolidado();}
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');btn.classList.add('active');currentTab=tab;updateKPIs();buildTab(tab);
+}
+function changeMes(key){
+  currentMes=key;document.querySelectorAll('.mes-btn').forEach(b=>b.classList.toggle('active',b.dataset.mes===key));
+  Object.keys(charts).forEach(id=>{try{charts[id].destroy()}catch(e){}});charts={};updateKPIs();buildTab(currentTab);
+}
+function init(){
+  document.getElementById('mesBar').innerHTML=Object.entries(MESES).map(([key,m])=>`<button class="mes-btn${key===currentMes?' active':''}" data-mes="${key}" onclick="changeMes('${key}')">${m.label}</button>`).join('');
+  updateKPIs();buildCiudad();
+}
+document.addEventListener('DOMContentLoaded',init);
+<\/script>
+<\/body>
+<\/html>
