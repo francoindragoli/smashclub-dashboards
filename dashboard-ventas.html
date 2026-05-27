@@ -64,6 +64,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .note{font-size:11px;color:#aaa;font-style:italic;margin-top:6px}
 .no-data{text-align:center;color:#ccc;font-size:13px;padding:28px 0}
 .footer{text-align:center;padding:24px;color:#bbb;font-size:11px}
+
+/* ── TENDENCIAS ── */
+.trend{font-size:11px;font-weight:700;margin-top:3px}
+.trend.up{color:#2e8b57}.trend.dn{color:#c0392b}.trend.flat{color:#aaa}
+
+/* ── DELTA BURGERS ── */
+.delta-box{margin-top:10px;background:#f8f8fc;border-radius:8px;padding:10px 14px}
+.delta-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:6px;font-weight:700}
+.delta-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px;border-bottom:1px solid #eee}
+.delta-row:last-child{border-bottom:none}
+.delta-name{color:#444;flex:1}
+.delta-val.pos{color:#2e8b57;font-weight:800}.delta-val.neg{color:#c0392b;font-weight:800}
 </style>
 </head>
 <body>
@@ -82,6 +94,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="tab-btn active" onclick="switchTab('ciudad',this)">Ciudad</button>
   <button class="tab-btn" onclick="switchTab('puntilla',this)">La Puntilla</button>
   <button class="tab-btn" onclick="switchTab('cons',this)">Consolidado</button>
+  <button class="tab-btn" onclick="switchTab('evol',this)">Evolución</button>
 </div>
 
 <!-- ── CIUDAD ── -->
@@ -89,6 +102,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="section">
     <div class="stitle">Burgers más vendidas</div>
     <div class="ch-wrap h300"><canvas id="c-burg"></canvas></div>
+    <div id="c-burger-delta"></div>
   </div>
   <div class="g2">
     <div class="section">
@@ -141,6 +155,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="section">
     <div class="stitle">Burgers más vendidas</div>
     <div class="ch-wrap h300"><canvas id="p-burg"></canvas></div>
+    <div id="p-burger-delta"></div>
   </div>
   <div class="g2">
     <div class="section">
@@ -194,6 +209,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="section">
     <div class="stitle">Burgers — ambos locales</div>
     <div class="ch-wrap h300"><canvas id="k-burg"></canvas></div>
+    <div id="k-burger-delta"></div>
   </div>
   <div class="g2">
     <div class="section">
@@ -216,6 +232,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="ch-wrap h220"><canvas id="k-pagos"></canvas></div>
       <div id="k-pagos-list"></div>
     </div>
+  </div>
+</div>
+
+<!-- ── EVOLUCIÓN ── -->
+<div class="tab-pane" id="tab-evol">
+  <div class="section">
+    <div class="stitle">Facturación mensual — por local</div>
+    <div class="ch-wrap h280"><canvas id="e-ventas"></canvas></div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Burgers vendidas / mes</div>
+      <div class="ch-wrap h220"><canvas id="e-burgers"></canvas></div>
+    </div>
+    <div class="section">
+      <div class="stitle">Ticket promedio / mes</div>
+      <div class="ch-wrap h220"><canvas id="e-ticket"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="stitle">Evolución por burger — top 6 consolidado</div>
+    <div class="ch-wrap h300"><canvas id="e-btrend"></canvas></div>
   </div>
 </div>
 
@@ -334,11 +372,41 @@ const MESES = {
 // ═══════════════════════════════════════════════════════
 const DIAS_LABELS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 const C = {purple:'#412d7d',yellow:'#f6d01e',green:'#6ebd89',red:'#e05a5a',orange:'#f0943d',blue:'#5b9bd5',teal:'#2ec4b6',pink:'#e884a0'};
-const BURG_COLORS = [C.purple,'#6b5299','#8b73b3','#a994cc','#c5b6e0','#412d7d','#5c4ba0','#7a63b5','#9980c8','#b59ed9'];
 
-let currentMes = 'abril2026';
+const _mesKeys = Object.keys(MESES);
+let currentMes = _mesKeys[_mesKeys.length - 1];
 let currentTab = 'ciudad';
 let charts = {};
+
+// ═══════════════════════════════════════════════════════
+// TENDENCIAS
+// ═══════════════════════════════════════════════════════
+function getPrevMes(){
+  const keys=Object.keys(MESES), idx=keys.indexOf(currentMes);
+  return idx>0 ? MESES[keys[idx-1]] : null;
+}
+function trendBadge(cur, prev){
+  if(!prev||prev===0) return '';
+  const pct=((cur-prev)/prev*100).toFixed(1);
+  const cls=pct>0?'up':pct<0?'dn':'flat';
+  const arrow=pct>0?'↑':pct<0?'↓':'→';
+  const sign=pct>0?'+':'';
+  return `<div class="trend ${cls}">${arrow} ${sign}${pct}% vs mes ant.</div>`;
+}
+function buildBurgerDelta(loc, prevLoc, elemId){
+  const el=document.getElementById(elemId);
+  if(!el) return;
+  if(!prevLoc){el.innerHTML='';return;}
+  const keys=Object.keys(MESES), prevKey=keys[keys.indexOf(currentMes)-1];
+  const prevLabel=MESES[prevKey]?.label||'';
+  const deltas=Object.entries(loc.burgers)
+    .map(([name,qty])=>({name,delta:qty-(prevLoc.burgers[name]||0)}))
+    .filter(x=>x.delta!==0).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,5);
+  if(!deltas.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="delta-box"><div class="delta-title">Cambios vs ${prevLabel}</div>${
+    deltas.map(d=>`<div class="delta-row"><span class="delta-name">${d.name}</span><span class="delta-val ${d.delta>0?'pos':'neg'}">${d.delta>0?'+':''}${d.delta} uds</span></div>`).join('')
+  }</div>`;
+}
 
 // ═══════════════════════════════════════════════════════
 // MEDIOS DE PAGO
@@ -478,47 +546,41 @@ function lineHora(id, labels, values, color){
 // KPI UPDATE — se actualiza según el tab activo
 // ═══════════════════════════════════════════════════════
 function updateKPIs(){
-  const m = MESES[currentMes];
-  const c = m.ciudad, p = m.puntilla;
-  let totalB, totalV, totalDocs, tabLabel;
+  const m=MESES[currentMes], prevM=getPrevMes();
+  const c=m.ciudad, p=m.puntilla;
+  let totalB,totalV,totalDocs,tabLabel,prevV=0,prevB=0,prevTicketVal=0;
 
-  if(currentTab === 'ciudad'){
-    totalB    = c.total;
-    totalV    = c.ventaTotal;
-    totalDocs = c.totalDocs || 0;
-    tabLabel  = '📍 Ciudad';
-  } else if(currentTab === 'puntilla'){
-    totalB    = p.total;
-    totalV    = p.ventaTotal;
-    totalDocs = p.totalDocs || 0;
-    tabLabel  = '📍 La Puntilla';
+  const tab=(currentTab==='evol')?'cons':currentTab;
+
+  if(tab==='ciudad'){
+    totalB=c.total; totalV=c.ventaTotal; totalDocs=c.totalDocs||0; tabLabel='📍 Ciudad';
+    if(prevM){ const pd=prevM.ciudad; prevV=pd.ventaTotal; prevB=pd.total;
+      prevTicketVal=pd.totalDocs>0?Math.round(pd.ventaTotal/pd.totalDocs):Math.round(pd.ventaTotal/pd.total); }
+  } else if(tab==='puntilla'){
+    totalB=p.total; totalV=p.ventaTotal; totalDocs=p.totalDocs||0; tabLabel='📍 La Puntilla';
+    if(prevM){ const pd=prevM.puntilla; prevV=pd.ventaTotal; prevB=pd.total;
+      prevTicketVal=pd.totalDocs>0?Math.round(pd.ventaTotal/pd.totalDocs):Math.round(pd.ventaTotal/pd.total); }
   } else {
-    totalB    = c.total + p.total;
-    totalV    = c.ventaTotal + p.ventaTotal;
-    totalDocs = (c.totalDocs || 0) + (p.totalDocs || 0);
-    tabLabel  = '📍 Ambos locales';
+    totalB=c.total+p.total; totalV=c.ventaTotal+p.ventaTotal; totalDocs=(c.totalDocs||0)+(p.totalDocs||0);
+    tabLabel=currentTab==='evol'?'📈 Evolución':'📍 Ambos locales';
+    if(prevM){ const pC=prevM.ciudad,pP=prevM.puntilla; prevV=pC.ventaTotal+pP.ventaTotal; prevB=pC.total+pP.total;
+      const pD=(pC.totalDocs||0)+(pP.totalDocs||0);
+      prevTicketVal=pD>0?Math.round(prevV/pD):Math.round(prevV/prevB); }
   }
 
-  // diasRef: usa diasLaborales del local activo si está disponible
-  // (para meses en que un local tuvo menos días operativos que el calendario)
-  const diasRef = currentTab === 'ciudad'   ? (c.diasLaborales || m.dias)
-                : currentTab === 'puntilla' ? (p.diasLaborales || m.dias)
-                : m.dias;
+  const diasRef=tab==='ciudad'?(c.diasLaborales||m.dias):tab==='puntilla'?(p.diasLaborales||m.dias):m.dias;
+  const ticket=totalDocs>0?Math.round(totalV/totalDocs):Math.round(totalV/totalB);
+  const factDia=Math.round(totalV/diasRef);
+  const ticketLabel=totalDocs>0?'Ticket promedio':'Precio prom/burger';
 
-  // Ticket promedio: usa totalDocs (cantidad de órdenes) si está disponible,
-  // si no, fallback a precio promedio por burger
-  const ticket  = totalDocs > 0 ? Math.round(totalV / totalDocs) : Math.round(totalV / totalB);
-  const factDia = Math.round(totalV / diasRef);
-  const ticketLabel = totalDocs > 0 ? 'Ticket promedio' : 'Precio prom/burger';
-  document.getElementById('kpis').innerHTML = `
-    <div class="kpi g"><div class="kv">${fmt(totalV)}</div><div class="kl">Facturación total</div></div>
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi g"><div class="kv">${fmt(totalV)}</div><div class="kl">Facturación total</div>${trendBadge(totalV,prevV)}</div>
     <div class="kpi y"><div class="kv">${fmt(factDia)}</div><div class="kl">Facturación / día</div></div>
-    <div class="kpi"><div class="kv">${fmt(ticket)}</div><div class="kl">${ticketLabel}</div></div>
-    <div class="kpi"><div class="kv">${fmtN(totalB)}</div><div class="kl">Burgers totales</div></div>
+    <div class="kpi"><div class="kv">${fmt(ticket)}</div><div class="kl">${ticketLabel}</div>${trendBadge(ticket,prevTicketVal)}</div>
+    <div class="kpi"><div class="kv">${fmtN(totalB)}</div><div class="kl">Burgers totales</div>${trendBadge(totalB,prevB)}</div>
     <div class="kpi wide g"><div class="kv">${Math.round(totalB/diasRef)}</div><div class="kl">Burgers / día</div></div>
   `;
-  document.getElementById('footer-info').textContent =
-    `Smash Club · Mendoza · ${m.label} · ${m.dias} días · ${tabLabel}`;
+  document.getElementById('footer-info').textContent=`Smash Club · Mendoza · ${m.label} · ${m.dias} días · ${tabLabel}`;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -526,10 +588,12 @@ function updateKPIs(){
 // ═══════════════════════════════════════════════════════
 function buildCiudad(){
   const loc = MESES[currentMes].ciudad;
+  const prev = getPrevMes();
   const bKeys = Object.keys(loc.burgers), bVals = Object.values(loc.burgers);
 
   // Burgers
   barH('c-burg', bKeys, bVals, C.purple);
+  buildBurgerDelta(loc, prev?.ciudad, 'c-burger-delta');
 
   // Tamaños
   if(loc.jr > 0 || loc.doble > 0 || loc.xl > 0){
@@ -587,10 +651,12 @@ function buildCiudad(){
 
 function buildPuntilla(){
   const loc = MESES[currentMes].puntilla;
+  const prev = getPrevMes();
   const bKeys = Object.keys(loc.burgers), bVals = Object.values(loc.burgers);
 
   // Burgers
   barH('p-burg', bKeys, bVals, '#5c4ba0');
+  buildBurgerDelta(loc, prev?.puntilla, 'p-burger-delta');
 
   // Tamaños
   if(!loc.sizes_incomplete && (loc.jr > 0 || loc.doble > 0)){
@@ -660,6 +726,7 @@ function buildPuntilla(){
 function buildConsolidado(){
   const m = MESES[currentMes];
   const c = m.ciudad, p = m.puntilla;
+  const prev = getPrevMes();
 
   // Burgers combinadas
   const allBurgers = {};
@@ -667,6 +734,13 @@ function buildConsolidado(){
   Object.entries(p.burgers).forEach(([k,v])=>{ allBurgers[k]=(allBurgers[k]||0)+v; });
   const bKeys = Object.keys(allBurgers), bVals = Object.values(allBurgers);
   barH('k-burg', bKeys, bVals, C.purple);
+
+  if(prev){
+    const prevCons={burgers:{}};
+    Object.entries(prev.ciudad.burgers).forEach(([k,v])=>{prevCons.burgers[k]=(prevCons.burgers[k]||0)+v;});
+    Object.entries(prev.puntilla.burgers).forEach(([k,v])=>{prevCons.burgers[k]=(prevCons.burgers[k]||0)+v;});
+    buildBurgerDelta({burgers:allBurgers}, prevCons, 'k-burger-delta');
+  }
 
   // Ventas por día — dos barras
   const totalDias = c.ventaDias.map((v,i)=>v+p.ventaDias[i]);
@@ -716,11 +790,74 @@ function buildConsolidado(){
 }
 
 // ═══════════════════════════════════════════════════════
+// EVOLUCIÓN MES A MES
+// ═══════════════════════════════════════════════════════
+function buildEvolucion(){
+  const keys=Object.keys(MESES);
+  const labels=keys.map(k=>MESES[k].label);
+
+  // Facturación mensual por local
+  makeChart('e-ventas',{type:'bar',data:{labels,datasets:[
+    {label:'Ciudad',data:keys.map(k=>MESES[k].ciudad.ventaTotal),backgroundColor:C.purple,borderRadius:5},
+    {label:'La Puntilla',data:keys.map(k=>MESES[k].puntilla.ventaTotal),backgroundColor:C.green,borderRadius:5}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${(ctx.parsed.y/1e6).toFixed(1)}M`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Burgers vendidas por mes
+  makeChart('e-burgers',{type:'bar',data:{labels,datasets:[
+    {label:'Ciudad',data:keys.map(k=>MESES[k].ciudad.total),backgroundColor:C.purple,borderRadius:5},
+    {label:'La Puntilla',data:keys.map(k=>MESES[k].puntilla.total),backgroundColor:C.green,borderRadius:5}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y} uds`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Ticket promedio por mes
+  const ticketData=loc=>keys.map(k=>{const d=MESES[k][loc];return d.totalDocs>0?Math.round(d.ventaTotal/d.totalDocs):Math.round(d.ventaTotal/d.total);});
+  makeChart('e-ticket',{type:'line',data:{labels,datasets:[
+    {label:'Ciudad',data:ticketData('ciudad'),borderColor:C.purple,backgroundColor:C.purple+'33',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:C.purple},
+    {label:'La Puntilla',data:ticketData('puntilla'),borderColor:C.green,backgroundColor:C.green+'33',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:C.green}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString('es-AR')}`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'K',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Top 6 burgers — evolución consolidada
+  const totales={};
+  keys.forEach(k=>{
+    [...Object.entries(MESES[k].ciudad.burgers),...Object.entries(MESES[k].puntilla.burgers)]
+      .forEach(([n,v])=>{totales[n]=(totales[n]||0)+v;});
+  });
+  const top6=Object.entries(totales).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]);
+  const lc=[C.purple,C.green,C.orange,C.teal,C.pink,'#f7b731'];
+  makeChart('e-btrend',{type:'line',data:{labels,datasets:top6.map((burger,i)=>({
+    label:burger,
+    data:keys.map(k=>(MESES[k].ciudad.burgers[burger]||0)+(MESES[k].puntilla.burgers[burger]||0)),
+    borderColor:lc[i],backgroundColor:'transparent',fill:false,tension:0.3,
+    pointRadius:5,pointBackgroundColor:lc[i],borderWidth:2
+  }))},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:10,boxWidth:10,usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y} uds`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+}
+
+// ═══════════════════════════════════════════════════════
 // NAVEGACIÓN
 // ═══════════════════════════════════════════════════════
 function buildTab(tab){
   if(tab==='ciudad') buildCiudad();
   else if(tab==='puntilla') buildPuntilla();
+  else if(tab==='evol') buildEvolucion();
   else buildConsolidado();
 }
 
@@ -737,7 +874,6 @@ function switchTab(tab, btn){
 function changeMes(key){
   currentMes = key;
   document.querySelectorAll('.mes-btn').forEach(b=>b.classList.toggle('active', b.dataset.mes===key));
-  // Destruir todos los charts
   Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
   charts = {};
   updateKPIs();
@@ -748,12 +884,10 @@ function changeMes(key){
 // INIT
 // ═══════════════════════════════════════════════════════
 function init(){
-  // Render month buttons
   const mesBar = document.getElementById('mesBar');
   mesBar.innerHTML = Object.entries(MESES).map(([key,m])=>
     `<button class="mes-btn${key===currentMes?' active':''}" data-mes="${key}" onclick="changeMes('${key}')">${m.label}</button>`
   ).join('');
-
   updateKPIs();
   buildCiudad();
 }
