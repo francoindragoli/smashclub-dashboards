@@ -28,10 +28,8 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Arial,sans-serif; font-size:14px; line-height:1.5; }
 .header {
-  background:var(--violet);
-  border-bottom:3px solid var(--yellow);
-  padding:16px 16px 14px;
-  display:flex; align-items:center; justify-content:space-between;
+  background:var(--violet); border-bottom:3px solid var(--yellow);
+  padding:16px 16px 14px; display:flex; align-items:center; justify-content:space-between;
   position:sticky; top:0; z-index:100;
 }
 .logo { font-family:'Passion One','Arial Black',Impact,sans-serif; font-weight:900; font-size:28px; color:var(--yellow); letter-spacing:3px; }
@@ -41,8 +39,7 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 .header-info p { color:rgba(255,255,255,0.65); font-size:10px; margin-top:2px; }
 .tabs {
   display:flex; background:var(--bg2);
-  border-bottom:2px solid var(--border);
-  border-top:1px solid var(--border);
+  border-bottom:2px solid var(--border); border-top:1px solid var(--border);
   position:sticky; top:68px; z-index:99;
   overflow-x:auto; -webkit-overflow-scrolling:touch;
 }
@@ -67,58 +64,32 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 }
 .legend-item { display:flex; align-items:center; gap:5px; }
 .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-/* ——— Ranking ——— */
-.intl-section {
-  margin-bottom:16px;
-}
-.intl-label {
-  font-size:9px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
-  color:var(--mcd-red); margin-bottom:6px; padding-left:2px;
-}
+/* Ranking */
+.intl-section { margin-bottom:16px; }
+.intl-label { font-size:9px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--mcd-red); margin-bottom:6px; padding-left:2px; }
 .mcd-hero {
   background:linear-gradient(135deg,#fff8e1,#ffeecc);
-  border:2px solid var(--mcd-yellow);
-  border-radius:12px; padding:14px 16px;
+  border:2px solid var(--mcd-yellow); border-radius:12px; padding:14px 16px;
   display:flex; align-items:center; justify-content:space-between;
 }
-.mcd-logo-block { }
 .mcd-name { font-family:'Passion One','Arial Black',sans-serif; font-size:22px; color:var(--mcd-red); letter-spacing:1px; }
-.mcd-badge-tag {
-  display:inline-block; background:var(--mcd-red); color:#fff;
-  font-size:8px; font-weight:800; padding:2px 7px;
-  border-radius:20px; letter-spacing:1px; margin-top:3px;
-}
+.mcd-badge-tag { display:inline-block; background:var(--mcd-red); color:#fff; font-size:8px; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:1px; margin-top:3px; }
 .mcd-hero-right { text-align:right; }
 .mcd-hero-avg { font-family:'Passion One','Arial Black',sans-serif; font-size:26px; color:var(--mcd-red); }
 .mcd-hero-sub { font-size:9px; color:#a07030; margin-top:1px; }
-.local-label {
-  font-size:9px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
-  color:var(--text2); margin-bottom:8px; padding-left:2px;
-}
+.local-label { font-size:9px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--text2); margin-bottom:8px; padding-left:2px; }
 .rank-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
-.rank-card {
-  background:var(--bg2); border:1px solid var(--border); border-radius:12px;
-  padding:16px 10px; text-align:center; position:relative;
-}
+.rank-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px 10px; text-align:center; position:relative; }
 .rank-card.smash { background:linear-gradient(135deg,#f0ebff,#e0d8ff); border:2px solid var(--violet); }
-.rank-badge {
-  width:26px; height:26px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:11px; margin:0 auto 6px;
-}
+.rank-badge { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; margin:0 auto 6px; }
 .r1 { background:var(--violet); color:#fff; }
-.r2 { background:#999; color:#fff; }
+.r2 { background:#888; color:#fff; }
 .r3 { background:#a06020; color:#fff; }
 .ro { background:var(--bg4); color:var(--muted); }
 .rank-local { font-size:10px; font-weight:700; margin-bottom:5px; }
 .rank-avg { font-family:'Passion One','Arial Black',sans-serif; font-size:18px; color:var(--violet); }
 .rank-n { font-size:9px; color:var(--muted); margin-top:5px; }
-.stag {
-  position:absolute; top:-8px; right:6px;
-  background:var(--violet); color:#fff;
-  font-size:7px; font-weight:800; padding:2px 6px;
-  border-radius:20px; letter-spacing:1px;
-}
+.stag { position:absolute; top:-8px; right:6px; background:var(--violet); color:#fff; font-size:7px; font-weight:800; padding:2px 6px; border-radius:20px; letter-spacing:1px; }
 .bars { display:flex; flex-direction:column; gap:10px; }
 .bar-row { display:flex; align-items:center; gap:8px; }
 .bar-lbl { width:100px; font-size:10px; font-weight:600; text-align:right; color:var(--text2); flex-shrink:0; }
@@ -132,34 +103,22 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 .bv { font-family:'Passion One','Arial Black',sans-serif; font-size:13px; color:var(--text); }
 .bar-fill.sc .bv { color:var(--yellow); }
 .bar-fill.mcd-bar .bv { color:#fff; }
-/* ——— Burgers / Extras / Bebidas ——— */
-.product-card {
-  background:var(--bg2); border:1px solid var(--border); border-radius:12px;
-  margin-bottom:12px; overflow:hidden;
-}
+/* Burgers / Extras / Bebidas */
+.product-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; margin-bottom:12px; overflow:hidden; }
 .product-card.rrow { border-left:3px solid rgba(246,208,30,0.5); }
-.prod-header {
-  padding:10px 12px;
-  background:var(--bg3);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-}
+.prod-header { padding:10px 12px; background:var(--bg3); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
 .prod-name { font-weight:700; font-size:13px; color:var(--text); }
 .prod-sub { font-size:10px; color:var(--muted); margin-top:1px; }
 .prod-rtag { color:var(--yellow); font-size:9px; font-weight:700; }
 .prod-sc-price { font-family:'Passion One','Arial Black',sans-serif; font-size:22px; color:var(--violet); white-space:nowrap; font-weight:900; }
 .comp-grid { display:grid; grid-template-columns:1fr 1fr; }
-.comp-cell {
-  padding:8px 10px;
-  border-right:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-}
+.comp-cell { padding:8px 10px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
 .comp-cell:nth-child(even) { border-right:none; }
 .comp-cell:nth-last-child(-n+2) { border-bottom:none; }
 .comp-name { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin-bottom:3px; }
 .comp-price { font-weight:700; font-size:13px; }
 .comp-item { font-size:9px; color:var(--muted); margin-top:1px; }
-.comp-diff { font-size:9px; font-weight:700; display:block; margin-top:2px; padding:1px 4px; border-radius:3px; display:inline-block; }
+.comp-diff { font-size:9px; font-weight:700; display:inline-block; margin-top:2px; padding:1px 4px; border-radius:3px; }
 .cheaper { color:var(--mint); }
 .same { color:var(--yellow); }
 .expensive { color:var(--red); }
@@ -168,42 +127,20 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 .diff-c { background:rgba(110,189,137,0.1); color:var(--mint); }
 .diff-s { background:rgba(246,208,30,0.1); color:var(--yellow); }
 .diff-e { background:rgba(240,80,74,0.1); color:var(--red); }
-/* ——— McD Tab ——— */
-.mcd-intro {
-  background:linear-gradient(135deg,#fff8e1,#ffeecc);
-  border:2px solid var(--mcd-yellow); border-radius:12px;
-  padding:14px 16px; margin-bottom:16px;
-}
+/* McD Tab */
+.mcd-intro { background:linear-gradient(135deg,#fff8e1,#ffeecc); border:2px solid var(--mcd-yellow); border-radius:12px; padding:14px 16px; margin-bottom:16px; }
 .mcd-intro-title { font-family:'Passion One','Arial Black',sans-serif; font-size:20px; color:var(--mcd-red); margin-bottom:4px; }
 .mcd-intro-sub { font-size:11px; color:#a07030; line-height:1.6; }
-.mcd-kpi-row {
-  display:grid; grid-template-columns:1fr 1fr; gap:10px;
-  margin-bottom:16px;
-}
-.mcd-kpi {
-  background:var(--bg2); border:1px solid var(--border); border-radius:10px;
-  padding:12px 10px; text-align:center;
-}
+.mcd-kpi-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.mcd-kpi { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:12px 10px; text-align:center; }
 .mcd-kpi-val { font-family:'Passion One','Arial Black',sans-serif; font-size:22px; }
 .mcd-kpi-val.red { color:var(--mcd-red); }
 .mcd-kpi-val.green { color:var(--mint); }
 .mcd-kpi-val.violet { color:var(--violet); }
 .mcd-kpi-lbl { font-size:9px; color:var(--muted); margin-top:3px; text-transform:uppercase; letter-spacing:0.5px; }
-.mcd-compare-title {
-  font-size:11px; font-weight:700; letter-spacing:1px;
-  text-transform:uppercase; color:var(--text2);
-  margin-bottom:10px; padding-left:2px;
-}
-.mcd-card {
-  background:var(--bg2); border:1px solid var(--mcd-yellow);
-  border-left:3px solid var(--mcd-red); border-radius:12px;
-  margin-bottom:12px; overflow:hidden;
-}
-.mcd-card-header {
-  padding:10px 12px; background:#fff8e1;
-  border-bottom:1px solid #ffe8a0;
-  display:flex; align-items:flex-start; justify-content:space-between;
-}
+.mcd-compare-title { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text2); margin-bottom:10px; padding-left:2px; }
+.mcd-card { background:var(--bg2); border:1px solid var(--mcd-yellow); border-left:3px solid var(--mcd-red); border-radius:12px; margin-bottom:12px; overflow:hidden; }
+.mcd-card-header { padding:10px 12px; background:#fff8e1; border-bottom:1px solid #ffe8a0; display:flex; align-items:flex-start; justify-content:space-between; }
 .mcd-card-name { font-weight:700; font-size:13px; color:var(--text); }
 .mcd-card-sub { font-size:9px; color:var(--mcd-red); font-weight:700; margin-top:2px; }
 .mcd-card-price { font-family:'Passion One','Arial Black',sans-serif; font-size:22px; color:var(--mcd-red); font-weight:900; white-space:nowrap; }
@@ -216,16 +153,8 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 .mcd-vs-note { font-size:8px; color:var(--muted); margin-top:2px; }
 .mcd-vs-divider { flex:0 0 auto; padding:0 8px; text-align:center; }
 .mcd-vs-diff-big { font-size:12px; font-weight:800; color:var(--mint); background:rgba(110,189,137,0.12); padding:5px 12px; border-radius:20px; white-space:nowrap; }
-.mcd-combo-note {
-  background:#fff8e1; border-top:1px solid #ffe8a0;
-  padding:8px 14px; font-size:9px; color:#a07030;
-}
-/* ——— Notas ——— */
-.notes {
-  background:var(--bg3); border-left:3px solid var(--violet);
-  border-radius:0 8px 8px 0; padding:12px 14px;
-  font-size:11px; color:var(--text2); line-height:1.8; margin-top:16px;
-}
+/* Notas */
+.notes { background:var(--bg3); border-left:3px solid var(--violet); border-radius:0 8px 8px 0; padding:12px 14px; font-size:11px; color:var(--text2); line-height:1.8; margin-top:16px; }
 .notes strong { color:var(--violet); }
 .notes p { margin-bottom:6px; }
 .notes p:last-child { margin-bottom:0; }
@@ -260,47 +189,45 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
     <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div><span>Rojo = más caro que SC</span></div>
   </div>
 
-  <!-- McD referencia internacional -->
   <div class="intl-section">
     <div class="intl-label">🌐 Referencia Internacional</div>
     <div class="mcd-hero">
-      <div class="mcd-logo-block">
+      <div>
         <div class="mcd-name">McDonald's</div>
         <div class="mcd-badge-tag">COMBO · INCLUYE BEBIDA</div>
       </div>
       <div class="mcd-hero-right">
-        <div class="mcd-hero-avg">$20.850</div>
-        <div class="mcd-hero-sub">promedio 4 combos · ver tab McD</div>
+        <div class="mcd-hero-avg">$19.160</div>
+        <div class="mcd-hero-sub">promedio 5 combos · ver tab McD</div>
       </div>
     </div>
   </div>
 
-  <!-- Ranking local 1–9 -->
-  <div class="local-label">Ranking Local — Mendoza</div>
+  <div class="local-label">Ranking Local — Mendoza · base: 5 productos equivalentes</div>
   <div class="rank-grid">
-    <div class="rank-card"><div class="rank-badge r1">1</div><div class="rank-local">STACY</div><div class="rank-avg">$16.800</div><div class="rank-n">5/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge r2">2</div><div class="rank-local">MEMPHIS</div><div class="rank-avg">$16.260</div><div class="rank-n">5/7 ítems</div></div>
-    <div class="rank-card smash"><div class="stag">NOSOTROS</div><div class="rank-badge r3">3</div><div class="rank-local" style="color:var(--violet)">SMASH CLUB</div><div class="rank-avg">$15.814</div><div class="rank-n">7/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge ro">4</div><div class="rank-local">PEAK</div><div class="rank-avg">$14.780</div><div class="rank-n">5/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge ro">5</div><div class="rank-local">SHOPPE</div><div class="rank-avg">$14.614</div><div class="rank-n">7/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge ro">6</div><div class="rank-local">BAD BURGERS</div><div class="rank-avg">$13.786</div><div class="rank-n">7/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge ro">7</div><div class="rank-local">BURGANG</div><div class="rank-avg">$13.757</div><div class="rank-n">7/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge ro">8</div><div class="rank-local">TBT</div><div class="rank-avg">$13.000</div><div class="rank-n">5/7 ítems</div></div>
-    <div class="rank-card"><div class="rank-badge ro">9</div><div class="rank-local">BAIROLETO</div><div class="rank-avg">$11.200</div><div class="rank-n">5/7 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge r1">1</div><div class="rank-local">STACY</div><div class="rank-avg">$16.875</div><div class="rank-n">4/5 ítems</div></div>
+    <div class="rank-card smash"><div class="stag">NOSOTROS</div><div class="rank-badge r2">2</div><div class="rank-local" style="color:var(--violet)">SMASH CLUB</div><div class="rank-avg">$15.940</div><div class="rank-n">5/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge r3">3</div><div class="rank-local">MEMPHIS</div><div class="rank-avg">$15.875</div><div class="rank-n">4/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge ro">4</div><div class="rank-local">PEAK</div><div class="rank-avg">$14.575</div><div class="rank-n">4/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge ro">5</div><div class="rank-local">BURGANG</div><div class="rank-avg">$14.500</div><div class="rank-n">5/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge ro">6</div><div class="rank-local">SHOPPE</div><div class="rank-avg">$14.320</div><div class="rank-n">5/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge ro">7</div><div class="rank-local">BAD BURGERS</div><div class="rank-avg">$14.020</div><div class="rank-n">5/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge ro">8</div><div class="rank-local">TBT</div><div class="rank-avg">$12.750</div><div class="rank-n">4/5 ítems</div></div>
+    <div class="rank-card"><div class="rank-badge ro">9</div><div class="rank-local">BAIROLETO</div><div class="rank-avg">$11.950</div><div class="rank-n">4/5 ítems</div></div>
   </div>
 
-  <!-- Barras — escala base $22.000 -->
+  <!-- Barras — escala base $20.000 -->
   <div class="bars">
-    <div class="bar-row"><div class="bar-lbl mcd-lbl">🌐 McD</div><div class="bar-outer"><div class="bar-fill mcd-bar" style="width:94.8%"><span class="bv">$20.850</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Stacy</div><div class="bar-outer"><div class="bar-fill co" style="width:76.4%"><span class="bv">$16.800</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Memphis</div><div class="bar-outer"><div class="bar-fill co" style="width:73.9%"><span class="bv">$16.260</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl smash">◀ SC</div><div class="bar-outer"><div class="bar-fill sc" style="width:71.9%"><span class="bv">$15.814</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Peak</div><div class="bar-outer"><div class="bar-fill co" style="width:67.2%"><span class="bv">$14.780</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Shoppe</div><div class="bar-outer"><div class="bar-fill co" style="width:66.4%"><span class="bv">$14.614</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Bad Burgers</div><div class="bar-outer"><div class="bar-fill co" style="width:62.7%"><span class="bv">$13.786</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Burgang</div><div class="bar-outer"><div class="bar-fill co" style="width:62.5%"><span class="bv">$13.757</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">TBT</div><div class="bar-outer"><div class="bar-fill co" style="width:59.1%"><span class="bv">$13.000</span></div></div></div>
-    <div class="bar-row"><div class="bar-lbl">Bairoleto</div><div class="bar-outer"><div class="bar-fill co" style="width:50.9%"><span class="bv">$11.200</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl mcd-lbl">🌐 McD</div><div class="bar-outer"><div class="bar-fill mcd-bar" style="width:95.8%"><span class="bv">$19.160</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Stacy</div><div class="bar-outer"><div class="bar-fill co" style="width:84.4%"><span class="bv">$16.875</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl smash">◀ SC</div><div class="bar-outer"><div class="bar-fill sc" style="width:79.7%"><span class="bv">$15.940</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Memphis</div><div class="bar-outer"><div class="bar-fill co" style="width:79.4%"><span class="bv">$15.875</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Peak</div><div class="bar-outer"><div class="bar-fill co" style="width:72.9%"><span class="bv">$14.575</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Burgang</div><div class="bar-outer"><div class="bar-fill co" style="width:72.5%"><span class="bv">$14.500</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Shoppe</div><div class="bar-outer"><div class="bar-fill co" style="width:71.6%"><span class="bv">$14.320</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Bad Burgers</div><div class="bar-outer"><div class="bar-fill co" style="width:70.1%"><span class="bv">$14.020</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">TBT</div><div class="bar-outer"><div class="bar-fill co" style="width:63.8%"><span class="bv">$12.750</span></div></div></div>
+    <div class="bar-row"><div class="bar-lbl">Bairoleto</div><div class="bar-outer"><div class="bar-fill co" style="width:59.8%"><span class="bv">$11.950</span></div></div></div>
   </div>
 </div>
 
@@ -314,35 +241,31 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
     </div>
   </div>
 
-  <!-- KPIs -->
   <div class="mcd-kpi-row">
     <div class="mcd-kpi">
-      <div class="mcd-kpi-val red">$20.850</div>
+      <div class="mcd-kpi-val red">$19.160</div>
       <div class="mcd-kpi-lbl">Promedio McD (combo)</div>
     </div>
     <div class="mcd-kpi">
-      <div class="mcd-kpi-val violet">$18.614</div>
+      <div class="mcd-kpi-val violet">$17.940</div>
       <div class="mcd-kpi-lbl">Promedio SC (burger + gaseosa)</div>
     </div>
     <div class="mcd-kpi">
-      <div class="mcd-kpi-val green">-11%</div>
-      <div class="mcd-kpi-lbl">SC más barato (combo equivalente)</div>
+      <div class="mcd-kpi-val green">-6%</div>
+      <div class="mcd-kpi-lbl">SC más barato (combo equiv.)</div>
     </div>
     <div class="mcd-kpi">
-      <div class="mcd-kpi-val green">-$2.236</div>
+      <div class="mcd-kpi-val green">-$1.220</div>
       <div class="mcd-kpi-lbl">Ahorro promedio por combo</div>
     </div>
   </div>
 
-  <div class="mcd-compare-title">Comparativa por producto</div>
+  <div class="mcd-compare-title">Comparativa producto a producto</div>
 
   <!-- Tasty Turbo Bacon Doble -->
   <div class="mcd-card">
     <div class="mcd-card-header">
-      <div>
-        <div class="mcd-card-name">Tasty Turbo Bacon Doble</div>
-        <div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div>
-      </div>
+      <div><div class="mcd-card-name">Tasty Turbo Bacon Doble</div><div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div></div>
       <div class="mcd-card-price">$21.900</div>
     </div>
     <div class="mcd-vs-body">
@@ -351,35 +274,7 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
         <div class="mcd-vs-price r">$21.900</div>
         <div class="mcd-vs-note">combo c/bebida</div>
       </div>
-      <div class="mcd-vs-divider">
-        <div class="mcd-vs-diff-big">SC -$2.100 (-10%)</div>
-      </div>
-      <div class="mcd-vs-col">
-        <div class="mcd-vs-brand">Smash Club</div>
-        <div class="mcd-vs-price v">$19.800</div>
-        <div class="mcd-vs-note">John Bacon Doble + gaseosa</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tasty Doble -->
-  <div class="mcd-card">
-    <div class="mcd-card-header">
-      <div>
-        <div class="mcd-card-name">Tasty Doble</div>
-        <div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div>
-      </div>
-      <div class="mcd-card-price">$20.900</div>
-    </div>
-    <div class="mcd-vs-body">
-      <div class="mcd-vs-col">
-        <div class="mcd-vs-brand">McDonald's</div>
-        <div class="mcd-vs-price r">$20.900</div>
-        <div class="mcd-vs-note">combo c/bebida</div>
-      </div>
-      <div class="mcd-vs-divider">
-        <div class="mcd-vs-diff-big">SC -$100 (≈ igual)</div>
-      </div>
+      <div class="mcd-vs-divider"><div class="mcd-vs-diff-big">SC -$1.100 (-5%)</div></div>
       <div class="mcd-vs-col">
         <div class="mcd-vs-brand">Smash Club</div>
         <div class="mcd-vs-price v">$20.800</div>
@@ -388,13 +283,10 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
     </div>
   </div>
 
-  <!-- Tasty Feat Cuarto Doble -->
+  <!-- Tasty Doble -->
   <div class="mcd-card">
     <div class="mcd-card-header">
-      <div>
-        <div class="mcd-card-name">Tasty Feat Cuarto Doble</div>
-        <div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div>
-      </div>
+      <div><div class="mcd-card-name">Tasty Doble</div><div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div></div>
       <div class="mcd-card-price">$20.900</div>
     </div>
     <div class="mcd-vs-body">
@@ -403,9 +295,7 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
         <div class="mcd-vs-price r">$20.900</div>
         <div class="mcd-vs-note">combo c/bebida</div>
       </div>
-      <div class="mcd-vs-divider">
-        <div class="mcd-vs-diff-big">SC -$2.100 (-10%)</div>
-      </div>
+      <div class="mcd-vs-divider"><div class="mcd-vs-diff-big">SC -$2.100 (-10%)</div></div>
       <div class="mcd-vs-col">
         <div class="mcd-vs-brand">Smash Club</div>
         <div class="mcd-vs-price v">$18.800</div>
@@ -417,10 +307,7 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
   <!-- Doble Cuarto de Libra -->
   <div class="mcd-card">
     <div class="mcd-card-header">
-      <div>
-        <div class="mcd-card-name">Doble Cuarto de Libra</div>
-        <div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div>
-      </div>
+      <div><div class="mcd-card-name">Doble Cuarto de Libra</div><div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div></div>
       <div class="mcd-card-price">$19.700</div>
     </div>
     <div class="mcd-vs-body">
@@ -429,9 +316,7 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
         <div class="mcd-vs-price r">$19.700</div>
         <div class="mcd-vs-note">combo c/bebida</div>
       </div>
-      <div class="mcd-vs-divider">
-        <div class="mcd-vs-diff-big">SC -$900 (-5%)</div>
-      </div>
+      <div class="mcd-vs-divider"><div class="mcd-vs-diff-big">SC -$900 (-5%)</div></div>
       <div class="mcd-vs-col">
         <div class="mcd-vs-brand">Smash Club</div>
         <div class="mcd-vs-price v">$18.800</div>
@@ -439,18 +324,60 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
       </div>
     </div>
   </div>
+
+  <!-- McNifica -->
+  <div class="mcd-card">
+    <div class="mcd-card-header">
+      <div><div class="mcd-card-name">McNifica</div><div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div></div>
+      <div class="mcd-card-price">$17.000</div>
+    </div>
+    <div class="mcd-vs-body">
+      <div class="mcd-vs-col">
+        <div class="mcd-vs-brand">McDonald's</div>
+        <div class="mcd-vs-price r">$17.000</div>
+        <div class="mcd-vs-note">combo c/bebida</div>
+      </div>
+      <div class="mcd-vs-divider"><div class="mcd-vs-diff-big">SC -$1.200 (-7%)</div></div>
+      <div class="mcd-vs-col">
+        <div class="mcd-vs-brand">Smash Club</div>
+        <div class="mcd-vs-price v">$15.800</div>
+        <div class="mcd-vs-note">L.A Americana Jr + gaseosa</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Big Mac -->
+  <div class="mcd-card">
+    <div class="mcd-card-header">
+      <div><div class="mcd-card-name">Big Mac</div><div class="mcd-card-sub">COMBO · INCLUYE BEBIDA</div></div>
+      <div class="mcd-card-price">$16.300</div>
+    </div>
+    <div class="mcd-vs-body">
+      <div class="mcd-vs-col">
+        <div class="mcd-vs-brand">McDonald's</div>
+        <div class="mcd-vs-price r">$16.300</div>
+        <div class="mcd-vs-note">combo c/bebida</div>
+      </div>
+      <div class="mcd-vs-divider"><div class="mcd-vs-diff-big">SC -$800 (-5%)</div></div>
+      <div class="mcd-vs-col">
+        <div class="mcd-vs-brand">Smash Club</div>
+        <div class="mcd-vs-price v">$15.500</div>
+        <div class="mcd-vs-note">Cheese Burger + gaseosa</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════ BURGERS ═══════════ -->
 <div id="tab-burgers" class="tab-content">
-  <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">Gollum Signature XL</div><div class="prod-sub">Triple patty / Premium · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$19.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$16.900</div><div class="comp-item">Fat Tonny</div><span class="comp-diff diff-c">-$2.100 (-11%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$18.400</div><div class="comp-item">King Peak Triple</div><span class="comp-diff diff-c">-$600 (-3%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$19.500</div><div class="comp-item">Stacycheese D+Extra</div><span class="comp-diff diff-e">+$500 (+3%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$18.200</div><div class="comp-item">Royale Doble+Carne</div><span class="comp-diff diff-c">-$800 (-4%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$20.400</div><div class="comp-item">Royal CB Triple</div><span class="comp-diff diff-e">+$1.400 (+7%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$16.500</div><div class="comp-item">Cheese XXL</div><span class="comp-diff diff-c">-$2.500 (-13%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$17.500</div><div class="comp-item">Bad Ricky D+Extra</div><span class="comp-diff diff-c">-$1.500 (-8%)</span></div></div></div>
+  <div class="product-card"><div class="prod-header"><div><div class="prod-name">Gollum Signature XL</div><div class="prod-sub">Triple patty / Premium</div></div><div class="prod-sc-price">$19.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$16.900</div><div class="comp-item">Fat Tonny</div><span class="comp-diff diff-c">-$2.100 (-11%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$18.400</div><div class="comp-item">King Peak Triple</div><span class="comp-diff diff-c">-$600 (-3%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$19.500</div><div class="comp-item">Stacycheese D+Extra</div><span class="comp-diff diff-e">+$500 (+3%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$18.200</div><div class="comp-item">Royale Doble+Carne</div><span class="comp-diff diff-c">-$800 (-4%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$20.400</div><div class="comp-item">Royal CB Triple</div><span class="comp-diff diff-e">+$1.400 (+7%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$16.500</div><div class="comp-item">Cheese XXL</div><span class="comp-diff diff-c">-$2.500 (-13%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$17.500</div><div class="comp-item">Bad Ricky D+Extra</div><span class="comp-diff diff-c">-$1.500 (-8%)</span></div></div></div>
   <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">Crispy Bliss Doble</div><div class="prod-sub">Doble patty / Crispy · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$18.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$15.900</div><div class="comp-item">Molly x2</div><span class="comp-diff diff-c">-$2.100 (-12%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$13.700</div><div class="comp-item">Bastarda Doble</div><span class="comp-diff diff-c">-$4.300 (-24%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$16.500</div><div class="comp-item">Monte Vesubio Doble</div><span class="comp-diff diff-c">-$1.500 (-8%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price cheaper">$17.500</div><div class="comp-item">Broadway Americana</div><span class="comp-diff diff-c">-$500 (-3%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$15.800</div><div class="comp-item">Crispy Deluxe Doble</div><span class="comp-diff diff-c">-$2.200 (-12%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">TBT</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$15.500</div><div class="comp-item">Bad Larry Doble</div><span class="comp-diff diff-c">-$2.500 (-14%)</span></div></div></div>
   <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">John Bacon Doble</div><div class="prod-sub">Doble patty / Bacon · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$17.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$14.900</div><div class="comp-item">Big Momma x2</div><span class="comp-diff diff-c">-$2.100 (-12%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$16.000</div><div class="comp-item">K2 Doble</div><span class="comp-diff diff-c">-$1.000 (-6%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price same">$17.000</div><div class="comp-item">Stacy Casa Doble</div><span class="comp-diff diff-s">= Mismo</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$15.700</div><div class="comp-item">Royale Bacon Doble</div><span class="comp-diff diff-c">-$1.300 (-8%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price cheaper">$16.900</div><div class="comp-item">Texan</div><span class="comp-diff diff-c">-$100 (-1%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$14.000</div><div class="comp-item">Americana XL</div><span class="comp-diff diff-c">-$3.000 (-18%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$14.500</div><div class="comp-item">Bad BBQ Doble</div><span class="comp-diff diff-c">-$2.500 (-15%)</span></div></div></div>
   <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">Gollum Signature Doble</div><div class="prod-sub">Doble patty / Cheese · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$16.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$13.900</div><div class="comp-item">Cheeseburger x2</div><span class="comp-diff diff-c">-$2.100 (-13%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$12.200</div><div class="comp-item">Gringa Doble</div><span class="comp-diff diff-c">-$3.800 (-24%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price same">$16.000</div><div class="comp-item">Stacycheese Doble</div><span class="comp-diff diff-s">= Mismo</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$14.700</div><div class="comp-item">Royale Classic Doble</div><span class="comp-diff diff-c">-$1.300 (-8%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$16.900</div><div class="comp-item">Royal Cheeseburger</div><span class="comp-diff diff-e">+$900 (+6%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$14.000</div><div class="comp-item">Cheese XL</div><span class="comp-diff diff-c">-$2.000 (-13%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$14.000</div><div class="comp-item">Bad Ricky Doble</div><span class="comp-diff diff-c">-$2.000 (-13%)</span></div></div></div>
-  <div class="product-card"><div class="prod-header"><div><div class="prod-name">L.A Americana</div><div class="prod-sub">Doble patty / Clásica</div></div><div class="prod-sc-price">$16.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price expensive">$16.900</div><div class="comp-item">Tatum</div><span class="comp-diff diff-e">+$900 (+6%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$12.500</div><div class="comp-item">Elegante Doble</div><span class="comp-diff diff-c">-$3.500 (-22%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price same">$15.300</div><div class="comp-item">Aconcagua Doble</div><span class="comp-diff diff-s">-$700 (-4%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$17.000</div><div class="comp-item">Classic Doble</div><span class="comp-diff diff-e">+$1.000 (+6%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$14.700</div><div class="comp-item">Shoppe Doble</div><span class="comp-diff diff-c">-$1.300 (-8%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$16.900</div><div class="comp-item">American</div><span class="comp-diff diff-e">+$900 (+6%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$13.000</div><div class="comp-item">Clasica XL</div><span class="comp-diff diff-c">-$3.000 (-19%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$14.600</div><div class="comp-item">Bad Smoke Doble</div><span class="comp-diff diff-c">-$1.400 (-9%)</span></div></div></div>
-  <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">Crispy Bliss Jr</div><div class="prod-sub">Single patty / Crispy · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$15.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$12.900</div><div class="comp-item">Molly x1</div><span class="comp-diff diff-c">-$2.100 (-14%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$11.100</div><div class="comp-item">Bastarda Simple</div><span class="comp-diff diff-c">-$3.900 (-26%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$12.500</div><div class="comp-item">Monte Vesubio Simple</div><span class="comp-diff diff-c">-$2.500 (-17%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$14.100</div><div class="comp-item">Crispy Deluxe Simple</div><span class="comp-diff diff-c">-$900 (-6%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">TBT</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$12.500</div><div class="comp-item">Bad Larry Simple</div><span class="comp-diff diff-c">-$2.500 (-17%)</span></div></div></div>
+  <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">L.A Americana</div><div class="prod-sub">Doble patty / Clásica · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$16.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price expensive">$16.900</div><div class="comp-item">Tatum</div><span class="comp-diff diff-e">+$900 (+6%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$12.500</div><div class="comp-item">Elegante Doble</div><span class="comp-diff diff-c">-$3.500 (-22%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price same">$15.300</div><div class="comp-item">Aconcagua Doble</div><span class="comp-diff diff-s">-$700 (-4%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$17.000</div><div class="comp-item">Classic Doble</div><span class="comp-diff diff-e">+$1.000 (+6%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$14.700</div><div class="comp-item">Shoppe Doble</div><span class="comp-diff diff-c">-$1.300 (-8%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$16.900</div><div class="comp-item">American</div><span class="comp-diff diff-e">+$900 (+6%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$13.000</div><div class="comp-item">Clasica XL</div><span class="comp-diff diff-c">-$3.000 (-19%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$14.600</div><div class="comp-item">Bad Smoke Doble</div><span class="comp-diff diff-c">-$1.400 (-9%)</span></div></div></div>
+  <div class="product-card"><div class="prod-header"><div><div class="prod-name">Crispy Bliss Jr</div><div class="prod-sub">Single patty / Crispy</div></div><div class="prod-sc-price">$15.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$12.900</div><div class="comp-item">Molly x1</div><span class="comp-diff diff-c">-$2.100 (-14%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$11.100</div><div class="comp-item">Bastarda Simple</div><span class="comp-diff diff-c">-$3.900 (-26%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$12.500</div><div class="comp-item">Monte Vesubio Simple</div><span class="comp-diff diff-c">-$2.500 (-17%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$14.100</div><div class="comp-item">Crispy Deluxe Simple</div><span class="comp-diff diff-c">-$900 (-6%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">TBT</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$12.500</div><div class="comp-item">Bad Larry Simple</div><span class="comp-diff diff-c">-$2.500 (-17%)</span></div></div></div>
   <div class="product-card"><div class="prod-header"><div><div class="prod-name">John Bacon Jr</div><div class="prod-sub">Single patty / Bacon</div></div><div class="prod-sc-price">$14.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$11.900</div><div class="comp-item">Big Momma x1</div><span class="comp-diff diff-c">-$2.100 (-15%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$12.000</div><div class="comp-item">K2 Simple</div><span class="comp-diff diff-c">-$2.000 (-14%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$15.000</div><div class="comp-item">Stacy Casa Original</div><span class="comp-diff diff-e">+$1.000 (+7%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price same">$14.100</div><div class="comp-item">Royale Bacon Simple</div><span class="comp-diff diff-s">+$100 (+1%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$11.000</div><div class="comp-item">Americana L</div><span class="comp-diff diff-c">-$3.000 (-21%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$11.500</div><div class="comp-item">Bad BBQ Simple</div><span class="comp-diff diff-c">-$2.500 (-18%)</span></div></div></div>
-  <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">Gollum Signature Jr</div><div class="prod-sub">Single patty / Cheese · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$13.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$10.900</div><div class="comp-item">Cheeseburger x1</div><span class="comp-diff diff-c">-$2.100 (-16%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$9.600</div><div class="comp-item">Gringa Simple</div><span class="comp-diff diff-c">-$3.400 (-26%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$14.000</div><div class="comp-item">Stacycheese Original</div><span class="comp-diff diff-e">+$1.000 (+8%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price same">$13.100</div><div class="comp-item">Royale Classic Simple</div><span class="comp-diff diff-s">+$100 (+1%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$14.300</div><div class="comp-item">Royal CB Simple</div><span class="comp-diff diff-e">+$1.300 (+10%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$10.500</div><div class="comp-item">Cheese L</div><span class="comp-diff diff-c">-$2.500 (-19%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$11.000</div><div class="comp-item">Bad Ricky Simple</div><span class="comp-diff diff-c">-$2.000 (-15%)</span></div></div></div>
+  <div class="product-card"><div class="prod-header"><div><div class="prod-name">Gollum Signature Jr</div><div class="prod-sub">Single patty / Cheese</div></div><div class="prod-sc-price">$13.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$10.900</div><div class="comp-item">Cheeseburger x1</div><span class="comp-diff diff-c">-$2.100 (-16%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$9.600</div><div class="comp-item">Gringa Simple</div><span class="comp-diff diff-c">-$3.400 (-26%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$14.000</div><div class="comp-item">Stacycheese Original</div><span class="comp-diff diff-e">+$1.000 (+8%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price same">$13.100</div><div class="comp-item">Royale Classic Simple</div><span class="comp-diff diff-s">+$100 (+1%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price expensive">$14.300</div><div class="comp-item">Royal CB Simple</div><span class="comp-diff diff-e">+$1.300 (+10%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$10.500</div><div class="comp-item">Cheese L</div><span class="comp-diff diff-c">-$2.500 (-19%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$11.000</div><div class="comp-item">Bad Ricky Simple</div><span class="comp-diff diff-c">-$2.000 (-15%)</span></div></div></div>
   <div class="product-card"><div class="prod-header"><div><div class="prod-name">L.A Americana Jr</div><div class="prod-sub">Single patty / Clásica</div></div><div class="prod-sc-price">$13.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$10.000</div><div class="comp-item">Elegante Simple</div><span class="comp-diff diff-c">-$3.000 (-23%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$11.200</div><div class="comp-item">Aconcagua Simple</div><span class="comp-diff diff-c">-$1.800 (-14%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$14.500</div><div class="comp-item">Classic Original</div><span class="comp-diff diff-e">+$1.500 (+12%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price same">$13.100</div><div class="comp-item">Shoppe Simple</div><span class="comp-diff diff-s">+$100 (+1%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$10.500</div><div class="comp-item">Clasica L</div><span class="comp-diff diff-c">-$2.500 (-19%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$11.600</div><div class="comp-item">Bad Smoke Simple</div><span class="comp-diff diff-c">-$1.400 (-11%)</span></div></div></div>
   <div class="product-card rrow"><div class="prod-header"><div><div class="prod-name">Cheese Burger</div><div class="prod-sub">Entry level · <span class="prod-rtag">★ RANKING</span></div></div><div class="prod-sc-price">$12.700</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price cheaper">$10.900</div><div class="comp-item">Cheeseburger</div><span class="comp-diff diff-c">-$1.800 (-14%)</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price cheaper">$9.400</div><div class="comp-item">Simple c/Queso</div><span class="comp-diff diff-c">-$3.300 (-26%)</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$10.500</div><div class="comp-item">Monte Pissis Simple</div><span class="comp-diff diff-c">-$2.200 (-17%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price cheaper">$10.700</div><div class="comp-item">Campeona Simple</div><span class="comp-diff diff-c">-$2.000 (-16%)</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price same">$12.800</div><div class="comp-item">Cheeseburger</div><span class="comp-diff diff-s">+$100 (+1%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$10.000</div><div class="comp-item">Simple c/Queso L</div><span class="comp-diff diff-c">-$2.700 (-21%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><div class="comp-price cheaper">$11.500</div><div class="comp-item">Bad Cheese Simple</div><span class="comp-diff diff-c">-$1.200 (-9%)</span></div></div></div>
   <div class="product-card"><div class="prod-header"><div><div class="prod-name">Biggie</div><div class="prod-sub">Veggie Burger</div></div><div class="prod-sc-price">$13.000</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nd">N/D</span><div class="comp-item">Gringa Veggie</div></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$11.500</div><div class="comp-item">Monte Fuji Simple</div><span class="comp-diff diff-c">-$1.500 (-12%)</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$15.000</div><div class="comp-item">De la Huerta Veggie</div><span class="comp-diff diff-e">+$2.000 (+15%)</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><div class="comp-price same">$12.800</div><div class="comp-item">Veggie Burger</div><span class="comp-diff diff-s">-$200 (-2%)</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price cheaper">$12.000</div><div class="comp-item">Veggie L</div><span class="comp-diff diff-c">-$1.000 (-8%)</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><span class="nt">N/T</span></div></div></div>
@@ -468,7 +395,7 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 <!-- ═══════════ BEBIDAS ═══════════ -->
 <div id="tab-bebidas" class="tab-content">
   <div class="product-card"><div class="prod-header"><div><div class="prod-name">Agua 500cc</div></div><div class="prod-sc-price">$2.500</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price same">$2.500</div><span class="comp-diff diff-s">= Igual</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price same">$2.600</div><span class="comp-diff diff-s">+$100</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$2.000</div><div class="comp-item">Eco de los Andes</div><span class="comp-diff diff-c">-$500</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$4.000</div><span class="comp-diff diff-e">+$1.500</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price expensive">$3.100</div><span class="comp-diff diff-e">+$600</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nd">N/D</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price same">$2.500</div><span class="comp-diff diff-s">= Igual</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><span class="nd">N/D</span></div></div></div>
-  <div class="product-card"><div class="prod-header"><div><div class="prod-name">Gaseosa 354cc</div></div><div class="prod-sc-price">$2.200</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price expensive">$2.500</div><div class="comp-item">Coca Cola</div><span class="comp-diff diff-e">+$300</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price expensive">$2.600</div><div class="comp-item">Coca Cola 500ml</div><span class="comp-diff diff-e">+$400</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$2.000</div><div class="comp-item">Pepsi 354cc</div><span class="comp-diff diff-c">-$200</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$4.000</div><div class="comp-item">Línea Coca</div><span class="comp-diff diff-e">+$1.800</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price expensive">$3.100</div><div class="comp-item">Pepsi 354ml</div><span class="comp-diff diff-e">+$900</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nd">N/D</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price expensive">$3.000</div><div class="comp-item">Coca Cola 500ml</div><span class="comp-diff diff-e">+$800</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><span class="nd">N/D</span></div></div></div>
+  <div class="product-card"><div class="prod-header"><div><div class="prod-name">Gaseosa 354cc</div></div><div class="prod-sc-price">$2.800</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price same">$2.500</div><div class="comp-item">Coca Cola</div><span class="comp-diff diff-s">-$300</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><div class="comp-price same">$2.600</div><div class="comp-item">Coca Cola 500ml</div><span class="comp-diff diff-s">-$200</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price cheaper">$2.000</div><div class="comp-item">Pepsi 354cc</div><span class="comp-diff diff-c">-$800</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$4.000</div><div class="comp-item">Línea Coca</div><span class="comp-diff diff-e">+$1.200</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price expensive">$3.100</div><div class="comp-item">Pepsi 354ml</div><span class="comp-diff diff-e">+$300</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nd">N/D</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price expensive">$3.000</div><div class="comp-item">Coca Cola 500ml</div><span class="comp-diff diff-e">+$200</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><span class="nd">N/D</span></div></div></div>
   <div class="product-card"><div class="prod-header"><div><div class="prod-name">Andes Origen IPA 473cc</div></div><div class="prod-sc-price">$3.200</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><div class="comp-price same">$3.200</div><span class="comp-diff diff-s">= Igual</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Peak</div><div class="comp-price same">$3.200</div><div class="comp-item">AO Rubia/Negra/Roja</div><span class="comp-diff diff-s">= Igual*</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><span class="nd">N/D</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price expensive">$4.200</div><span class="comp-diff diff-e">+$1.000</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nd">N/D</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price expensive">$4.300</div><span class="comp-diff diff-e">+$1.100</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><span class="nd">N/D</span></div></div></div>
   <div class="product-card"><div class="prod-header"><div><div class="prod-name">Patagonia / Stella 473cc</div></div><div class="prod-sc-price">$3.700</div></div><div class="comp-grid"><div class="comp-cell"><div class="comp-name">Burgang</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Bairoleto</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Peak</div><span class="nt">N/T</span></div><div class="comp-cell"><div class="comp-name">Stacy</div><div class="comp-price expensive">$6.000</div><div class="comp-item">Cerveza Imperial</div><span class="comp-diff diff-e">+$2.300</span></div><div class="comp-cell"><div class="comp-name">Shoppe</div><div class="comp-price expensive">$4.600</div><div class="comp-item">Stella Artois Rubia</div><span class="comp-diff diff-e">+$900</span></div><div class="comp-cell"><div class="comp-name">Memphis</div><span class="nd">N/D</span></div><div class="comp-cell"><div class="comp-name">TBT</div><div class="comp-price expensive">$4.800</div><div class="comp-item">Stella Artois</div><span class="comp-diff diff-e">+$1.100</span></div><div class="comp-cell"><div class="comp-name">Bad Burgers</div><span class="nd">N/D</span></div></div></div>
 </div>
@@ -477,15 +404,15 @@ body { background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Ari
 <div id="tab-notas" class="tab-content">
   <div class="notes">
     <p><strong>📌 Notas del análisis — Mayo 2026</strong></p>
-    <p>• <strong>Ranking:</strong> Smash Club es <strong>3° de 9 locales</strong>. Solo Stacy y Memphis tienen promedios más altos, con 5/7 ítems cada uno vs nuestros 7/7.</p>
-    <p>• <strong class="mcd-strong">🍟 McDonald's ($20.850 promedio):</strong> Precios de <strong>combo</strong> — incluyen bebida 400cc. Los precios SC en el tab McD ya incluyen la gaseosa ($2.800) para comparar de igual a igual. SC sigue siendo <strong>~11% más barato</strong> en promedio. El caso más ajustado: Tasty Doble ($20.900) vs SC Crispy Bliss Doble + gaseosa ($20.800) — prácticamente igual.</p>
-    <p>• <strong>Bad Burgers (6°, $13.786):</strong> Gollum XL = Bad Ricky D + Extra ($17.500) · John Bacon = Bad BBQ Doble ($14.500) · Cheese Burger = Bad Cheese ($11.500).</p>
-    <p>• <strong>Peak (4°, $14.780):</strong> K2 Doble corregido a $16.000 · Monte Pissis a $10.500.</p>
+    <p>• <strong>Ranking:</strong> Smash Club es <strong>2° de 9 locales</strong> con el nuevo criterio de 5 productos representativos. Solo Stacy tiene promedio más alto ($16.875 vs $15.940), con 4/5 ítems relevados.</p>
+    <p>• <strong>Criterio de ranking:</strong> Crispy Bliss Doble · Gollum Signature Doble · John Bacon Doble · Cheese Burger · L.A Americana. Se compara solo contra el equivalente más cercano de cada local.</p>
+    <p>• <strong class="mcd-strong">🍟 McDonald's ($19.160 promedio):</strong> Precios de <strong>combo</strong> — incluyen bebida. Los precios SC en el tab McD incluyen la gaseosa ($2.800) para comparar de igual a igual. SC es ~6% más barato en promedio.</p>
+    <p>• <strong>Bad Burgers (7°, $14.020):</strong> Crispy Bliss = Bad Larry Doble ($15.500) · Gollum Doble = Bad Ricky Doble ($14.000) · John Bacon = Bad BBQ Doble ($14.500).</p>
+    <p>• <strong>Peak (4°, $14.575):</strong> Sin equivalente para Gollum Signature Doble · K2 Doble $16.000 · Monte Pissis $10.500.</p>
     <p>• <strong>TBT — Extras:</strong> Extra Medallón $5.000 · Cheddar $3.000 · Bacon $3.000 · Papas $4.000 · Andes Origen $4.300.</p>
-    <p>• <strong>Denver ($11.000):</strong> SC es el más barato. Burgang ($12.900) y Shoppe ($12.500) son más caros.</p>
     <p>• <strong>Peak — Andes Origen:</strong> No tienen IPA; Rubia/Negra/Roja al mismo precio ($3.200).</p>
-    <p>• <strong>Bairoleto:</strong> Sus combos incluyen porción de papas. Memphis: sin bebidas ni extras relevados.</p>
-    <p>• <strong>★ RANKING</strong> = ítems usados para calcular el precio promedio de ranking local.</p>
+    <p>• <strong>Bairoleto:</strong> Sin equivalente para John Bacon Doble. Sus combos incluyen papas.</p>
+    <p>• <strong>★ RANKING</strong> = los 5 ítems usados para calcular el precio promedio de cada local.</p>
   </div>
 </div>
 
