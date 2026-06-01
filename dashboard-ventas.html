@@ -28,12 +28,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .mes-bar{padding:0 16px 10px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .mes-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;-webkit-tap-highlight-color:transparent}
 .mes-btn.active{background:var(--yellow);color:var(--purple);border-color:var(--yellow)}
-/* ── SNAP CHIPS ── */
-.snap-bar{padding:0 16px 14px;display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap}
-.snap-label{color:rgba(255,255,255,.6);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-right:2px}
-.snap-btn{background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.2);border-radius:16px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
-.snap-btn:hover{background:rgba(255,255,255,.18)}
-.snap-btn.active{background:rgba(255,255,255,.95);color:var(--purple);border-color:#fff}
+/* ── CALENDAR FILTER ── */
+.snap-bar{padding:0 16px 14px}
+.cal-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.cal-full-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
+.cal-full-btn.active{background:#fff;color:var(--purple);border-color:#fff}
+.cal-period-info{color:var(--yellow);font-size:11px;font-weight:700;letter-spacing:.3px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:300px;margin:0 auto}
+.cal-dow{text-align:center;font-size:9px;color:rgba(255,255,255,.45);font-weight:700;padding:2px 0;letter-spacing:.5px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;color:rgba(255,255,255,.2);cursor:default;min-width:0}
+.cal-day.snap{background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
+.cal-day.snap:hover{background:rgba(255,255,255,.25)}
+.cal-day.active{background:var(--yellow)!important;color:var(--purple)!important;font-weight:800}
 
 /* ── KPIs ── */
 .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px 14px 0}
@@ -463,47 +469,139 @@ let currentTab = 'ciudad';
 let currentSnap = null;   // null = última snapshot (datos principales)
 let charts = {};
 
+// ── Calendar / Period helpers ─────────────────────────────────────────────────
+const MESES_NUM = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+function getMesYear(key){
+  const m=key.match(/^([a-záéíóú]+)(\d{4})$/i);
+  return m?{mes:MESES_NUM[m[1].toLowerCase()]||1,year:parseInt(m[2])}:null;
+}
+function getDiasInRange(year,mes,fromDay,toDay){
+  const cnt=[0,0,0,0,0,0,0];
+  for(let d=fromDay;d<=toDay;d++) cnt[(new Date(year,mes-1,d).getDay()+6)%7]++;
+  return cnt;
+}
+// Compute differential between two snap data objects for one local
+function snapDiff(snapB,snapA,locKey,mainLoc){
+  const b=snapB[locKey], a=snapA?snapA[locKey]:null;
+  // Build result starting with structural/static fields from main month data
+  const d={
+    horaLabels: b.horaLabels||mainLoc.horaLabels,
+    sizes_incomplete: mainLoc.sizes_incomplete,
+    acompanante_note: mainLoc.acompanante_note,
+    pan_note: mainLoc.pan_note,
+    // Fields not present in snaps → empty (they can't be differenced)
+    acompanante:{'Con Papas':0,'Sin Papas':0,'Aros de Cebolla':0},
+    pan:{'Pan Regular':0,'Pan Sin Gluten':0},
+    salsa:null, biggie:null, formasPago:null,
+    // Differentiable snap fields
+    burgers:{}, jr:0, doble:0, xl:0, total:0,
+    ventaTotal:0, totalDocs:0, ticketPromedio:0,
+    ventaDias: b.ventaDias?[...b.ventaDias]:[...mainLoc.ventaDias],
+    horaVentas: b.horaVentas?[...b.horaVentas]:[...mainLoc.horaVentas],
+  };
+  if(!a){
+    // First period: snap[B] is cumulative from day 1 — use it directly
+    d.burgers={...(b.burgers||{})};
+    d.jr=b.jr||0; d.doble=b.doble||0; d.xl=b.xl||0; d.total=b.total||0;
+    d.ventaTotal=b.ventaTotal||0; d.totalDocs=b.totalDocs||0;
+    if(b.ventaDias) d.ventaDias=[...b.ventaDias];
+    if(b.horaVentas) d.horaVentas=[...b.horaVentas];
+  } else {
+    // Differential: snap[B] - snap[A]
+    Object.entries(b.burgers||{}).forEach(([k,v])=>{ const df=v-(a.burgers?.[k]||0); if(df>0) d.burgers[k]=df; });
+    d.jr=(b.jr||0)-(a.jr||0); d.doble=(b.doble||0)-(a.doble||0); d.xl=(b.xl||0)-(a.xl||0);
+    d.total=(b.total||0)-(a.total||0); d.ventaTotal=(b.ventaTotal||0)-(a.ventaTotal||0);
+    d.totalDocs=(b.totalDocs||0)-(a.totalDocs||0);
+    if(b.ventaDias) d.ventaDias=b.ventaDias.map((v,i)=>Math.max(0,v-(a.ventaDias?.[i]||0)));
+    if(b.horaVentas) d.horaVentas=b.horaVentas.map((v,i)=>Math.max(0,v-(a.horaVentas?.[i]||0)));
+  }
+  d.ticketPromedio=d.totalDocs>0?Math.round(d.ventaTotal/d.totalDocs):d.total>0?Math.round(d.ventaTotal/d.total):0;
+  return d;
+}
+
 // ── Snapshot helpers ──────────────────────────────────────────────────────────
 function getActiveSnapData(m) {
   if (currentSnap && m.snaps && m.snaps[currentSnap]) {
-    const snap = m.snaps[currentSnap];
-    // Merge: snap overrides main for KPI/chart fields; main supplies rest (salsa, pan, biggie, etc.)
+    const snapDays = Object.keys(m.snaps).map(Number).sort((a,b)=>a-b);
+    const snapIdx  = snapDays.indexOf(currentSnap);
+    const prevSnapDay = snapIdx > 0 ? snapDays[snapIdx-1] : null;
+    const snapB = m.snaps[currentSnap];
+    const snapA = prevSnapDay ? m.snaps[prevSnapDay] : null;
+    const fromDay = prevSnapDay ? prevSnapDay + 1 : 1;
+    const toDay   = currentSnap;
+    const diffDays = toDay - fromDay + 1;
+    const my = getMesYear(currentMes);
+    const diasCount = my ? getDiasInRange(my.year, my.mes, fromDay, toDay) : (snapB.diasCount||m.diasCount);
     return {
-      dias: snap.dias,
-      diasCount: snap.diasCount || m.diasCount,
-      ciudad:   { ...m.ciudad,   ...snap.ciudad   },
-      puntilla: { ...m.puntilla, ...snap.puntilla },
+      dias: diffDays,
+      diasCount,
+      ciudad:   snapDiff(snapB, snapA, 'ciudad',   m.ciudad),
+      puntilla: snapDiff(snapB, snapA, 'puntilla', m.puntilla),
+      _isDiff: true, _fromDay: fromDay, _toDay: toDay,
     };
   }
-  return { dias: m.dias, diasCount: m.diasCount, ciudad: m.ciudad, puntilla: m.puntilla };
+  return { dias: m.dias, diasCount: m.diasCount, ciudad: m.ciudad, puntilla: m.puntilla,
+           _isDiff: false, _fromDay: 1, _toDay: m.dias };
 }
 
-function buildSnapChips(m) {
+function buildCalendar(m) {
   const bar = document.getElementById('snapBar');
   const snaps = m.snaps;
-  if (!snaps || Object.keys(snaps).length <= 1) {
+  if (!snaps || Object.keys(snaps).length === 0) {
     bar.style.display = 'none';
     currentSnap = null;
     return;
   }
-  const days = Object.keys(snaps).map(Number).sort((a,b)=>a-b);
-  const latestDay = days[days.length - 1];
-  // Default to latest snap
-  if (currentSnap === null || !snaps[currentSnap]) currentSnap = latestDay;
+  const snapDaysArr = Object.keys(snaps).map(Number).sort((a,b)=>a-b);
+  const snapSet = new Set(snapDaysArr);
+  const my = getMesYear(currentMes);
+  if (!my) { bar.style.display = 'none'; return; }
+  const { year, mes } = my;
+  // Use the month's declared dias (may not equal calendar days if partial month)
+  const daysInMonth = new Date(year, mes, 0).getDate();  // real calendar days
+  const firstDow = (new Date(year, mes-1, 1).getDay() + 6) % 7; // 0=Mon
+  const isFullMonth = (currentSnap === null);
 
-  bar.innerHTML = `<span class="snap-label">Período:</span>` +
-    days.map(d => {
-      const isActive = (d == currentSnap);
-      return `<button class="snap-btn${isActive?' active':''}" onclick="changeSnap(${d})" title="1–${d} del mes">hasta el ${d}</button>`;
-    }).join('');
-  bar.style.display = 'flex';
+  // Period label for selected range
+  let periodInfo = '';
+  if (!isFullMonth && currentSnap && snaps[currentSnap]) {
+    const idx = snapDaysArr.indexOf(currentSnap);
+    const prevDay = idx > 0 ? snapDaysArr[idx-1] : 0;
+    const fromDay = prevDay + 1;
+    periodInfo = fromDay === currentSnap ? `Día ${currentSnap}` : `${fromDay}–${currentSnap}`;
+  }
+
+  const DOW = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+  let html = `<div class="cal-hdr-row">
+    <button class="cal-full-btn${isFullMonth?' active':''}" onclick="selectCalendarFull()">Mes completo</button>
+    ${periodInfo ? `<span class="cal-period-info">📅 Días ${periodInfo}</span>` : ''}
+  </div><div class="cal-grid">`;
+  DOW.forEach(d => { html += `<div class="cal-dow">${d}</div>`; });
+  for (let i = 0; i < firstDow; i++) html += `<div class="cal-day"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const hasDat = snapSet.has(d);
+    const isAct  = (d === currentSnap);
+    const cls    = 'cal-day' + (hasDat ? ' snap' : '') + (isAct ? ' active' : '');
+    const onclick = hasDat ? `onclick="selectCalendarDay(${d})"` : '';
+    html += `<div class="${cls}" ${onclick}>${d}</div>`;
+  }
+  html += `</div>`;
+  bar.innerHTML = html;
+  bar.style.display = 'block';
 }
 
-function changeSnap(day) {
+function selectCalendarDay(day) {
   currentSnap = day;
-  // Rebuild chip UI
-  buildSnapChips(MESES[currentMes]);
-  // Rebuild all charts and KPIs
+  buildCalendar(MESES[currentMes]);
+  Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
+  charts = {};
+  updateKPIs();
+  buildTab(currentTab);
+}
+
+function selectCalendarFull() {
+  currentSnap = null;
+  buildCalendar(MESES[currentMes]);
   Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
   charts = {};
   updateKPIs();
@@ -711,24 +809,38 @@ function updateKPIs(){
     prevB = Math.round(prevB * dayRatio);
   }
 
+  // Detect differential mode (specific calendar period selected)
+  const isDiff = snapData._isDiff || false;
+
   // Only treat as "snap active" for partial periods (not the latest/full-month snap).
   // This preserves diasLaborales behavior when viewing the full period.
   const latestSnapDay = m.snaps ? Math.max(...Object.keys(m.snaps).map(Number)) : m.dias;
-  const isPartialSnap = currentSnap && m.snaps && m.snaps[currentSnap] && (activeDias < latestSnapDay);
+  const isPartialSnap = !isDiff && currentSnap && m.snaps && m.snaps[currentSnap] && (activeDias < latestSnapDay);
 
-  // diasRef: partial snap → use snap dias; full period → use diasLaborales if available.
-  const diasRef = isPartialSnap ? activeDias :
+  // diasRef: differential/partial → activeDias; full period → diasLaborales if available.
+  const diasRef = (isDiff || isPartialSnap) ? activeDias :
     (tab==='ciudad'?(c.diasLaborales||activeDias):tab==='puntilla'?(p.diasLaborales||activeDias):activeDias);
   const ticket=totalDocs>0?Math.round(totalV/totalDocs):Math.round(totalV/totalB);
   const factDia=Math.round(totalV/diasRef);
   const ticketLabel=totalDocs>0?'Ticket promedio':'Precio prom/burger';
 
-  const periodoLabel = isPartialSnap ? `1–${activeDias} de ${m.dias}` : `${activeDias} días`;
+  // Period label
+  const MES_SHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const mesShort=(()=>{ const my=getMesYear(currentMes); return my?MES_SHORT[my.mes-1]:''; })();
+  const periodoLabel = isDiff
+    ? (snapData._fromDay===snapData._toDay
+       ? `Día ${snapData._fromDay} de ${mesShort}`
+       : `${snapData._fromDay}–${snapData._toDay} de ${mesShort} (${activeDias}d)`)
+    : isPartialSnap ? `1–${activeDias} de ${m.dias}`
+    : `${activeDias} días`;
+
+  // Suppress trend badges in differential mode (partial-period vs full-month comparisons mislead)
+  const pV = isDiff ? 0 : prevV, pB = isDiff ? 0 : prevB, pT = isDiff ? 0 : prevTicketVal;
   document.getElementById('kpis').innerHTML=`
-    <div class="kpi g"><div class="kv">${fmt(totalV)}</div><div class="kl">Facturación total</div>${trendBadge(totalV,prevV)}</div>
+    <div class="kpi g"><div class="kv">${fmt(totalV)}</div><div class="kl">Facturación total</div>${trendBadge(totalV,pV)}</div>
     <div class="kpi y"><div class="kv">${fmt(factDia)}</div><div class="kl">Facturación / día</div></div>
-    <div class="kpi"><div class="kv">${fmt(ticket)}</div><div class="kl">${ticketLabel}</div>${trendBadge(ticket,prevTicketVal,'vs mes ant.')}</div>
-    <div class="kpi"><div class="kv">${fmtN(totalB)}</div><div class="kl">Burgers totales</div>${trendBadge(totalB,prevB)}</div>
+    <div class="kpi"><div class="kv">${fmt(ticket)}</div><div class="kl">${ticketLabel}</div>${trendBadge(ticket,pT,'vs mes ant.')}</div>
+    <div class="kpi"><div class="kv">${fmtN(totalB)}</div><div class="kl">Burgers totales</div>${trendBadge(totalB,pB)}</div>
     <div class="kpi wide g"><div class="kv">${Math.round(totalB/diasRef)}</div><div class="kl">Burgers / día</div></div>
   `;
   document.getElementById('footer-info').textContent=`Smash Club · Mendoza · ${m.label} · ${periodoLabel} · ${tabLabel}`;
@@ -744,7 +856,7 @@ function buildCiudad(){
 
   // Burgers
   barH('c-burg', bKeys, bVals, C.purple);
-  buildBurgerDelta(loc, prev?.ciudad, 'c-burger-delta');
+  buildBurgerDelta(loc, currentSnap===null ? prev?.ciudad : null, 'c-burger-delta');
 
   // Tamaños
   if(loc.jr > 0 || loc.doble > 0 || loc.xl > 0){
@@ -765,8 +877,14 @@ function buildCiudad(){
 
   // Pan
   const pan = loc.pan;
-  donut('c-pan',['Pan Regular','Pan Sin Gluten'],[pan['Pan Regular'],pan['Pan Sin Gluten']],[C.purple,C.green]);
-  document.getElementById('c-pan-note').textContent = `Regular ${pan['Pan Regular']} · Sin Gluten ${pan['Pan Sin Gluten']}`;
+  const panTotal = (pan['Pan Regular']||0) + (pan['Pan Sin Gluten']||0);
+  if(panTotal > 0){
+    donut('c-pan',['Pan Regular','Pan Sin Gluten'],[pan['Pan Regular'],pan['Pan Sin Gluten']],[C.purple,C.green]);
+    document.getElementById('c-pan-note').textContent = `Regular ${pan['Pan Regular']} · Sin Gluten ${pan['Pan Sin Gluten']}`;
+  } else {
+    destroyChart('c-pan');
+    document.getElementById('c-pan-note').textContent = currentSnap ? 'Detalle no disponible para este período' : '';
+  }
 
   // Salsa
   if(loc.salsa){
@@ -807,7 +925,7 @@ function buildPuntilla(){
 
   // Burgers
   barH('p-burg', bKeys, bVals, '#5c4ba0');
-  buildBurgerDelta(loc, prev?.puntilla, 'p-burger-delta');
+  buildBurgerDelta(loc, currentSnap===null ? prev?.puntilla : null, 'p-burger-delta');
 
   // Tamaños
   if(!loc.sizes_incomplete && (loc.jr > 0 || loc.doble > 0)){
@@ -1029,7 +1147,7 @@ function changeMes(key){
   document.querySelectorAll('.mes-btn').forEach(b=>b.classList.toggle('active', b.dataset.mes===key));
   Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
   charts = {};
-  buildSnapChips(MESES[key]);
+  buildCalendar(MESES[key]);
   updateKPIs();
   buildTab(currentTab);
 }
@@ -1042,7 +1160,7 @@ function init(){
   mesBar.innerHTML = Object.entries(MESES).map(([key,m])=>
     `<button class="mes-btn${key===currentMes?' active':''}" data-mes="${key}" onclick="changeMes('${key}')">${m.label}</button>`
   ).join('');
-  buildSnapChips(MESES[currentMes]);
+  buildCalendar(MESES[currentMes]);
   updateKPIs();
   buildCiudad();
 }
