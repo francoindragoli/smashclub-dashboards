@@ -28,18 +28,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .mes-bar{padding:0 16px 10px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .mes-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;-webkit-tap-highlight-color:transparent}
 .mes-btn.active{background:var(--yellow);color:var(--purple);border-color:var(--yellow)}
-/* ── CALENDAR FILTER ── */
-.snap-bar{padding:0 16px 14px}
-.cal-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
-.cal-full-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
-.cal-full-btn.active{background:#fff;color:var(--purple);border-color:#fff}
-.cal-period-info{color:var(--yellow);font-size:11px;font-weight:700;letter-spacing:.3px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:300px;margin:0 auto}
-.cal-dow{text-align:center;font-size:9px;color:rgba(255,255,255,.45);font-weight:700;padding:2px 0;letter-spacing:.5px}
-.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;color:rgba(255,255,255,.2);cursor:default;min-width:0}
-.cal-day.snap{background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
-.cal-day.snap:hover{background:rgba(255,255,255,.25)}
-.cal-day.active{background:var(--yellow)!important;color:var(--purple)!important;font-weight:800}
+/* ── SNAP BAR (disabled — future day filter) ── */
+.snap-bar{display:none!important}
 
 /* ── KPIs ── */
 .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px 14px 0}
@@ -357,7 +347,7 @@ const MESES = {
         }
       },
       mayo2026: {
-        label: 'Mayo 2026 (1-30)', dias: 30, diasCount: [4, 4, 4, 4, 5, 5, 4],
+        label: 'Mayo 2026', dias: 31, diasCount: [4, 4, 4, 4, 5, 5, 5],
         ciudad: {
           burgers: {'Crispy Bliss':1027, 'Gollum Signature':759, 'John Bacon':454, 'L.A Americana':389, 'Cheese Burger':312, 'Sweet Alabama':182, 'Burnin Joe':137, '7TH STREET':129, 'Biggie':97, 'Denver':13, 'Hot Honey Ranch':2},
           jr:1475, doble:1840, xl:186, total:3501,
@@ -419,6 +409,11 @@ const MESES = {
             dias:30, diasCount:[4, 4, 4, 4, 5, 5, 4],
             ciudad:{burgers:{'Crispy Bliss':1027, 'Gollum Signature':759, 'John Bacon':454, 'L.A Americana':389, 'Cheese Burger':312, 'Sweet Alabama':182, 'Burnin Joe':137, '7TH STREET':129, 'Biggie':97, 'Denver':13, 'Hot Honey Ranch':2},jr:1475,doble:1840,xl:186,total:3501,ventaTotal:62468445,totalDocs:2492,ticketPromedio:25068,ventaDias:[4860980,5011745,4972990,13008235,16100005,11576600,6937890],horaLabels:["9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],horaVentas:[0.197, 0.396, 0.622, 2.485, 5.356, 4.516, 1.846, 1.824, 1.284, 1.4, 2.378, 7.275, 13.919, 12.716, 5.756, 0.499]},
             puntilla:{burgers:{'Crispy Bliss':1582, 'Gollum Signature':1562, 'John Bacon':805, 'L.A Americana':740, 'Cheese Burger':554, 'Sweet Alabama':271, 'Burnin Joe':233, '7TH STREET':185, 'Biggie':111, 'Denver':32, 'Hot Honey Ranch':1},jr:2383,doble:3238,xl:455,total:6076,ventaTotal:98896760,totalDocs:3119,ticketPromedio:31708,ventaDias:[7032450,6459885,8137957,15748160,21699714,25004600,14813994],horaLabels:["11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],horaVentas:[0.048, 2.164, 7.52, 6.494, 2.899, 1.177, 0.571, 0.993, 3.4, 15.614, 27.221, 20.011, 8.82, 1.976]}
+          },
+          31: {
+            dias:31, diasCount:[4, 4, 4, 4, 5, 5, 5],
+            ciudad:{burgers:{'Crispy Bliss':20, 'Gollum Signature':15, 'L.A Americana':12, 'Cheese Burger':8, 'John Bacon':7, 'Burnin Joe':6, '7Th Street':3, 'Sweet Alabama':3, 'Biggie':3, 'Denver':1},jr:34,doble:37,xl:7,total:78,ventaTotal:1434120,totalDocs:18,ticketPromedio:79673,ventaDias:[0,0,0,0,0,0,2353428],horaLabels:["10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"],horaVentas:[0.008, 0.006, 0.06, 0.225, 0.131, 0.11, 0.04, 0.072, 0.083, 0.24, 0.443, 0.685, 0.122, 0.128]},
+            puntilla:{burgers:{'Crispy Bliss':52, 'Gollum Signature':48, 'John Bacon':16, 'L.A Americana':13, 'Burnin Joe':7, 'Sweet Alabama':7, '7Th Street':5, 'Cheese Burger':5, 'Biggie':2},jr:44,doble:91,xl:20,total:155,ventaTotal:2706410,totalDocs:5,ticketPromedio:541282,ventaDias:[0,0,0,0,0,0,3570460],horaLabels:["12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],horaVentas:[0.03, 0.269, 0.348, 0.106, 0.021, 0.087, 0.014, 0.484, 0.535, 0.9, 0.442, 0.236, 0.097]}
           },
         }
       },
