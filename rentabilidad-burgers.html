@@ -89,7 +89,7 @@ tr:hover td:first-child{background:var(--sf2);}
     <div class="logo-s">Dashboard de Rentabilidad</div>
   </div>
   <div class="kpis">
-    <div class="kpi"><div class="kv wh" id="k-uds"></div><div class="kl">Unidades Mayo</div></div>
+    <div class="kpi"><div class="kv wh" id="k-uds"></div><div class="kl" id="k-uds-label">Unidades</div></div>
     <div class="kpi"><div class="kv am" id="k-local"></div><div class="kl">Rent. Local</div></div>
     <div class="kpi"><div class="kv vd" id="k-py"></div><div class="kl">Rent. PY</div></div>
   </div>
@@ -132,6 +132,15 @@ document.getElementById('k-uds').textContent=D.total_unidades.toLocaleString('es
 document.getElementById('k-local').textContent=D.rent_ponderada_local.toFixed(1)+'%';
 document.getElementById('k-py').textContent=D.rent_ponderada_py!=null?D.rent_ponderada_py.toFixed(1)+'%':'—';
 document.getElementById('hm').innerHTML=`Actualizado: ${D.generado}<br>CSV: ${D.csv_fecha} (${D.csv_nombre})`;
+(()=>{
+  const _mNom={1:'Enero',2:'Febrero',3:'Marzo',4:'Abril',5:'Mayo',6:'Junio',7:'Julio',8:'Agosto',9:'Septiembre',10:'Octubre',11:'Noviembre',12:'Diciembre'};
+  const _parts=(D.generado||'').split('/');
+  const _mN=parseInt(_parts[1]||'0');
+  const _yr=(_parts[2]||'').split(' ')[0]||'';
+  const _mesLabel=(_mNom[_mN]||'Mes')+' '+_yr;
+  document.getElementById('k-uds-label').textContent='Unidades '+_mesLabel;
+  window._mesLabel=_mesLabel;
+})();
 
 const TABS=['local','py','extras','ing','evo'];
 function showTab(t){
@@ -154,26 +163,48 @@ function pctStr(n,b){const p=pct(n,b);const s=(p>0?'+':'')+p.toFixed(1)+'%';retu
   const fams=[...new Set(D.burgers_local.map(b=>b.familia))];
   ['local','py'].forEach(canal=>{
     const data=D['burgers_'+canal];
-    let h=`<thead><tr><th>Producto</th><th>Precio</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+    const isPY = canal==='py';
+    const cols = isPY ? 8 : 7;  // PY tiene columna extra "Precio Carta"
+    let h;
+    if(isPY){
+      h=`<thead><tr><th>Producto</th><th title="Precio publicado en PedidosYa (precio local +10%)">Precio Carta</th><th title="Precio que percibimos después de la comisión de PY">Precio Neto</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+    } else {
+      h=`<thead><tr><th>Producto</th><th>Precio</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+    }
     fams.forEach(fam=>{
       const rows=data.filter(b=>b.familia===fam);
       if(!rows.length) return;
-      h+=`<tr class="fr"><td colspan="7">${fam}</td></tr>`;
+      h+=`<tr class="fr"><td colspan="${cols}">${fam}</td></tr>`;
       rows.forEach(b=>{
-        h+=`<tr>
-          <td>${b.nombre}</td>
-          <td>${fmt(b.precio_civa)}</td>
-          <td>${fmt(b.costo_civa)}</td>
-          <td>${fmt(b.ganancia_civa)}</td>
-          <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
-          <td>${b.unidades||'-'}</td>
-          <td>${b.peso_pct?b.peso_pct+'%':'-'}</td>
-        </tr>`;
+        if(isPY){
+          h+=`<tr>
+            <td>${b.nombre}</td>
+            <td style="color:#f6d01e;font-weight:bold">${fmt(b.precio_cliente_civa||0)}</td>
+            <td>${fmt(b.precio_civa)}</td>
+            <td>${fmt(b.costo_civa)}</td>
+            <td>${fmt(b.ganancia_civa)}</td>
+            <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
+            <td>${b.unidades||'-'}</td>
+            <td>${b.peso_pct?b.peso_pct+'%':'-'}</td>
+          </tr>`;
+        } else {
+          h+=`<tr>
+            <td>${b.nombre}</td>
+            <td>${fmt(b.precio_civa)}</td>
+            <td>${fmt(b.costo_civa)}</td>
+            <td>${fmt(b.ganancia_civa)}</td>
+            <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
+            <td>${b.unidades||'-'}</td>
+            <td>${b.peso_pct?b.peso_pct+'%':'-'}</td>
+          </tr>`;
+        }
       });
     });
     if(D.rent_ponderada_local){
       const rp=canal==='local'?D.rent_ponderada_local:D.rent_ponderada_py;
-      if(rp!=null) h+=`<tr class="fr"><td colspan="4">Rentabilidad ponderada por ventas</td><td colspan="3"><span style="color:${rc(rp)};font-weight:bold">${rp.toFixed(1)}%</span></td></tr>`;
+      const spanLeft = isPY ? 5 : 4;
+      const spanRight = isPY ? 3 : 3;
+      if(rp!=null) h+=`<tr class="fr"><td colspan="${spanLeft}">Rentabilidad ponderada por ventas</td><td colspan="${spanRight}"><span style="color:${rc(rp)};font-weight:bold">${rp.toFixed(1)}%</span></td></tr>`;
     }
     document.getElementById('t'+canal[0]).innerHTML=h+'</tbody>';
   });
@@ -284,7 +315,7 @@ const sc={x:{ticks:{color:'#7a6fa0',font:{size:10}},grid:{color:grid}},y:{ticks:
       datasets:[{data:top.map(b=>b.unidades),backgroundColor:pal,borderColor:'#0e0b1a',borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#a09abf',font:{size:10}},position:'right'},
-        title:{display:true,text:'Mix de Ventas Mayo 2026',color:'#e8e4f0',font:{size:11,weight:'bold'}}}}});
+        title:{display:true,text:'Mix de Ventas '+(window._mesLabel||''),color:'#e8e4f0',font:{size:11,weight:'bold'}}}}});
 })();
 
 (()=>{
