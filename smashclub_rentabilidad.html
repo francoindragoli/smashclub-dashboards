@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentabilidad — Smash Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" crossorigin="anonymous"></script>
+<style>
+:root{--am:#f6d01e;--vl:#412d7d;--vd:#6ebd89;--bg:#0e0b1a;--sf:#1a1530;--sf2:#231d3e;--bd:#2e2655;--tx:#e8e4f0;--mt:#7a6fa0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--tx);font-size:13px;}
+.hdr{background:var(--vl);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:3px solid var(--am);}
+.logo-t{font-family:'Passion One',sans-serif;font-weight:700;font-size:28px;color:#fff;letter-spacing:1px;line-height:1;}
+.logo-t span{color:var(--am);}
+.logo-s{font-family:'Passion One',sans-serif;font-weight:400;font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:2px;}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;}
+.kpi{text-align:center;background:rgba(0,0,0,.25);border-radius:8px;padding:7px 12px;border:1px solid rgba(255,255,255,.08);}
+.kv{font-family:'Passion One',sans-serif;font-weight:700;font-size:24px;line-height:1;}
+.kv.am{color:var(--am);} .kv.vd{color:var(--vd);} .kv.wh{color:#fff;}
+.kl{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px;text-transform:uppercase;letter-spacing:.8px;}
+.hm{font-size:10px;color:rgba(255,255,255,.28);text-align:right;line-height:1.7;}
+.tabs{display:flex;background:var(--sf);border-bottom:2px solid var(--bd);padding:0 12px;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{padding:10px 14px;cursor:pointer;font-family:'Passion One',sans-serif;font-weight:400;font-size:13px;letter-spacing:1px;color:var(--mt);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;text-transform:uppercase;white-space:nowrap;}
+.tab.active{color:var(--am);border-bottom-color:var(--am);}
+.tab:hover:not(.active){color:var(--tx);}
+.panel{display:none;padding:12px;}
+.panel.active{display:block;}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.cgrid.one{grid-template-columns:1fr;}
+.cc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:12px;height:240px;}
+@media(max-width:640px){.cgrid{grid-template-columns:1fr;}.cc{height:200px;}}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+thead th{background:var(--sf2);color:var(--mt);font-family:'Passion One',sans-serif;font-weight:400;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:9px 10px;text-align:right;border-bottom:2px solid var(--am);white-space:nowrap;}
+thead th:first-child{text-align:left;position:sticky;left:0;background:var(--sf2);z-index:1;}
+td{padding:7px 10px;border-bottom:1px solid var(--bd);text-align:right;vertical-align:middle;}
+td:first-child{text-align:left;font-weight:600;color:#fff;position:sticky;left:0;background:var(--bg);z-index:1;}
+tr:hover td{background:var(--sf2);}
+tr:hover td:first-child{background:var(--sf2);}
+.fr td{background:var(--sf)!important;color:var(--am);font-family:'Passion One',sans-serif;font-weight:400;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 10px;border-top:1px solid var(--vl);}
+.fr td:first-child{background:var(--sf)!important;}
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-family:'Passion One',sans-serif;font-weight:400;font-size:13px;letter-spacing:.5px;}
+.bvd{background:rgba(110,189,137,.15);color:var(--vd);border:1px solid rgba(110,189,137,.3);}
+.bam{background:rgba(246,208,30,.12);color:var(--am);border:1px solid rgba(246,208,30,.25);}
+.brj{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.rb{display:inline-flex;align-items:center;gap:6px;justify-content:flex-end;}
+.rt{background:var(--bd);border-radius:3px;height:6px;width:50px;overflow:hidden;}
+.rf{height:100%;border-radius:3px;}
+.pb{display:inline-flex;align-items:center;gap:5px;justify-content:flex-end;}
+.pt{background:var(--bd);border-radius:2px;height:4px;width:36px;overflow:hidden;}
+.pf{height:100%;background:var(--vl);border-right:1px solid var(--am);border-radius:2px;}
+.pl{color:var(--mt);font-size:11px;}
+.nota{font-size:10px;color:var(--mt);font-style:italic;}
+.nm{color:var(--mt);} .nw{color:#fff;font-weight:600;} .nv{color:var(--vd);} .na{color:var(--am);}
+.dok{color:var(--vd);font-size:11px;} .dwrn{color:var(--am);font-size:11px;} .dbd{color:#f87171;font-size:11px;}
+/* EVOLUCION */
+.evo-header{background:rgba(255,255,255,.05);border-radius:10px;padding:14px 18px;margin-bottom:16px}
+.evo-title{font-family:'Passion One',sans-serif;font-size:18px;letter-spacing:1px;color:#f6d01e}
+.evo-sub{font-size:11px;color:#7a6fa0;margin-top:3px}
+.evo-chart-wrap{height:220px;margin-bottom:20px}
+.evo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:560px){.evo-grid{grid-template-columns:repeat(4,1fr)}}
+.evo-card{background:#1a1535;border-radius:10px;padding:12px 10px;border-top:2px solid #412d7d}
+.evo-card.up{border-top-color:#e8342a}
+.evo-card.down{border-top-color:#6ebd89}
+.evo-card.flat{border-top-color:#412d7d}
+.evo-name{font-size:10px;color:#7a6fa0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.evo-val{font-family:'Passion One',sans-serif;font-size:20px;color:#e8e4f0}
+.evo-unit{font-size:9px;color:#7a6fa0;margin-bottom:4px}
+.evo-history{font-size:10px;color:#a09abf}
+.evo-badge-up{color:#e8342a;font-weight:bold}
+.evo-badge-dn{color:#6ebd89;font-weight:bold}
+.evo-badge-fl{color:#7a6fa0}
+.ev-badge .label{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:.8px;}
+.ev-badge .val{font-family:'Passion One',sans-serif;font-size:20px;color:var(--am);}
+
+.aumento{color:var(--vd);font-weight:600;} .sin-cambio{color:var(--mt);} .baja{color:#f87171;font-weight:600;}
+@media(max-width:480px){.logo-t{font-size:22px;}.kpis{gap:6px;}.kv{font-size:20px;}.hdr{padding:10px 12px;}.panel{padding:8px;}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="logo-t">SMASH <span>CLUB</span></div>
+    <div class="logo-s">Dashboard de Rentabilidad</div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="kv wh" id="k-uds"></div><div class="kl" id="k-uds-label">Unidades</div></div>
+    <div class="kpi"><div class="kv am" id="k-local"></div><div class="kl">Rent. Local</div></div>
+    <div class="kpi"><div class="kv vd" id="k-py"></div><div class="kl">Rent. PY</div></div>
+  </div>
+  <div class="hm" id="hm"></div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('local')">Local</div>
+  <div class="tab" onclick="showTab('py')">Pedidos Ya</div>
+  <div class="tab" onclick="showTab('extras')">Extras</div>
+  <div class="tab" onclick="showTab('ing')">Insumos</div>
+  <div class="tab" onclick="showTab('evo')">Evolución Precios</div>
+</div>
+
+<div class="panel active" id="panel-local">
+  <div class="cgrid"><div class="cc"><canvas id="ch-rl"></canvas></div><div class="cc"><canvas id="ch-mix"></canvas></div></div>
+  <div class="tbl-wrap"><table id="tl"></table></div>
+</div>
+<div class="panel" id="panel-py">
+  <div class="cgrid one"><div class="cc" style="height:220px;"><canvas id="ch-py"></canvas></div></div>
+  <div class="tbl-wrap"><table id="tp"></table></div>
+</div>
+<div class="panel" id="panel-extras"><div class="tbl-wrap"><table id="te"></table></div></div>
+<div class="panel" id="panel-ing"><div class="tbl-wrap"><table id="ti"></table></div></div>
+<div class="panel" id="panel-evo">
+  <div class="evo-header">
+    <div class="evo-title">Evolución de Costos de Insumos</div>
+    <div class="evo-sub">Seguimiento histórico por fecha de actualización del archivo de costos</div>
+  </div>
+  <div class="evo-chart-wrap">
+    <canvas id="ch-evo-bar"></canvas>
+  </div>
+  <div class="evo-grid" id="evo-cards"></div>
+</div>
+
+<script>
+const D = {"generado": "29/06/2026 11:55", "csv_fecha": "29/06/2026", "csv_nombre": "29-06 Costos Actuales.csv", "ref_fecha": "19/06/2026", "actual_fecha": "29/06/2026", "total_unidades": 7693, "rent_ponderada_local": 64.0, "rent_ponderada_py": 58.0, "burgers_local": [{"nombre": "Gollum Signature XL", "familia": "Burgers", "precio_civa": 20000.0, "precio_siva": 16528.93, "costo_siva": 6626.2, "costo_civa": 7536.37, "ganancia_siva": 9902.73, "ganancia_civa": 12463.63, "rent_siva": 59.9, "rent_civa": 62.3, "excel_civa": 7978.63, "delta_civa": -442.26, "delta_pct": -5.5, "unidades": 501, "peso_pct": 6.5, "nota": ""}, {"nombre": "Burnin Joe Doble", "familia": "Burgers", "precio_civa": 19000.0, "precio_siva": 15702.48, "costo_siva": 6727.56, "costo_civa": 7769.3, "ganancia_siva": 8974.92, "ganancia_civa": 11230.7, "rent_siva": 57.2, "rent_civa": 59.1, "excel_civa": 8026.51, "delta_civa": -257.21, "delta_pct": -3.2, "unidades": 194, "peso_pct": 2.5, "nota": ""}, {"nombre": "Crispy Bliss Doble", "familia": "Burgers", "precio_civa": 19000.0, "precio_siva": 15702.48, "costo_siva": 5940.39, "costo_civa": 6816.82, "ganancia_siva": 9762.09, "ganancia_civa": 12183.18, "rent_siva": 62.2, "rent_civa": 64.1, "excel_civa": 7132.44, "delta_civa": -315.62, "delta_pct": -4.4, "unidades": 1332, "peso_pct": 17.3, "nota": ""}, {"nombre": "John Bacon Doble", "familia": "Burgers", "precio_civa": 17900.0, "precio_siva": 14793.39, "costo_siva": 6102.45, "costo_civa": 7012.92, "ganancia_siva": 8690.94, "ganancia_civa": 10887.08, "rent_siva": 58.7, "rent_civa": 60.8, "excel_civa": 7326.57, "delta_civa": -313.65, "delta_pct": -4.3, "unidades": 764, "peso_pct": 9.9, "nota": ""}, {"nombre": "Sweet Alabama Doble", "familia": "Burgers", "precio_civa": 16800.0, "precio_siva": 13884.3, "costo_siva": 5533.2, "costo_civa": 6324.13, "ganancia_siva": 8351.09, "ganancia_civa": 10475.87, "rent_siva": 60.1, "rent_civa": 62.4, "excel_civa": 6631.12, "delta_civa": -306.99, "delta_pct": -4.6, "unidades": 249, "peso_pct": 3.2, "nota": ""}, {"nombre": "Gollum Signature Doble", "familia": "Burgers", "precio_civa": 16800.0, "precio_siva": 13884.3, "costo_siva": 5398.02, "costo_civa": 6160.56, "ganancia_siva": 8486.28, "ganancia_civa": 10639.44, "rent_siva": 61.1, "rent_civa": 63.3, "excel_civa": 6474.21, "delta_civa": -313.65, "delta_pct": -4.8, "unidades": 915, "peso_pct": 11.9, "nota": ""}, {"nombre": "L.A. Americana Doble", "familia": "Burgers", "precio_civa": 16800.0, "precio_siva": 13884.3, "costo_siva": 5530.41, "costo_civa": 6320.76, "ganancia_siva": 8353.88, "ganancia_civa": 10479.24, "rent_siva": 60.2, "rent_civa": 62.4, "excel_civa": 6674.79, "delta_civa": -354.03, "delta_pct": -5.3, "unidades": 618, "peso_pct": 8.0, "nota": ""}, {"nombre": "Burnin Joe Jr", "familia": "Burgers", "precio_civa": 15800.0, "precio_siva": 13057.85, "costo_siva": 5207.64, "costo_civa": 6071.11, "ganancia_siva": 7850.21, "ganancia_civa": 9728.89, "rent_siva": 60.1, "rent_civa": 61.6, "excel_civa": 6199.71, "delta_civa": -128.6, "delta_pct": -2.1, "unidades": 81, "peso_pct": 1.1, "nota": ""}, {"nombre": "Crispy Bliss Jr", "familia": "Burgers", "precio_civa": 15800.0, "precio_siva": 13057.85, "costo_siva": 4420.47, "costo_civa": 5118.63, "ganancia_siva": 8637.39, "ganancia_civa": 10681.37, "rent_siva": 66.1, "rent_civa": 67.6, "excel_civa": 5305.64, "delta_civa": -187.01, "delta_pct": -3.5, "unidades": 552, "peso_pct": 7.2, "nota": ""}, {"nombre": "John Bacon Jr", "familia": "Burgers", "precio_civa": 14700.0, "precio_siva": 12148.76, "costo_siva": 4582.53, "costo_civa": 5314.72, "ganancia_siva": 7566.23, "ganancia_civa": 9385.28, "rent_siva": 62.3, "rent_civa": 63.8, "excel_civa": 5499.77, "delta_civa": -185.05, "delta_pct": -3.4, "unidades": 317, "peso_pct": 4.1, "nota": ""}, {"nombre": "Sweet Alabama Jr", "familia": "Burgers", "precio_civa": 13600.0, "precio_siva": 11239.67, "costo_siva": 3992.53, "costo_civa": 4600.83, "ganancia_siva": 7247.14, "ganancia_civa": 8999.17, "rent_siva": 64.5, "rent_civa": 66.2, "excel_civa": 4779.22, "delta_civa": -178.39, "delta_pct": -3.7, "unidades": 103, "peso_pct": 1.3, "nota": ""}, {"nombre": "Gollum Signature Jr", "familia": "Burgers", "precio_civa": 13600.0, "precio_siva": 11239.67, "costo_siva": 3878.1, "costo_civa": 4462.36, "ganancia_siva": 7361.57, "ganancia_civa": 9137.64, "rent_siva": 65.5, "rent_civa": 67.2, "excel_civa": 4647.41, "delta_civa": -185.05, "delta_pct": -4.0, "unidades": 379, "peso_pct": 4.9, "nota": ""}, {"nombre": "L.A. Americana Jr", "familia": "Burgers", "precio_civa": 13600.0, "precio_siva": 11239.67, "costo_siva": 4010.49, "costo_civa": 4622.56, "ganancia_siva": 7229.18, "ganancia_civa": 8977.44, "rent_siva": 64.3, "rent_civa": 66.0, "excel_civa": 4847.99, "delta_civa": -225.43, "delta_pct": -4.6, "unidades": 256, "peso_pct": 3.3, "nota": ""}, {"nombre": "Denver", "familia": "Burgers", "precio_civa": 11000.0, "precio_siva": 9090.91, "costo_siva": 3167.5, "costo_civa": 3755.71, "ganancia_siva": 5923.41, "ganancia_civa": 7244.29, "rent_siva": 65.2, "rent_civa": 65.9, "excel_civa": 3860.12, "delta_civa": -104.41, "delta_pct": -2.7, "unidades": 40, "peso_pct": 0.5, "nota": ""}, {"nombre": "Cheese Burger", "familia": "Burgers", "precio_civa": 13000.0, "precio_siva": 10743.8, "costo_siva": 3792.92, "costo_civa": 4359.31, "ganancia_siva": 6950.88, "ganancia_civa": 8640.69, "rent_siva": 64.7, "rent_civa": 66.5, "excel_civa": 4618.09, "delta_civa": -258.78, "delta_pct": -5.6, "unidades": 582, "peso_pct": 7.6, "nota": ""}, {"nombre": "Emmy Burger Jr", "familia": "Burgers del Mes", "precio_civa": 15300.0, "precio_siva": 12644.63, "costo_siva": 4489.12, "costo_civa": 5179.22, "ganancia_siva": 8155.51, "ganancia_civa": 10120.78, "rent_siva": 64.5, "rent_civa": 66.1, "excel_civa": 3947.07, "delta_civa": 1232.15, "delta_pct": 31.2, "unidades": 190, "peso_pct": 2.5, "nota": ""}, {"nombre": "Emmy Burger Doble", "familia": "Burgers del Mes", "precio_civa": 18500.0, "precio_siva": 15289.26, "costo_siva": 5950.69, "costo_civa": 6812.94, "ganancia_siva": 9338.56, "ganancia_civa": 11687.06, "rent_siva": 61.1, "rent_civa": 63.2, "excel_civa": 5681.15, "delta_civa": 1131.79, "delta_pct": 19.9, "unidades": 458, "peso_pct": 6.0, "nota": ""}, {"nombre": "Biggie Gollum", "familia": "Burgers", "precio_civa": 13000.0, "precio_siva": 10743.8, "costo_siva": 3033.78, "costo_civa": 3593.9, "ganancia_siva": 7710.03, "ganancia_civa": 9406.1, "rent_siva": 71.8, "rent_civa": 72.4, "excel_civa": 3816.57, "delta_civa": -222.67, "delta_pct": -5.8, "unidades": 26, "peso_pct": 0.3, "nota": "Con medallón veggie"}, {"nombre": "Biggie Sweet", "familia": "Burgers", "precio_civa": 13000.0, "precio_siva": 10743.8, "costo_siva": 3124.7, "costo_civa": 3703.92, "ganancia_siva": 7619.1, "ganancia_civa": 9296.08, "rent_siva": 70.9, "rent_civa": 71.5, "excel_civa": 3919.92, "delta_civa": -216.0, "delta_pct": -5.5, "unidades": 18, "peso_pct": 0.2, "nota": ""}, {"nombre": "Biggie Crispy", "familia": "Burgers", "precio_civa": 13000.0, "precio_siva": 10743.8, "costo_siva": 3402.45, "costo_civa": 4039.99, "ganancia_siva": 7341.36, "ganancia_civa": 8960.01, "rent_siva": 68.3, "rent_civa": 68.9, "excel_civa": 4271.54, "delta_civa": -231.55, "delta_pct": -5.4, "unidades": 38, "peso_pct": 0.5, "nota": ""}, {"nombre": "Biggie L.A.", "familia": "Burgers", "precio_civa": 13000.0, "precio_siva": 10743.8, "costo_siva": 3166.17, "costo_civa": 3754.1, "ganancia_siva": 7577.63, "ganancia_civa": 9245.9, "rent_siva": 70.5, "rent_civa": 71.1, "excel_civa": 4017.15, "delta_civa": -263.05, "delta_pct": -6.5, "unidades": 70, "peso_pct": 0.9, "nota": ""}, {"nombre": "Biggie Cheese", "familia": "Burgers", "precio_civa": 13000.0, "precio_siva": 10743.8, "costo_siva": 2948.6, "costo_civa": 3490.84, "ganancia_siva": 7795.2, "ganancia_civa": 9509.16, "rent_siva": 72.6, "rent_civa": 73.1, "excel_civa": 3787.25, "delta_civa": -296.41, "delta_pct": -7.8, "unidades": 10, "peso_pct": 0.1, "nota": ""}], "burgers_py": [{"nombre": "Gollum Signature XL", "familia": "Burgers", "precio_civa": 16940.0, "precio_siva": 14000.0, "costo_siva": 6626.2, "costo_civa": 7536.37, "ganancia_siva": 7373.8, "ganancia_civa": 9403.63, "rent_siva": 52.7, "rent_civa": 55.5, "excel_civa": 7978.63, "delta_civa": -442.26, "delta_pct": -5.5, "unidades": 501, "peso_pct": 6.5, "nota": "", "precio_cliente_civa": 22000.0}, {"nombre": "Burnin Joe Doble", "familia": "Burgers", "precio_civa": 16093.0, "precio_siva": 13300.0, "costo_siva": 6727.56, "costo_civa": 7769.3, "ganancia_siva": 6572.44, "ganancia_civa": 8323.7, "rent_siva": 49.4, "rent_civa": 51.7, "excel_civa": 8026.51, "delta_civa": -257.21, "delta_pct": -3.2, "unidades": 194, "peso_pct": 2.5, "nota": "", "precio_cliente_civa": 20900.0}, {"nombre": "Crispy Bliss Doble", "familia": "Burgers", "precio_civa": 16093.0, "precio_siva": 13300.0, "costo_siva": 5940.39, "costo_civa": 6816.82, "ganancia_siva": 7359.61, "ganancia_civa": 9276.18, "rent_siva": 55.3, "rent_civa": 57.6, "excel_civa": 7132.44, "delta_civa": -315.62, "delta_pct": -4.4, "unidades": 1332, "peso_pct": 17.3, "nota": "", "precio_cliente_civa": 20900.0}, {"nombre": "Sweet Alabama Doble", "familia": "Burgers", "precio_civa": 14229.6, "precio_siva": 11760.0, "costo_siva": 5533.2, "costo_civa": 6324.13, "ganancia_siva": 6226.8, "ganancia_civa": 7905.47, "rent_siva": 52.9, "rent_civa": 55.6, "excel_civa": 6631.12, "delta_civa": -306.99, "delta_pct": -4.6, "unidades": 249, "peso_pct": 3.2, "nota": "", "precio_cliente_civa": 18480.0}, {"nombre": "Gollum Signature Doble", "familia": "Burgers", "precio_civa": 14229.6, "precio_siva": 11760.0, "costo_siva": 5398.02, "costo_civa": 6160.56, "ganancia_siva": 6361.98, "ganancia_civa": 8069.04, "rent_siva": 54.1, "rent_civa": 56.7, "excel_civa": 6474.21, "delta_civa": -313.65, "delta_pct": -4.8, "unidades": 915, "peso_pct": 11.9, "nota": "", "precio_cliente_civa": 18480.0}, {"nombre": "L.A. Americana Doble", "familia": "Burgers", "precio_civa": 14229.6, "precio_siva": 11760.0, "costo_siva": 5530.41, "costo_civa": 6320.76, "ganancia_siva": 6229.59, "ganancia_civa": 7908.84, "rent_siva": 53.0, "rent_civa": 55.6, "excel_civa": 6674.79, "delta_civa": -354.03, "delta_pct": -5.3, "unidades": 618, "peso_pct": 8.0, "nota": "", "precio_cliente_civa": 18480.0}, {"nombre": "Burnin Joe Jr", "familia": "Burgers", "precio_civa": 13382.6, "precio_siva": 11060.0, "costo_siva": 5207.64, "costo_civa": 6071.11, "ganancia_siva": 5852.36, "ganancia_civa": 7311.49, "rent_siva": 52.9, "rent_civa": 54.6, "excel_civa": 6199.71, "delta_civa": -128.6, "delta_pct": -2.1, "unidades": 81, "peso_pct": 1.1, "nota": "", "precio_cliente_civa": 17380.0}, {"nombre": "Crispy Bliss Jr", "familia": "Burgers", "precio_civa": 13382.6, "precio_siva": 11060.0, "costo_siva": 4420.47, "costo_civa": 5118.63, "ganancia_siva": 6639.53, "ganancia_civa": 8263.97, "rent_siva": 60.0, "rent_civa": 61.8, "excel_civa": 5305.64, "delta_civa": -187.01, "delta_pct": -3.5, "unidades": 552, "peso_pct": 7.2, "nota": "", "precio_cliente_civa": 17380.0}, {"nombre": "John Bacon Jr", "familia": "Burgers", "precio_civa": 12450.9, "precio_siva": 10290.0, "costo_siva": 4582.53, "costo_civa": 5314.72, "ganancia_siva": 5707.47, "ganancia_civa": 7136.18, "rent_siva": 55.5, "rent_civa": 57.3, "excel_civa": 5499.77, "delta_civa": -185.05, "delta_pct": -3.4, "unidades": 317, "peso_pct": 4.1, "nota": "", "precio_cliente_civa": 16170.0}, {"nombre": "Sweet Alabama Jr", "familia": "Burgers", "precio_civa": 11519.2, "precio_siva": 9520.0, "costo_siva": 3992.53, "costo_civa": 4600.83, "ganancia_siva": 5527.47, "ganancia_civa": 6918.37, "rent_siva": 58.1, "rent_civa": 60.1, "excel_civa": 4779.22, "delta_civa": -178.39, "delta_pct": -3.7, "unidades": 103, "peso_pct": 1.3, "nota": "", "precio_cliente_civa": 14960.0}, {"nombre": "Gollum Signature Jr", "familia": "Burgers", "precio_civa": 11519.2, "precio_siva": 9520.0, "costo_siva": 3878.1, "costo_civa": 4462.36, "ganancia_siva": 5641.9, "ganancia_civa": 7056.84, "rent_siva": 59.3, "rent_civa": 61.3, "excel_civa": 4647.41, "delta_civa": -185.05, "delta_pct": -4.0, "unidades": 379, "peso_pct": 4.9, "nota": "", "precio_cliente_civa": 14960.0}, {"nombre": "L.A. Americana Jr", "familia": "Burgers", "precio_civa": 11519.2, "precio_siva": 9520.0, "costo_siva": 4010.49, "costo_civa": 4622.56, "ganancia_siva": 5509.51, "ganancia_civa": 6896.64, "rent_siva": 57.9, "rent_civa": 59.9, "excel_civa": 4847.99, "delta_civa": -225.43, "delta_pct": -4.6, "unidades": 256, "peso_pct": 3.3, "nota": "", "precio_cliente_civa": 14960.0}, {"nombre": "Denver", "familia": "Burgers", "precio_civa": 9317.0, "precio_siva": 7700.0, "costo_siva": 3167.5, "costo_civa": 3755.71, "ganancia_siva": 4532.5, "ganancia_civa": 5561.29, "rent_siva": 58.9, "rent_civa": 59.7, "excel_civa": 3860.12, "delta_civa": -104.41, "delta_pct": -2.7, "unidades": 40, "peso_pct": 0.5, "nota": "", "precio_cliente_civa": 12100.0}, {"nombre": "Cheese Burger", "familia": "Burgers", "precio_civa": 11011.0, "precio_siva": 9100.0, "costo_siva": 3792.92, "costo_civa": 4359.31, "ganancia_siva": 5307.08, "ganancia_civa": 6651.69, "rent_siva": 58.3, "rent_civa": 60.4, "excel_civa": 4618.09, "delta_civa": -258.78, "delta_pct": -5.6, "unidades": 582, "peso_pct": 7.6, "nota": "", "precio_cliente_civa": 14300.0}, {"nombre": "Emmy Burger Jr", "familia": "Burgers del Mes", "precio_civa": 12959.1, "precio_siva": 10710.0, "costo_siva": 4489.12, "costo_civa": 5179.22, "ganancia_siva": 6220.88, "ganancia_civa": 7779.88, "rent_siva": 58.1, "rent_civa": 60.0, "excel_civa": 3947.07, "delta_civa": 1232.15, "delta_pct": 31.2, "unidades": 190, "peso_pct": 2.5, "nota": "", "precio_cliente_civa": 16830.0}, {"nombre": "Emmy Burger Doble", "familia": "Burgers del Mes", "precio_civa": 15669.5, "precio_siva": 12950.0, "costo_siva": 5950.69, "costo_civa": 6812.94, "ganancia_siva": 6999.31, "ganancia_civa": 8856.56, "rent_siva": 54.0, "rent_civa": 56.5, "excel_civa": 5681.15, "delta_civa": 1131.79, "delta_pct": 19.9, "unidades": 458, "peso_pct": 6.0, "nota": "", "precio_cliente_civa": 20350.0}, {"nombre": "Biggie Gollum", "familia": "Burgers", "precio_civa": 11011.0, "precio_siva": 9100.0, "costo_siva": 3033.78, "costo_civa": 3593.9, "ganancia_siva": 6066.22, "ganancia_civa": 7417.1, "rent_siva": 66.7, "rent_civa": 67.4, "excel_civa": 3816.57, "delta_civa": -222.67, "delta_pct": -5.8, "unidades": 26, "peso_pct": 0.3, "nota": "Con medallón veggie", "precio_cliente_civa": 14300.0}, {"nombre": "Biggie Sweet", "familia": "Burgers", "precio_civa": 11011.0, "precio_siva": 9100.0, "costo_siva": 3124.7, "costo_civa": 3703.92, "ganancia_siva": 5975.3, "ganancia_civa": 7307.08, "rent_siva": 65.7, "rent_civa": 66.4, "excel_civa": 3919.92, "delta_civa": -216.0, "delta_pct": -5.5, "unidades": 18, "peso_pct": 0.2, "nota": "", "precio_cliente_civa": 14300.0}, {"nombre": "Biggie Crispy", "familia": "Burgers", "precio_civa": 11011.0, "precio_siva": 9100.0, "costo_siva": 3402.45, "costo_civa": 4039.99, "ganancia_siva": 5697.55, "ganancia_civa": 6971.01, "rent_siva": 62.6, "rent_civa": 63.3, "excel_civa": 4271.54, "delta_civa": -231.55, "delta_pct": -5.4, "unidades": 38, "peso_pct": 0.5, "nota": "", "precio_cliente_civa": 14300.0}, {"nombre": "Biggie L.A.", "familia": "Burgers", "precio_civa": 11011.0, "precio_siva": 9100.0, "costo_siva": 3166.17, "costo_civa": 3754.1, "ganancia_siva": 5933.83, "ganancia_civa": 7256.9, "rent_siva": 65.2, "rent_civa": 65.9, "excel_civa": 4017.15, "delta_civa": -263.05, "delta_pct": -6.5, "unidades": 70, "peso_pct": 0.9, "nota": "", "precio_cliente_civa": 14300.0}, {"nombre": "Biggie Cheese", "familia": "Burgers", "precio_civa": 11011.0, "precio_siva": 9100.0, "costo_siva": 2948.6, "costo_civa": 3490.84, "ganancia_siva": 6151.4, "ganancia_civa": 7520.16, "rent_siva": 67.6, "rent_civa": 68.3, "excel_civa": 3787.25, "delta_civa": -296.41, "delta_pct": -7.8, "unidades": 10, "peso_pct": 0.1, "nota": "", "precio_cliente_civa": 14300.0}], "extras": [{"nombre": "Extra carne + Cheddar", "costo_siva": 0, "precio_local": 4000.0, "precio_py": 4400.0, "ganancia_local": 4000.0, "rent_siva": 0}, {"nombre": "Extra Cheddar", "costo_siva": 0, "precio_local": 1200.0, "precio_py": 1320.0, "ganancia_local": 1200.0, "rent_siva": 0}, {"nombre": "Extra Panceta", "costo_siva": 0, "precio_local": 2000.0, "precio_py": 2200.0, "ganancia_local": 2000.0, "rent_siva": 0}, {"nombre": "Extra Papas Sure Crisp", "costo_siva": 0, "precio_local": 4000.0, "precio_py": 4400.0, "ganancia_local": 4000.0, "rent_siva": 0}, {"nombre": "Extra Papas CrossTrax", "costo_siva": 0, "precio_local": 5000.0, "precio_py": 5500.0, "ganancia_local": 5000.0, "rent_siva": 0}, {"nombre": "Aros de Cebolla x10", "costo_siva": 0, "precio_local": 5500.0, "precio_py": 6050.0, "ganancia_local": 5500.0, "rent_siva": 0}, {"nombre": "Nuggets x6", "costo_siva": 0, "precio_local": 5500.0, "precio_py": 6050.0, "ganancia_local": 5500.0, "rent_siva": 0}, {"nombre": "Nuggets x10", "costo_siva": 0, "precio_local": 8000.0, "precio_py": 8800.0, "ganancia_local": 8000.0, "rent_siva": 0}, {"nombre": "Nuggets x20", "costo_siva": 0, "precio_local": 14000.0, "precio_py": 15400.0, "ganancia_local": 14000.0, "rent_siva": 0}, {"nombre": "Franui", "costo_siva": 0, "precio_local": 8500.0, "precio_py": 9350.0, "ganancia_local": 8500.0, "rent_siva": 0}], "ingredientes": [{"nombre": "Carne (kg)", "ref": 11669.68, "ref_fecha": "19/06/2026", "actual": 11669.68, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Pan Golden (u)", "ref": 733.03, "ref_fecha": "19/06/2026", "actual": 733.03, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Cheddar (slice)", "ref": 88.95, "ref_fecha": "19/06/2026", "actual": 88.95, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Panceta Antonativa (kg)", "ref": 14376.14, "ref_fecha": "19/06/2026", "actual": 14376.14, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Panceta Centurión (kg)", "ref": 13052.44, "ref_fecha": "19/06/2026", "actual": 13052.44, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Papas Sure Crisp (kg)", "ref": 3981.61, "ref_fecha": "19/06/2026", "actual": 3981.61, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Papas Cross Trax (kg)", "ref": 6732.54, "ref_fecha": "19/06/2026", "actual": 6732.54, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Salsa Smash (kg)", "ref": 4342.49, "ref_fecha": "19/06/2026", "actual": 4342.49, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Relish Pepino (kg)", "ref": 6986.1, "ref_fecha": "19/06/2026", "actual": 6986.1, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Barbacoa (kg)", "ref": 5824.05, "ref_fecha": "19/06/2026", "actual": 5824.05, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Ketchup (kg)", "ref": 3377.11, "ref_fecha": "19/06/2026", "actual": 3377.11, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Mostaza (kg)", "ref": 1911.08, "ref_fecha": "19/06/2026", "actual": 1911.08, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Mayonesa (kg)", "ref": 3073.54, "ref_fecha": "19/06/2026", "actual": 3073.54, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Lechuga efectiva (kg)", "ref": 2951.6, "ref_fecha": "19/06/2026", "actual": 2361.27, "delta": -590.33, "delta_pct": -20.0}, {"nombre": "Tomate efectivo (kg)", "ref": 3099.18, "ref_fecha": "19/06/2026", "actual": 3099.18, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Cebolla efectiva (kg)", "ref": 691.65, "ref_fecha": "19/06/2026", "actual": 691.65, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Papel Bioxido (u)", "ref": 210.0, "ref_fecha": "19/06/2026", "actual": 210.0, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Caja papas (u)", "ref": 178.0, "ref_fecha": "19/06/2026", "actual": 178.0, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Bolsa pedido (u)", "ref": 265.0, "ref_fecha": "19/06/2026", "actual": 265.0, "delta": 0.0, "delta_pct": 0.0}, {"nombre": "Medallón Veggie (u)", "ref": 614.39, "ref_fecha": "19/06/2026", "actual": 614.39, "delta": 0.0, "delta_pct": 0.0}], "price_history": [{"label": "Pan Golden", "unidad": "por unidad", "data": [{"fecha": "19/05/2026", "valor": 733.03}, {"fecha": "27/05/2026", "valor": 733.03}, {"fecha": "30/05/2026", "valor": 733.03}, {"fecha": "10/06/2026", "valor": 1122.17}, {"fecha": "19/06/2026", "valor": 733.03}, {"fecha": "29/06/2026", "valor": 733.03}]}, {"label": "Carne molida", "unidad": "por kg", "data": [{"fecha": "19/05/2026", "valor": 11669.68}, {"fecha": "27/05/2026", "valor": 11669.68}, {"fecha": "30/05/2026", "valor": 11669.68}, {"fecha": "10/06/2026", "valor": 11669.68}, {"fecha": "19/06/2026", "valor": 11669.68}, {"fecha": "29/06/2026", "valor": 11669.68}]}, {"label": "Cheddar Milkaut", "unidad": "por slice (÷192)", "data": [{"fecha": "19/05/2026", "valor": 142.1}, {"fecha": "27/05/2026", "valor": 127.08}, {"fecha": "30/05/2026", "valor": 127.08}, {"fecha": "10/06/2026", "valor": 88.95}, {"fecha": "19/06/2026", "valor": 88.95}, {"fecha": "29/06/2026", "valor": 88.95}]}, {"label": "Papas Sure Crisp 9x9", "unidad": "por kg (÷2.5)", "data": [{"fecha": "19/05/2026", "valor": 4253.86}, {"fecha": "27/05/2026", "valor": 4253.86}, {"fecha": "30/05/2026", "valor": 4253.86}, {"fecha": "10/06/2026", "valor": 3981.61}, {"fecha": "19/06/2026", "valor": 3981.61}, {"fecha": "29/06/2026", "valor": 3981.61}]}, {"label": "Panceta Antonativa", "unidad": "por kg", "data": [{"fecha": "19/05/2026", "valor": 13804.29}, {"fecha": "27/05/2026", "valor": 13146.94}, {"fecha": "30/05/2026", "valor": 13146.94}, {"fecha": "10/06/2026", "valor": 13146.94}, {"fecha": "19/06/2026", "valor": 13146.95}, {"fecha": "29/06/2026", "valor": 13146.95}]}, {"label": "Panceta Centurión", "unidad": "pack 1.5kg", "data": [{"fecha": "19/05/2026", "valor": 11936.43}, {"fecha": "27/05/2026", "valor": 11936.43}, {"fecha": "30/05/2026", "valor": 11936.43}, {"fecha": "10/06/2026", "valor": 11936.43}, {"fecha": "19/06/2026", "valor": 11936.43}, {"fecha": "29/06/2026", "valor": 11936.43}]}, {"label": "Aceite La Joya Girasol", "unidad": "por 5L", "data": [{"fecha": "19/05/2026", "valor": 15322.31}, {"fecha": "27/05/2026", "valor": 15322.31}, {"fecha": "30/05/2026", "valor": 11975.21}, {"fecha": "10/06/2026", "valor": 17024.79}, {"fecha": "19/06/2026", "valor": 18595.04}, {"fecha": "29/06/2026", "valor": 18595.04}]}, {"label": "Manteca Milkaut", "unidad": "por 5kg", "data": [{"fecha": "19/05/2026", "valor": 54262.33}, {"fecha": "27/05/2026", "valor": 54262.33}, {"fecha": "30/05/2026", "valor": 54262.33}, {"fecha": "10/06/2026", "valor": 56017.5}, {"fecha": "19/06/2026", "valor": 56017.5}, {"fecha": "29/06/2026", "valor": 56017.5}]}]};
+
+document.getElementById('k-uds').textContent=D.total_unidades.toLocaleString('es-AR');
+document.getElementById('k-local').textContent=D.rent_ponderada_local.toFixed(1)+'%';
+document.getElementById('k-py').textContent=D.rent_ponderada_py!=null?D.rent_ponderada_py.toFixed(1)+'%':'—';
+document.getElementById('hm').innerHTML=`Actualizado: ${D.generado}<br>CSV: ${D.csv_fecha} (${D.csv_nombre})`;
+(()=>{
+  const _mNom={1:'Enero',2:'Febrero',3:'Marzo',4:'Abril',5:'Mayo',6:'Junio',7:'Julio',8:'Agosto',9:'Septiembre',10:'Octubre',11:'Noviembre',12:'Diciembre'};
+  const _parts=(D.generado||'').split('/');
+  const _mN=parseInt(_parts[1]||'0');
+  const _yr=(_parts[2]||'').split(' ')[0]||'';
+  const _mesLabel=(_mNom[_mN]||'Mes')+' '+_yr;
+  document.getElementById('k-uds-label').textContent='Unidades '+_mesLabel;
+  window._mesLabel=_mesLabel;
+})();
+
+const TABS=['local','py','extras','ing','evo'];
+function showTab(t){
+  TABS.forEach(id=>{
+    document.getElementById('panel-'+id).classList.toggle('active',id===t);
+  });
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.textContent.trim()===
+    ({local:'Local',py:'Pedidos Ya',extras:'Extras',ing:'Insumos',evo:'Evolución Precios'})[t]));
+}
+
+// Helpers
+const AM='#f6d01e', VL='#6ebd89', VD='#412d7d';
+function rc(r){return r>=65?VL:r>=55?AM:'#e8342a';}
+function fmt(n){return n.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function pct(n,b){return b?((n-b)/b*100):0;}
+function pctStr(n,b){const p=pct(n,b);const s=(p>0?'+':'')+p.toFixed(1)+'%';return `<span style="color:${p>0?'#e8342a':p<0?'#6ebd89':'#888'}">${s}</span>`;}
+
+// ─── TABLAS BURGERS ────────────────────────────────────────────────────────
+(()=>{
+  const fams=[...new Set(D.burgers_local.map(b=>b.familia))];
+  ['local','py'].forEach(canal=>{
+    const data=D['burgers_'+canal];
+    const isPY = canal==='py';
+    const cols = isPY ? 8 : 7;  // PY tiene columna extra "Precio Carta"
+    let h;
+    if(isPY){
+      h=`<thead><tr><th>Producto</th><th title="Precio publicado en PedidosYa (precio local +10%)">Precio Carta</th><th title="Precio que percibimos después de la comisión de PY">Precio Neto</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+    } else {
+      h=`<thead><tr><th>Producto</th><th>Precio</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+    }
+    fams.forEach(fam=>{
+      const rows=data.filter(b=>b.familia===fam);
+      if(!rows.length) return;
+      h+=`<tr class="fr"><td colspan="${cols}">${fam}</td></tr>`;
+      rows.forEach(b=>{
+        if(isPY){
+          h+=`<tr>
+            <td>${b.nombre}</td>
+            <td style="color:#f6d01e;font-weight:bold">${fmt(b.precio_cliente_civa||0)}</td>
+            <td>${fmt(b.precio_civa)}</td>
+            <td>${fmt(b.costo_civa)}</td>
+            <td>${fmt(b.ganancia_civa)}</td>
+            <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
+            <td>${b.unidades||'-'}</td>
+            <td>${b.peso_pct?b.peso_pct+'%':'-'}</td>
+          </tr>`;
+        } else {
+          h+=`<tr>
+            <td>${b.nombre}</td>
+            <td>${fmt(b.precio_civa)}</td>
+            <td>${fmt(b.costo_civa)}</td>
+            <td>${fmt(b.ganancia_civa)}</td>
+            <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
+            <td>${b.unidades||'-'}</td>
+            <td>${b.peso_pct?b.peso_pct+'%':'-'}</td>
+          </tr>`;
+        }
+      });
+    });
+    if(D.rent_ponderada_local){
+      const rp=canal==='local'?D.rent_ponderada_local:D.rent_ponderada_py;
+      const spanLeft = isPY ? 5 : 4;
+      const spanRight = isPY ? 3 : 3;
+      if(rp!=null) h+=`<tr class="fr"><td colspan="${spanLeft}">Rentabilidad ponderada por ventas</td><td colspan="${spanRight}"><span style="color:${rc(rp)};font-weight:bold">${rp.toFixed(1)}%</span></td></tr>`;
+    }
+    document.getElementById('t'+canal[0]).innerHTML=h+'</tbody>';
+  });
+})();
+
+// ─── TABLA EXTRAS ──────────────────────────────────────────────────────────
+(()=>{
+  let h=`<thead><tr><th>Extra</th><th>Costo s/IVA</th><th>Precio Local</th><th>Precio PY</th><th>Rent. s/IVA</th></tr></thead><tbody>`;
+  D.extras.forEach(e=>{
+    h+=`<tr><td>${e.nombre}</td><td>${fmt(e.costo_siva)}</td><td>${fmt(e.precio_local)}</td><td>${fmt(e.precio_py)}</td><td><span style="color:${rc(e.rent_siva)}">${e.rent_siva.toFixed(1)}%</span></td></tr>`;
+  });
+  document.getElementById('te').innerHTML=h+'</tbody>';
+})();
+
+// ─── TABLA INSUMOS ─────────────────────────────────────────────────────────
+(()=>{
+  const refLbl    = D.ref_fecha    || 'Revisión anterior';
+  const actualLbl = D.actual_fecha || 'Actual';
+  let h=`<thead><tr><th>Insumo</th><th>${refLbl}</th><th>${actualLbl}</th><th>Δ $</th><th>Δ %</th></tr></thead><tbody>`;
+  D.ingredientes.forEach(i=>{
+    const up=i.delta>0;
+    h+=`<tr><td>${i.nombre}</td><td>${fmt(i.ref??i.excel)}</td><td>${fmt(i.actual)}</td>
+      <td><span style="color:${up?'#e8342a':'#6ebd89'}">${up?'+':''}${fmt(i.delta)}</span></td>
+      <td><span style="color:${up?'#e8342a':'#6ebd89'}">${up?'+':''}${i.delta_pct.toFixed(1)}%</span></td></tr>`;
+  });
+  document.getElementById('ti').innerHTML=h+'</tbody>';
+})();
+
+// ─── EVOLUCIÓN PRECIOS INSUMOS ─────────────────────────────────────────────
+(()=>{
+  const PH = D.price_history || [];
+  if (!PH.length) return;
+
+  // Bar chart: % variación total
+  const labels=[], changes=[], bgColors=[], bdColors=[];
+  PH.forEach(item=>{
+    const pts=item.data;
+    labels.push(item.label);
+    if(pts.length<2){ changes.push(0); bgColors.push('#41307799'); bdColors.push('#412d7d'); return; }
+    const first=pts[0].valor, last=pts[pts.length-1].valor;
+    const chg=parseFloat(((last-first)/first*100).toFixed(1));
+    changes.push(chg);
+    bgColors.push(chg>0.1?'#e8342a88':chg<-0.1?'#6ebd8988':'#41307799');
+    bdColors.push(chg>0.1?'#e8342a':chg<-0.1?'#6ebd89':'#412d7d');
+  });
+  const chEvo = document.getElementById('ch-evo-bar');
+  if(chEvo) new Chart(chEvo,{
+    type:'bar',
+    data:{labels,datasets:[{label:'Variación %',data:changes,backgroundColor:bgColors,
+      borderColor:bdColors,borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},
+        title:{display:true,text:'Variación de Costos de Insumos vs. medición anterior — '+D.csv_fecha,color:'#e8e4f0',font:{size:11,weight:'bold'}},
+        tooltip:{callbacks:{label:ctx=>(ctx.raw>0?'+':'')+ctx.raw+'%'}}},
+      scales:{
+        x:{ticks:{color:'#7a6fa0',font:{size:10},callback:v=>(v>0?'+':'')+v+'%'},grid:{color:'#2e2655'}},
+        y:{ticks:{color:'#7a6fa0',font:{size:10}},grid:{color:'#2e2655'}}}}});
+
+  // Cards por insumo
+  const grid=document.getElementById('evo-cards');
+  if(!grid) return;
+  let html='';
+  PH.forEach(item=>{
+    const pts=item.data;
+    if(!pts.length) return;
+    const last=pts[pts.length-1];
+    const first=pts[0];
+    const chg=pts.length>1?parseFloat(((last.valor-first.valor)/first.valor*100).toFixed(1)):0;
+    const cls=chg>0.1?'up':chg<-0.1?'down':'flat';
+    const arrow=chg>0.1?'▲':chg<-0.1?'▼':'—';
+    const chgColor=chg>0.1?'#e8342a':chg<-0.1?'#6ebd89':'#888';
+    const chgStr=chg===0?'<span style="color:#888">Sin cambio</span>'
+      :`<span style="color:${chgColor};font-weight:bold">${arrow} ${chg>0?'+':''}${chg}%</span>`;
+    const fmtVal=v=>v>=10000?'$'+Math.round(v).toLocaleString('es-AR'):'$'+v.toFixed(2);
+    const histRows=pts.map((p,i)=>`<div style="color:${i===pts.length-1?'#e8e4f0':'#7a6fa0'}">${p.fecha}: ${fmtVal(p.valor)}</div>`).join('');
+    html+=`<div class="evo-card ${cls}">
+      <div class="evo-name">${item.label}</div>
+      <div class="evo-val">${fmtVal(last.valor)}</div>
+      <div class="evo-unit">${item.unidad}</div>
+      <div class="evo-history" style="margin:6px 0">${histRows}</div>
+      <div style="font-size:11px">${chgStr}</div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+})();
+
+// ─── CHARTS ────────────────────────────────────────────────────────────────
+Chart.defaults.color='#7a6fa0';
+const grid='#2e2655';
+const sc={x:{ticks:{color:'#7a6fa0',font:{size:10}},grid:{color:grid}},y:{ticks:{color:'#7a6fa0',font:{size:10}},grid:{color:grid}}};
+
+(()=>{
+  const top=[...D.burgers_local].sort((a,b)=>b.unidades-a.unidades).slice(0,10);
+  new Chart(document.getElementById('ch-rl'),{type:'bar',
+    data:{labels:top.map(b=>b.nombre.replace(' Doble','').replace('Signature','Sig.')),
+      datasets:[{label:'Rent. s/IVA %',data:top.map(b=>b.rent_siva),
+        backgroundColor:top.map(b=>rc(b.rent_siva)+'99'),borderColor:top.map(b=>rc(b.rent_siva)),borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},title:{display:true,text:'Top 10 — Rentabilidad Local',color:'#e8e4f0',font:{size:11,weight:'bold'}}},
+      scales:{...sc,y:{...sc.y,min:40,max:80}}}});
+})();
+
+(()=>{
+  const top=[...D.burgers_local].filter(b=>b.unidades>0).sort((a,b)=>b.unidades-a.unidades).slice(0,8);
+  const pal=[AM,VL,VD,'#e8342a','#f97316','#22d3ee','#a78bfa','#f472b6'];
+  new Chart(document.getElementById('ch-mix'),{type:'doughnut',
+    data:{labels:top.map(b=>b.nombre.replace(' Doble','').replace('Signature','Sig.')),
+      datasets:[{data:top.map(b=>b.unidades),backgroundColor:pal,borderColor:'#0e0b1a',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#a09abf',font:{size:10}},position:'right'},
+        title:{display:true,text:'Mix de Ventas '+(window._mesLabel||''),color:'#e8e4f0',font:{size:11,weight:'bold'}}}}});
+})();
+
+(()=>{
+  const top=[...D.burgers_py].sort((a,b)=>b.unidades-a.unidades).slice(0,10);
+  const lm={};D.burgers_local.forEach(b=>lm[b.nombre]=b.rent_siva);
+  new Chart(document.getElementById('ch-py'),{type:'bar',
+    data:{labels:top.map(b=>b.nombre.replace(' Doble','').replace('Signature','Sig.')),
+      datasets:[
+        {label:'Rent. Local',data:top.map(b=>lm[b.nombre]||0),backgroundColor:AM+'77',borderColor:AM,borderWidth:1,borderRadius:3},
+        {label:'Rent. PY',data:top.map(b=>b.rent_siva),backgroundColor:VD+'77',borderColor:VD,borderWidth:1,borderRadius:3}
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#a09abf',font:{size:11}}},
+        title:{display:true,text:'Rent. Local vs Pedidos Ya',color:'#e8e4f0',font:{size:11,weight:'bold'}}},
+      scales:{...sc,y:{...sc.y,min:30,max:80}}}});
+})();
+</script>
+</body>
+</html>
