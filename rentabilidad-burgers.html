@@ -403,7 +403,9 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
     const chgStr=chg===0?'<span style="color:#888">Sin cambio</span>'
       :`<span style="color:${chgColor};font-weight:bold">${arrow} ${chg>0?'+':''}${chg}%</span>`;
     const fmtVal=v=>v>=10000?'$'+Math.round(v).toLocaleString('es-AR'):'$'+v.toFixed(2);
-    const histRows=pts.map((p,i)=>`<div style="color:${i===pts.length-1?'#e8e4f0':'#7a6fa0'}">${p.fecha}: ${fmtVal(p.valor)}</div>`).join('');
+    // Mostrar solo cambios de precio + siempre el último. Si nunca cambió, solo el último.
+    const visPts=(()=>{const lv=pts[pts.length-1].valor,r=[];let prev=null;pts.forEach((p,i)=>{if(p.valor!==prev){if(r.length>0||p.valor!==lv)r.push(p);prev=p.valor;}else if(i===pts.length-1)r.push(p);});return r;})();
+    const histRows=visPts.map((p,i)=>`<div style="color:${i===visPts.length-1?'#e8e4f0':'#7a6fa0'}">${p.fecha}: ${fmtVal(p.valor)}</div>`).join('');
     html+=`<div class="evo-card ${cls}">
       <div class="evo-name">${item.label}</div>
       <div class="evo-val">${fmtVal(last.valor)}</div>
