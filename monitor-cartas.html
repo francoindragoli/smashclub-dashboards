@@ -24,15 +24,16 @@
   .card.status-ok { border-color: #e0f0e8; }
   .card.status-changed { border-color: #e05252; background: #fff5f5; box-shadow: 0 0 0 3px rgba(224,82,82,0.15); }
   .card.status-manual { border-color: #f0e8c8; background: #fffdf5; }
+  .card.status-error { border-color: #e8e0c8; background: #fdfaf5; }
   .card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .status-ok .card-icon { background: #e8f8ee; }
   .status-changed .card-icon { background: #ffeaea; }
-  .status-manual .card-icon { background: #fff3cd; }
-  .card-info { flex: 1; }
+  .status-manual .card-icon, .status-error .card-icon { background: #fff3cd; }
+  .card-info { flex: 1; min-width: 0; }
   .card-name { font-size: 14px; font-weight: 900; color: #1a1a1a; }
   .card-name a { color: inherit; text-decoration: none; border-bottom: 1px dashed rgba(65,45,125,0.4); transition: color .15s, border-color .15s; }
   .card-name a:hover { color: #412d7d; border-bottom-color: #412d7d; }
-  .card-detail { font-size: 11px; color: #888; margin-top: 2px; font-weight: normal; }
+  .card-detail { font-size: 11px; color: #888; margin-top: 2px; font-weight: normal; line-height: 1.5; word-break: break-word; }
   .status-changed .card-detail { color: #c0392b; font-weight: bold; }
   .card-badge { font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 20px; flex-shrink: 0; }
   .badge-ok { background: #e8f8ee; color: #2d7a4a; }
@@ -48,27 +49,40 @@
     <h1>🍔 Monitor de Cartas</h1>
     <p>Smash Club — Competidores Mendoza</p>
   </div>
-  <div class="last-check">Última verificación<span>30/05/2026 — 09:00</span></div>
+  <div class="last-check">Última verificación<span>28/08/2026 — 16:36</span></div>
 </div>
-<div class="alert-banner ok">
-  <div class="alert-icon">✅</div>
-  <div>Ningún competidor actualizó su carta hoy. Todo igual.</div>
-</div>
+<div class="alert-banner ok"><div class="alert-icon">✅</div><div>Ningún competidor actualizó su carta hoy. Todo igual.</div></div>
 <div class="section-title">Monitoreados automáticamente</div>
 <div class="cards-grid">
   <div class="card status-ok">
     <div class="card-icon">🟢</div>
     <div class="card-info">
-      <div class="card-name"><a href="https://tr.ee/N-0Cp9hnCg" target="_blank" rel="noopener">Burgang ↗</a></div>
-      <div class="card-detail">Sin cambios — PDF detectado en Google Drive</div>
+      <div class="card-name"><a href="https://tr.ee/ggF6YMGVfD" target="_blank" rel="noopener">TBT ↗</a></div>
+      <div class="card-detail">71 productos en carta · último cambio: 28/08/2026</div>
     </div>
     <div class="card-badge badge-ok">Sin cambios</div>
   </div>
   <div class="card status-ok">
     <div class="card-icon">🟢</div>
     <div class="card-info">
-      <div class="card-name"><a href="https://tr.ee/S702t8-so9" target="_blank" rel="noopener">Peak ↗</a></div>
-      <div class="card-detail">Sin cambios — carpeta detectada en Google Drive</div>
+      <div class="card-name"><a href="https://tr.ee/VQjiGjQDHe" target="_blank" rel="noopener">Bairoleto ↗</a></div>
+      <div class="card-detail">57 productos en carta · último cambio: 28/08/2026</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name"><a href="https://tr.ee/1Kuxt_FeNh" target="_blank" rel="noopener">Burger Shoppe ↗</a></div>
+      <div class="card-detail">56 productos en carta · último cambio: 28/08/2026</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name"><a href="https://tr.ee/N-0Cp9hnCg" target="_blank" rel="noopener">Burgang ↗</a></div>
+      <div class="card-detail">PDF sin cambios · último cambio: 28/08/2026</div>
     </div>
     <div class="card-badge badge-ok">Sin cambios</div>
   </div>
@@ -76,15 +90,7 @@
     <div class="card-icon">🟢</div>
     <div class="card-info">
       <div class="card-name"><a href="https://tr.ee/g5JQE652KA" target="_blank" rel="noopener">Stacy ↗</a></div>
-      <div class="card-detail">Sin cambios — PDF detectado en Google Drive</div>
-    </div>
-    <div class="card-badge badge-ok">Sin cambios</div>
-  </div>
-  <div class="card status-ok">
-    <div class="card-icon">🟢</div>
-    <div class="card-info">
-      <div class="card-name"><a href="https://tr.ee/ggF6YMGVfD" target="_blank" rel="noopener">TBT ↗</a></div>
-      <div class="card-detail">Sin cambios — carpeta detectada en Google Drive</div>
+      <div class="card-detail">PDF sin cambios · último cambio: 28/08/2026</div>
     </div>
     <div class="card-badge badge-ok">Sin cambios</div>
   </div>
@@ -92,17 +98,30 @@
     <div class="card-icon">🟢</div>
     <div class="card-info">
       <div class="card-name"><a href="https://tr.ee/f-vgYqPT2z" target="_blank" rel="noopener">Bad Burgers ↗</a></div>
-      <div class="card-detail">Sin cambios — PDF detectado en Google Drive</div>
+      <div class="card-detail">PDF sin cambios · último cambio: 28/08/2026</div>
+    </div>
+    <div class="card-badge badge-ok">Sin cambios</div>
+  </div>
+  <div class="card status-ok">
+    <div class="card-icon">🟢</div>
+    <div class="card-info">
+      <div class="card-name"><a href="https://tr.ee/S702t8-so9" target="_blank" rel="noopener">Peak ↗</a></div>
+      <div class="card-detail">3 archivo(s) · último cambio: 28/08/2026</div>
     </div>
     <div class="card-badge badge-ok">Sin cambios</div>
   </div>
 </div>
 <div class="section-title">Requieren revisión manual</div>
 <div class="cards-grid">
-  <div class="card status-manual"><div class="card-icon">⚠️</div><div class="card-info"><div class="card-name"><a href="https://tr.ee/VQjiGjQDHe" target="_blank" rel="noopener">Bairoleto ↗</a></div><div class="card-detail">Plataforma Fudo — no scrapeble automáticamente</div></div><div class="card-badge badge-manual">Manual</div></div>
-  <div class="card status-manual"><div class="card-icon">⚠️</div><div class="card-info"><div class="card-name"><a href="https://tr.ee/1Kuxt_FeNh" target="_blank" rel="noopener">Burger Shoppe ↗</a></div><div class="card-detail">Plataforma Fudo — no scrapeble automáticamente</div></div><div class="card-badge badge-manual">Manual</div></div>
-  <div class="card status-manual"><div class="card-icon">⚠️</div><div class="card-info"><div class="card-name"><a href="https://www.instagram.com/memphis.americanburgers" target="_blank" rel="noopener">Memphis ↗</a></div><div class="card-detail">Carta en Instagram — no scrapeble automáticamente</div></div><div class="card-badge badge-manual">Manual</div></div>
+  <div class="card status-manual">
+    <div class="card-icon">⚠️</div>
+    <div class="card-info">
+      <div class="card-name"><a href="https://www.instagram.com/memphis.americanburgers" target="_blank" rel="noopener">Memphis ↗</a></div>
+      <div class="card-detail">Carta en Instagram — revisar manualmente</div>
+    </div>
+    <div class="card-badge badge-manual">Manual</div>
+  </div>
 </div>
-<div class="footer">Actualizado automáticamente todos los días a las 9am<br><strong>Recargá esta página</strong> para ver el estado del día</div>
+<div class="footer">Actualizado automáticamente todos los días a las 12pm<br><strong>Recargá esta página</strong> para ver el estado del día</div>
 </body>
 </html>
