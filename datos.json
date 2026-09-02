@@ -1,0 +1,1333 @@
+{
+  "generado": "2026-09-02T10:54:59",
+  "meses": {
+    "enero2026": {
+      "label": "Enero 2026",
+      "dias": 31,
+      "diasCount": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        4
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 822,
+          "Gollum Signature": 644,
+          "John Bacon": 513,
+          "Cheese Burger": 226,
+          "Burnin Joe": 123,
+          "Sweet Alabama": 193,
+          "L.A Americana": 309,
+          "Joven": 34,
+          "Biggie": 82,
+          "Denver": 11
+        },
+        "jr": 1227,
+        "doble": 1502,
+        "xl": 228,
+        "total": 2957,
+        "acompanante": {
+          "Con Papas": 2934,
+          "Sin Papas": 20,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 3413,
+          "Pan Sin Gluten": 59
+        },
+        "salsa": {
+          "Salsa CDL": 971,
+          "Cebolla Caramelizada": 210,
+          "Sin Salsa": 63
+        },
+        "ventaTotal": 55685635,
+        "totalDocs": 2808,
+        "ticketPromedio": 19831,
+        "ventaDias": [
+          6562870,
+          6087809,
+          7019386,
+          5557228,
+          12494319,
+          10523591,
+          7440433
+        ],
+        "horaLabels": [],
+        "horaVentas": [],
+        "biggie": {
+          "Crispy Bliss": 16,
+          "L.A Americana": 19,
+          "Sweet Alabama": 17,
+          "Cheese Burger": 9
+        },
+        "formasPago": null
+      },
+      "puntilla": {
+        "burgers": {
+          "Burnin Joe": 332,
+          "Gollum Signature": 1525,
+          "John Bacon": 1236,
+          "Crispy Bliss": 1723,
+          "Biggie": 120,
+          "Sweet Alabama": 324,
+          "Cheese Burger": 638,
+          "L.A Americana": 807,
+          "Denver": 40
+        },
+        "jr": 2703,
+        "doble": 3502,
+        "xl": 540,
+        "total": 6745,
+        "acompanante": {
+          "Con Papas": 6010,
+          "Sin Papas": 75,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 6840,
+          "Pan Sin Gluten": 137
+        },
+        "salsa": {
+          "Salsa CDL": 2368,
+          "Cebolla Caramelizada": 440,
+          "Sin Salsa": 202
+        },
+        "ventaTotal": 100399250,
+        "totalDocs": 3498,
+        "ticketPromedio": 28702,
+        "ventaDias": [
+          9972717,
+          9900870,
+          11032085,
+          11046045,
+          21412305,
+          22210279,
+          14824950
+        ],
+        "horaLabels": [],
+        "horaVentas": [],
+        "biggie": {
+          "Cheese Burger": 11,
+          "Sweet Alabama": 15,
+          "Crispy Bliss": 28,
+          "L.A Americana": 42,
+          "Burnin Joe": 2
+        },
+        "formasPago": null
+      }
+    },
+    "febrero2026": {
+      "label": "Febrero 2026",
+      "dias": 28,
+      "diasCount": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 674,
+          "Gollum Signature": 550,
+          "John Bacon": 428,
+          "Cheese Burger": 157,
+          "Sweet Alabama": 160,
+          "Burnin Joe": 113,
+          "L.A Americana": 241,
+          "Biggie": 62,
+          "Joven": 64,
+          "Denver": 7
+        },
+        "jr": 1087,
+        "doble": 1218,
+        "xl": 151,
+        "total": 2456,
+        "acompanante": {
+          "Con Papas": 2348,
+          "Sin Papas": 28,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 2731,
+          "Pan Sin Gluten": 94
+        },
+        "salsa": {
+          "Salsa CDL": 812,
+          "Cebolla Caramelizada": 164,
+          "Sin Salsa": 58
+        },
+        "ventaTotal": 49289743,
+        "totalDocs": 2367,
+        "ticketPromedio": 20824,
+        "ventaDias": [
+          7384154,
+          6627533,
+          5707219,
+          5367597,
+          8554908,
+          7654157,
+          7994175
+        ],
+        "horaLabels": [],
+        "horaVentas": [],
+        "biggie": {
+          "L.A Americana": 24,
+          "Cheese Burger": 8,
+          "Crispy Bliss": 5,
+          "Sweet Alabama": 6,
+          "Burnin Joe": 1
+        },
+        "formasPago": null
+      },
+      "puntilla": {
+        "burgers": {
+          "L.A Americana": 677,
+          "Gollum Signature": 1441,
+          "Cheese Burger": 577,
+          "John Bacon": 971,
+          "Biggie": 82,
+          "Sweet Alabama": 225,
+          "Crispy Bliss": 1391,
+          "Burnin Joe": 259,
+          "Denver": 18
+        },
+        "jr": 2684,
+        "doble": 2579,
+        "xl": 378,
+        "total": 5641,
+        "acompanante": {
+          "Con Papas": 5349,
+          "Sin Papas": 120,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 5574,
+          "Pan Sin Gluten": 118
+        },
+        "salsa": {
+          "Salsa CDL": 2118,
+          "Cebolla Caramelizada": 273,
+          "Sin Salsa": 137
+        },
+        "ventaTotal": 89570774,
+        "totalDocs": 3006,
+        "ticketPromedio": 29797,
+        "ventaDias": [
+          12477910,
+          10855960,
+          11280185,
+          7710860,
+          14554754,
+          15958715,
+          16732390
+        ],
+        "horaLabels": [],
+        "horaVentas": [],
+        "biggie": {
+          "L.A Americana": 38,
+          "Sweet Alabama": 12,
+          "Crispy Bliss": 15,
+          "Burnin Joe": 1,
+          "Cheese Burger": 3,
+          "Denver": 1
+        },
+        "formasPago": null
+      }
+    },
+    "marzo2026": {
+      "label": "Marzo 2026",
+      "dias": 31,
+      "diasCount": [
+        5,
+        5,
+        4,
+        4,
+        4,
+        4,
+        5
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 847,
+          "Gollum Signature": 698,
+          "John Bacon": 559,
+          "L.A Americana": 391,
+          "Cheese Burger": 286,
+          "PROMO CHEESE BURGER PEYA": 191,
+          "Sweet Alabama": 186,
+          "Burnin Joe": 142,
+          "Biggie": 97,
+          "Denver": 6
+        },
+        "jr": 1600,
+        "doble": 1641,
+        "xl": 162,
+        "total": 3403,
+        "acompanante": {
+          "Con Papas": 3040,
+          "Sin Papas": 148,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 3146,
+          "Pan Sin Gluten": 62
+        },
+        "salsa": {
+          "Salsa CDL": 444,
+          "Cebolla Caramelizada": 223,
+          "Sin Salsa / Otra": 12
+        },
+        "ventaTotal": 61466320,
+        "totalDocs": 3014,
+        "ticketPromedio": 20394,
+        "ventaDias": [
+          8954832,
+          7813728,
+          5661676,
+          9310498,
+          11073855,
+          8924722,
+          9727009
+        ],
+        "horaLabels": [
+          "9h",
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h",
+          "1h"
+        ],
+        "horaVentas": [
+          0.14,
+          0.483,
+          0.609,
+          2.706,
+          4.657,
+          3.704,
+          2.407,
+          1.796,
+          1.211,
+          1.249,
+          2.21,
+          5.201,
+          13.297,
+          14.717,
+          5.272,
+          1.802,
+          0.006
+        ],
+        "biggie": {
+          "L.A Americana": 20,
+          "Gollum": 10,
+          "Sweet Alabama": 9,
+          "Crispy Bliss": 7,
+          "Cheese Burger": 4
+        },
+        "formasPago": {
+          "PedidosYa": 25022090,
+          "MercadoPago": 20662815,
+          "Efectivo": 9939555,
+          "Crédito": 3816310,
+          "Débito": 1855350,
+          "Otros": 89800,
+          "MasDelivery": 80400
+        }
+      },
+      "puntilla": {
+        "burgers": {
+          "Gollum Signature": 1751,
+          "Crispy Bliss": 1603,
+          "John Bacon": 987,
+          "L.A Americana": 780,
+          "Cheese Burger": 678,
+          "Burnin Joe": 317,
+          "Sweet Alabama": 283,
+          "Biggie": 99,
+          "Denver": 35
+        },
+        "jr": 2659,
+        "doble": 3405,
+        "xl": 469,
+        "total": 6533,
+        "acompanante": {
+          "Con Papas": 6471,
+          "Sin Papas": 136,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 6433,
+          "Pan Sin Gluten": 100
+        },
+        "salsa": {
+          "Salsa CDL": 1287,
+          "Cebolla Caramelizada": 385,
+          "Sin Salsa / Otra": 49
+        },
+        "ventaTotal": 104562389,
+        "totalDocs": 3432,
+        "ticketPromedio": 30467,
+        "ventaDias": [
+          10583199,
+          12512130,
+          8808880,
+          10670625,
+          19830395,
+          21757420,
+          20399740
+        ],
+        "horaLabels": [
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h"
+        ],
+        "horaVentas": [
+          0.008,
+          0.068,
+          1.469,
+          7.401,
+          8.033,
+          4.053,
+          1.03,
+          0.392,
+          0.69,
+          1.842,
+          12.084,
+          30.234,
+          23.782,
+          11.261,
+          2.215
+        ],
+        "biggie": {
+          "Crispy Bliss": 14,
+          "L.A Americana": 10,
+          "Sweet Alabama": 6,
+          "Gollum": 5,
+          "Cheese Burger": 4,
+          "Burnin Joe": 1
+        },
+        "formasPago": {
+          "MercadoPago": 37920990,
+          "PedidosYa": 31256635,
+          "Efectivo": 23592970,
+          "Débito": 9021620,
+          "Crédito": 2736180,
+          "Otros": 25880,
+          "MasDelivery": 11650
+        }
+      }
+    },
+    "abril2026": {
+      "label": "Abril 2026",
+      "dias": 30,
+      "diasCount": [
+        4,
+        4,
+        5,
+        5,
+        4,
+        4,
+        4
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 905,
+          "Gollum Signature": 691,
+          "John Bacon": 506,
+          "L.A Americana": 404,
+          "Cheese Burger": 272,
+          "Sweet Alabama": 160,
+          "Burnin Joe": 159,
+          "Hot Honey Ranch": 93,
+          "Biggie": 90,
+          "Denver": 13,
+          "7TH STREET": 1
+        },
+        "jr": 1404,
+        "doble": 1721,
+        "xl": 169,
+        "total": 3294,
+        "acompanante": {
+          "Con Papas": 2975,
+          "Sin Papas": 302,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 3182,
+          "Pan Sin Gluten": 111
+        },
+        "salsa": {
+          "Salsa CDL": 450,
+          "Cebolla Caramelizada": 210,
+          "Sin Salsa / Otra": 13
+        },
+        "ventaTotal": 60650860,
+        "totalDocs": 2517,
+        "ticketPromedio": 24096,
+        "ventaDias": [
+          4811800,
+          6063365,
+          8311510,
+          11579920,
+          13015110,
+          9970690,
+          6898465
+        ],
+        "horaLabels": [
+          "9h",
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h",
+          "1h"
+        ],
+        "horaVentas": [
+          0.153,
+          0.265,
+          0.601,
+          2.19,
+          6.019,
+          4.548,
+          1.922,
+          1.236,
+          0.977,
+          1.086,
+          1.772,
+          6.119,
+          14.951,
+          13.236,
+          4.959,
+          0.614,
+          0.002
+        ],
+        "biggie": {
+          "L.A Americana": 36,
+          "Gollum": 20,
+          "Sweet Alabama": 16,
+          "Crispy Bliss": 9,
+          "Cheese Burger": 8,
+          "Burnin Joe": 1
+        },
+        "formasPago": {
+          "PedidosYa": 24094600,
+          "MercadoPago": 19619590,
+          "Efectivo": 9274110,
+          "Crédito": 3882240,
+          "Débito": 2645340,
+          "MasDelivery": 1017820,
+          "Otros": 117160
+        }
+      },
+      "puntilla": {
+        "burgers": {
+          "Gollum Signature": 1417,
+          "Crispy Bliss": 1390,
+          "John Bacon": 1011,
+          "L.A Americana": 703,
+          "Cheese Burger": 532,
+          "Burnin Joe": 290,
+          "Sweet Alabama": 252,
+          "Hot Honey Ranch": 248,
+          "Biggie": 113,
+          "Denver": 21
+        },
+        "jr": 2404,
+        "doble": 3122,
+        "xl": 451,
+        "total": 5977,
+        "acompanante": {
+          "Con Papas": 5881,
+          "Sin Papas": 60,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 5872,
+          "Pan Sin Gluten": 76
+        },
+        "salsa": {
+          "Salsa CDL": 931,
+          "Cebolla Caramelizada": 403,
+          "Sin Salsa / Otra": 18
+        },
+        "ventaTotal": 99524169,
+        "totalDocs": 3047,
+        "ticketPromedio": 32663,
+        "ventaDias": [
+          4888325,
+          7870940,
+          13606105,
+          18521569,
+          22105490,
+          20194010,
+          12337730
+        ],
+        "horaLabels": [
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h"
+        ],
+        "horaVentas": [
+          0.012,
+          0.008,
+          1.89,
+          7.283,
+          6.336,
+          2.587,
+          1.007,
+          0.784,
+          0.656,
+          3.075,
+          12.413,
+          29.958,
+          21.356,
+          10.487,
+          1.672
+        ],
+        "biggie": {
+          "L.A Americana": 43,
+          "Crispy Bliss": 29,
+          "Gollum": 18,
+          "Sweet Alabama": 11,
+          "Cheese Burger": 11,
+          "Burnin Joe": 1
+        },
+        "formasPago": {
+          "MercadoPago": 35164890,
+          "PedidosYa": 25197309,
+          "Efectivo": 22367080,
+          "Débito": 11373250,
+          "MasDelivery": 4002740,
+          "Crédito": 1418900
+        }
+      }
+    },
+    "mayo2026": {
+      "label": "Mayo 2026",
+      "dias": 31,
+      "diasCount": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 1063,
+          "Gollum Signature": 783,
+          "John Bacon": 467,
+          "L.A Americana": 408,
+          "Cheese Burger": 325,
+          "Sweet Alabama": 187,
+          "Burnin Joe": 147,
+          "7TH STREET": 136,
+          "Biggie": 101,
+          "Denver": 14,
+          "Hot Honey Ranch": 2
+        },
+        "jr": 1526,
+        "doble": 1914,
+        "xl": 193,
+        "total": 3633,
+        "acompanante": {
+          "Con Papas": 3257,
+          "Sin Papas": 309,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 3453,
+          "Pan Sin Gluten": 127
+        },
+        "salsa": {
+          "Salsa CDL": 508,
+          "Cebolla Caramelizada": 232,
+          "Sin Salsa / Otra": 27
+        },
+        "ventaTotal": 64821873,
+        "totalDocs": 2580,
+        "ticketPromedio": 25125,
+        "ventaDias": [
+          4860980,
+          5011745,
+          4972990,
+          13008235,
+          16100005,
+          11576600,
+          9291318
+        ],
+        "horaLabels": [
+          "9h",
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h"
+        ],
+        "horaVentas": [
+          0.197,
+          0.404,
+          0.628,
+          2.545,
+          5.581,
+          4.647,
+          1.956,
+          1.863,
+          1.356,
+          1.483,
+          2.618,
+          7.718,
+          14.605,
+          12.837,
+          5.884,
+          0.499
+        ],
+        "biggie": {
+          "L.A Americana": 46,
+          "Gollum": 17,
+          "Crispy Bliss": 16,
+          "Sweet Alabama": 10,
+          "Cheese Burger": 8,
+          "Burnin Joe": 4
+        },
+        "formasPago": {
+          "PedidosYa": 26022660,
+          "MercadoPago": 20058280,
+          "Efectivo": 8657710,
+          "Crédito": 2884065,
+          "Débito": 2423660,
+          "MasDelivery": 2321750,
+          "Otros": 100320
+        }
+      },
+      "puntilla": {
+        "burgers": {
+          "Crispy Bliss": 1642,
+          "Gollum Signature": 1630,
+          "John Bacon": 829,
+          "L.A Americana": 762,
+          "Cheese Burger": 560,
+          "Sweet Alabama": 280,
+          "Burnin Joe": 240,
+          "7TH STREET": 190,
+          "Biggie": 115,
+          "Denver": 34,
+          "Hot Honey Ranch": 1
+        },
+        "jr": 2447,
+        "doble": 3353,
+        "xl": 483,
+        "total": 6283,
+        "acompanante": {
+          "Con Papas": 5938,
+          "Sin Papas": 202,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 6087,
+          "Pan Sin Gluten": 105
+        },
+        "salsa": {
+          "Salsa CDL": 1054,
+          "Cebolla Caramelizada": 431,
+          "Sin Salsa / Otra": 109
+        },
+        "ventaTotal": 102467220,
+        "totalDocs": 3222,
+        "ticketPromedio": 31802,
+        "ventaDias": [
+          7032450,
+          6459885,
+          8137957,
+          15748160,
+          21699714,
+          25004600,
+          18384454
+        ],
+        "horaLabels": [
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h"
+        ],
+        "horaVentas": [
+          0.048,
+          2.194,
+          7.789,
+          6.842,
+          3.006,
+          1.198,
+          0.658,
+          1.007,
+          3.884,
+          16.148,
+          28.121,
+          20.453,
+          9.056,
+          2.073
+        ],
+        "biggie": {
+          "L.A Americana": 34,
+          "Crispy Bliss": 28,
+          "Gollum": 26,
+          "Sweet Alabama": 15,
+          "Cheese Burger": 11,
+          "Burnin Joe": 1
+        },
+        "formasPago": {
+          "MercadoPago": 31138775,
+          "PedidosYa": 27596835,
+          "Efectivo": 19765950,
+          "Débito": 11675050,
+          "MasDelivery": 7874350,
+          "Crédito": 845800
+        }
+      }
+    },
+    "junio2026": {
+      "label": "Junio 2026",
+      "dias": 30,
+      "diasCount": [
+        5,
+        5,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 762,
+          "Gollum Signature": 660,
+          "John Bacon": 398,
+          "L.A Americana": 354,
+          "Emmy": 252,
+          "Cheese Burger": 237,
+          "Sweet Alabama": 163,
+          "Burnin Joe": 124,
+          "Biggie": 104,
+          "Denver": 18
+        },
+        "jr": 1334,
+        "doble": 1586,
+        "xl": 152,
+        "total": 3072,
+        "acompanante": {
+          "Con Papas": 2752,
+          "Sin Papas": 247,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 2925,
+          "Pan Sin Gluten": 102
+        },
+        "salsa": {
+          "Salsa CDL": 416,
+          "Cebolla Caramelizada": 181,
+          "Sin Salsa / Otra": 28
+        },
+        "ventaTotal": 57905274,
+        "totalDocs": 2252,
+        "ticketPromedio": 25713,
+        "ventaDias": [
+          8289790,
+          8745374,
+          5703909,
+          7494857,
+          12878521,
+          9111141,
+          5681682
+        ],
+        "horaLabels": [
+          "9h",
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h",
+          "8h"
+        ],
+        "horaVentas": [
+          0.093,
+          0.276,
+          0.929,
+          2.631,
+          5.713,
+          4.458,
+          1.855,
+          1.139,
+          1.638,
+          1.073,
+          2.247,
+          7.042,
+          13.717,
+          11.07,
+          3.67,
+          0.348,
+          0.007
+        ],
+        "biggie": {
+          "L.A Americana": 39,
+          "Crispy Bliss": 25,
+          "Sweet Alabama": 12,
+          "Gollum": 12,
+          "Cheese Burger": 5,
+          "Burnin Joe": 1
+        }
+      },
+      "puntilla": {
+        "burgers": {
+          "Gollum Signature": 1264,
+          "Crispy Bliss": 1233,
+          "John Bacon": 734,
+          "L.A Americana": 562,
+          "Emmy": 438,
+          "Cheese Burger": 364,
+          "Sweet Alabama": 207,
+          "Burnin Joe": 165,
+          "Biggie": 83,
+          "Denver": 25
+        },
+        "jr": 1845,
+        "doble": 2853,
+        "xl": 377,
+        "total": 5075,
+        "acompanante": {
+          "Con Papas": 4720,
+          "Sin Papas": 240,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 4922,
+          "Pan Sin Gluten": 96
+        },
+        "salsa": {
+          "Salsa CDL": 800,
+          "Cebolla Caramelizada": 301,
+          "Sin Salsa / Otra": 145
+        },
+        "ventaTotal": 87691153,
+        "totalDocs": 2671,
+        "ticketPromedio": 32831,
+        "ventaDias": [
+          8046531,
+          8825054,
+          7446871,
+          10312490,
+          20534090,
+          19280033,
+          13246083
+        ],
+        "horaLabels": [
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h"
+        ],
+        "horaVentas": [
+          2.323,
+          8.181,
+          5.973,
+          3.166,
+          1.685,
+          0.484,
+          0.983,
+          2.768,
+          12.045,
+          23.481,
+          17.436,
+          8.328,
+          0.839
+        ],
+        "biggie": {
+          "L.A Americana": 32,
+          "Crispy Bliss": 18,
+          "Gollum": 15,
+          "Sweet Alabama": 6,
+          "Cheese Burger": 5,
+          "Burnin Joe": 3
+        }
+      }
+    },
+    "julio2026": {
+      "label": "Julio 2026",
+      "dias": 31,
+      "diasCount": [
+        4,
+        4,
+        5,
+        5,
+        5,
+        4,
+        4
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 831,
+          "Gollum Signature": 673,
+          "John Bacon": 441,
+          "L.A Americana": 381,
+          "BLUE VELVET": 317,
+          "Sweet Alabama": 253,
+          "Cheese Burger": 213,
+          "Biggie": 125,
+          "Burnin Joe": 78,
+          "Denver": 24,
+          "Emmy": 9,
+          "SMASH TASTY": 1
+        },
+        "jr": 1491,
+        "doble": 1780,
+        "xl": 75,
+        "total": 3346,
+        "acompanante": {
+          "Con Papas": 2999,
+          "Sin Papas": 259,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 3235,
+          "Pan Sin Gluten": 49
+        },
+        "salsa": {
+          "Salsa CDL": 357,
+          "Cebolla Caramelizada": 252,
+          "Sin Salsa / Otra": 12
+        },
+        "ventaTotal": 62106292,
+        "totalDocs": 2206,
+        "ticketPromedio": 28153,
+        "ventaDias": [
+          6505002,
+          6016588,
+          10784095,
+          9387432,
+          12362780,
+          8617795,
+          8432600
+        ],
+        "horaLabels": [
+          "9h",
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h"
+        ],
+        "horaVentas": [
+          0.041,
+          0.173,
+          0.761,
+          2.811,
+          5.364,
+          3.46,
+          2.024,
+          1.746,
+          1.091,
+          1.166,
+          2.457,
+          8.361,
+          14.771,
+          13.051,
+          4.844
+        ],
+        "biggie": {
+          "L.A Americana": 45,
+          "Gollum": 21,
+          "Crispy Bliss": 18,
+          "Sweet Alabama": 15,
+          "Cheese Burger": 12
+        }
+      },
+      "puntilla": {
+        "burgers": {
+          "Crispy Bliss": 1381,
+          "Gollum Signature": 1246,
+          "John Bacon": 903,
+          "L.A Americana": 656,
+          "BLUE VELVET": 645,
+          "Cheese Burger": 502,
+          "Sweet Alabama": 294,
+          "Biggie": 96,
+          "Burnin Joe": 80,
+          "Denver": 27,
+          "Emmy": 8
+        },
+        "jr": 2265,
+        "doble": 3294,
+        "xl": 279,
+        "total": 5838,
+        "acompanante": {
+          "Con Papas": 5444,
+          "Sin Papas": 237,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 5587,
+          "Pan Sin Gluten": 136
+        },
+        "salsa": {
+          "Salsa CDL": 841,
+          "Cebolla Caramelizada": 279,
+          "Sin Salsa / Otra": 95
+        },
+        "ventaTotal": 98762355,
+        "totalDocs": 2912,
+        "ticketPromedio": 33916,
+        "ventaDias": [
+          7728693,
+          9523786,
+          14833693,
+          12910487,
+          21653190,
+          17528393,
+          14584113
+        ],
+        "horaLabels": [
+          "10h",
+          "11h",
+          "12h",
+          "13h",
+          "14h",
+          "15h",
+          "16h",
+          "17h",
+          "18h",
+          "19h",
+          "20h",
+          "21h",
+          "22h",
+          "23h",
+          "0h"
+        ],
+        "horaVentas": [
+          0.02,
+          0.161,
+          2.573,
+          6.073,
+          5.795,
+          2.584,
+          1.886,
+          0.933,
+          1.469,
+          3.102,
+          13.915,
+          25.297,
+          20.341,
+          8.297,
+          6.335
+        ],
+        "biggie": {
+          "L.A Americana": 34,
+          "Crispy Bliss": 23,
+          "Gollum": 14,
+          "Sweet Alabama": 11,
+          "Cheese Burger": 8
+        }
+      }
+    },
+    "agosto2026": {
+      "label": "Agosto 2026",
+      "dias": 31,
+      "diasCount": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5
+      ],
+      "ciudad": {
+        "burgers": {
+          "Crispy Bliss": 895,
+          "Gollum Signature": 619,
+          "John Bacon": 449,
+          "SMASH TASTY": 358,
+          "L.A Americana": 328,
+          "Sweet Alabama": 266,
+          "Cheese Burger": 233,
+          "Biggie": 111,
+          "BLUE VELVET": 45,
+          "Denver": 28
+        },
+        "jr": 1400,
+        "doble": 1823,
+        "xl": 110,
+        "total": 3333,
+        "acompanante": {
+          "Con Papas": 2966,
+          "Sin Papas": 280,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 3211,
+          "Pan Sin Gluten": 83
+        },
+        "salsa": {
+          "Salsa CDL": 354,
+          "Cebolla Caramelizada": 218,
+          "Sin Salsa / Otra": 8
+        },
+        "ventaTotal": 64995018,
+        "totalDocs": 2859,
+        "ticketPromedio": 22733,
+        "ventaDias": [
+          7805770,
+          6231583,
+          6755480,
+          6702071,
+          12822805,
+          14133821,
+          10543488
+        ]
+      },
+      "puntilla": {
+        "burgers": {
+          "Crispy Bliss": 1351,
+          "Gollum Signature": 1101,
+          "John Bacon": 849,
+          "SMASH TASTY": 845,
+          "L.A Americana": 649,
+          "Cheese Burger": 541,
+          "Sweet Alabama": 391,
+          "Biggie": 81,
+          "Denver": 38,
+          "BLUE VELVET": 11
+        },
+        "jr": 2238,
+        "doble": 3340,
+        "xl": 278,
+        "total": 5856,
+        "acompanante": {
+          "Con Papas": 5350,
+          "Sin Papas": 263,
+          "Aros de Cebolla": 0
+        },
+        "pan": {
+          "Pan Regular": 5578,
+          "Pan Sin Gluten": 164
+        },
+        "salsa": {
+          "Salsa CDL": 714,
+          "Cebolla Caramelizada": 318,
+          "Sin Salsa / Otra": 53
+        },
+        "ventaTotal": 100998768,
+        "totalDocs": 3473,
+        "ticketPromedio": 29081,
+        "ventaDias": [
+          10037754,
+          7983438,
+          8348740,
+          8620186,
+          21854726,
+          24913856,
+          19240068
+        ]
+      }
+    }
+  }
+}

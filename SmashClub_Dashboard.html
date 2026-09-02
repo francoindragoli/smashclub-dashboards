@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smash Club">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Smash Club — Dashboard de Ventas</title>
+<link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<style>
+:root {
+  --yellow:#f6d01e; --purple:#412d7d; --green:#6ebd89;
+  --gray:#f4f4f8; --card:#fff; --border:#e8e8e8; --text:#1e1e2e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray);color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+.hdr-wrap{background:var(--purple)}
+.hdr{padding:16px 20px 0;text-align:center}
+.hdr h1{font-family:'Passion One',sans-serif;font-size:30px;letter-spacing:3px;color:var(--yellow);line-height:1}
+.hdr small{font-size:11px;color:rgba(255,255,255,.65);letter-spacing:1.5px;text-transform:uppercase;display:block;margin:3px 0 14px}
+
+/* ── MES SELECTOR ── */
+.mes-bar{padding:0 16px 10px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.mes-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;-webkit-tap-highlight-color:transparent}
+.mes-btn.active{background:var(--yellow);color:var(--purple);border-color:var(--yellow)}
+/* ── SNAP BAR (disabled — future day filter) ── */
+.snap-bar{display:none!important}
+
+/* ── KPIs ── */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px 14px 0}
+.kpi.wide{grid-column:1/-1}
+@media(min-width:560px){.kpis{grid-template-columns:repeat(5,1fr)}.kpi.wide{grid-column:auto}}
+.kpi{background:var(--card);border-radius:12px;padding:14px 10px;text-align:center;border-top:3px solid var(--purple);box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.kpi.g{border-top-color:var(--green)}.kpi.y{border-top-color:var(--yellow)}
+.kv{font-family:'Passion One',sans-serif;font-size:26px;color:var(--purple);line-height:1}
+.kpi.g .kv{color:#2e8b57}.kpi.y .kv{color:#9a7800}
+.kl{font-size:10px;color:#999;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:8px;padding:14px 14px 0;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:90px;background:var(--card);border:2px solid var(--border);border-radius:8px;padding:11px 8px;font-size:13px;font-weight:700;color:#999;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;transition:.2s}
+.tab-btn.active{background:var(--purple);border-color:var(--purple);color:#fff}
+
+/* ── CONTENT ── */
+.tab-pane{display:none;padding:14px}
+.tab-pane.active{display:block}
+.section{background:var(--card);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.stitle{font-family:'Passion One',sans-serif;font-size:15px;color:var(--purple);letter-spacing:1px;margin-bottom:12px;text-transform:uppercase;border-bottom:2px solid var(--yellow);padding-bottom:6px}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.g2{grid-template-columns:1fr 1fr}}
+.g3{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.g3{grid-template-columns:repeat(3,1fr)}}
+
+/* ── CHARTS ── */
+.ch-wrap{position:relative}
+.ch-wrap.h300{height:300px}.ch-wrap.h220{height:220px}.ch-wrap.h180{height:180px}.ch-wrap.h160{height:160px}
+
+/* ── MISC ── */
+.note{font-size:11px;color:#aaa;font-style:italic;margin-top:6px}
+.no-data{text-align:center;color:#ccc;font-size:13px;padding:28px 0}
+.footer{text-align:center;padding:24px;color:#bbb;font-size:11px}
+
+/* ── TENDENCIAS ── */
+.trend{font-size:11px;font-weight:700;margin-top:3px}
+.trend.up{color:#2e8b57}.trend.dn{color:#c0392b}.trend.flat{color:#aaa}
+
+/* ── DELTA BURGERS ── */
+.delta-box{margin-top:10px;background:#f8f8fc;border-radius:8px;padding:10px 14px}
+.delta-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:6px;font-weight:700}
+.delta-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:12px;border-bottom:1px solid #eee}
+.delta-row:last-child{border-bottom:none}
+.delta-name{color:#444;flex:1}
+.delta-val.pos{color:#2e8b57;font-weight:800}.delta-val.neg{color:#c0392b;font-weight:800}
+</style>
+</head>
+<body>
+
+<div class="hdr-wrap">
+  <div class="hdr">
+    <h1>🍔 SMASH CLUB</h1>
+    <small>Dashboard de Ventas</small>
+  </div>
+  <div class="mes-bar" id="mesBar"></div>
+  <div class="snap-bar" id="snapBar" style="display:none"></div>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('ciudad',this)">Ciudad</button>
+  <button class="tab-btn" onclick="switchTab('puntilla',this)">La Puntilla</button>
+  <button class="tab-btn" onclick="switchTab('cons',this)">Consolidado</button>
+  <button class="tab-btn" onclick="switchTab('evol',this)">Evolución</button>
+</div>
+
+<!-- ── CIUDAD ── -->
+<div class="tab-pane active" id="tab-ciudad">
+  <div class="section">
+    <div class="stitle">Burgers más vendidas</div>
+    <div class="ch-wrap h300"><canvas id="c-burg"></canvas></div>
+    <div id="c-burger-delta"></div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Tamaños</div>
+      <div class="ch-wrap h180"><canvas id="c-tam"></canvas></div>
+      <div class="note" id="c-tam-note"></div>
+    </div>
+    <div class="section">
+      <div class="stitle">Acompañante</div>
+      <div class="ch-wrap h180"><canvas id="c-acomp"></canvas></div>
+      <div class="note" id="c-acomp-note"></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Pan</div>
+      <div class="ch-wrap h160"><canvas id="c-pan"></canvas></div>
+      <div class="note" id="c-pan-note"></div>
+    </div>
+    <div class="section">
+      <div class="stitle">Salsa Gollum</div>
+      <div class="ch-wrap h160" id="c-salsa-wrap"><canvas id="c-salsa"></canvas></div>
+      <div id="c-salsa-empty" class="no-data" style="display:none">Dato no disponible</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="stitle">Promedio de venta por día de la semana</div>
+    <div class="ch-wrap h220"><canvas id="c-dias"></canvas></div>
+  </div>
+  <div class="section">
+    <div class="stitle">Venta por hora (en millones $)</div>
+    <div class="ch-wrap h220"><canvas id="c-hora"></canvas></div>
+  </div>
+  <div class="section">
+    <div class="stitle">Variantes Biggie</div>
+    <div class="ch-wrap h160" id="c-biggie-wrap"><canvas id="c-biggie"></canvas></div>
+    <div id="c-biggie-empty" class="no-data" style="display:none">Sin datos disponibles</div>
+  </div>
+  <div class="section" id="c-pagos-section" style="display:none">
+    <div class="stitle">Medios de Pago</div>
+    <div class="g2" style="align-items:start">
+      <div class="ch-wrap h220"><canvas id="c-pagos"></canvas></div>
+      <div id="c-pagos-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LA PUNTILLA ── -->
+<div class="tab-pane" id="tab-puntilla">
+  <div class="section">
+    <div class="stitle">Burgers más vendidas</div>
+    <div class="ch-wrap h300"><canvas id="p-burg"></canvas></div>
+    <div id="p-burger-delta"></div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Tamaños</div>
+      <div class="ch-wrap h180" id="p-tam-wrap"><canvas id="p-tam"></canvas></div>
+      <div id="p-tam-empty" class="no-data" style="display:none">Dato no disponible en este export</div>
+      <div class="note" id="p-tam-note"></div>
+    </div>
+    <div class="section">
+      <div class="stitle">Acompañante</div>
+      <div class="ch-wrap h180" id="p-acomp-wrap"><canvas id="p-acomp"></canvas></div>
+      <div id="p-acomp-empty" class="no-data" style="display:none">Dato no disponible en este export</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Pan</div>
+      <div class="ch-wrap h160" id="p-pan-wrap"><canvas id="p-pan"></canvas></div>
+      <div id="p-pan-empty" class="no-data" style="display:none">Dato no disponible en este export</div>
+    </div>
+    <div class="section">
+      <div class="stitle">Salsa Gollum</div>
+      <div class="ch-wrap h160" id="p-salsa-wrap"><canvas id="p-salsa"></canvas></div>
+      <div id="p-salsa-empty" class="no-data" style="display:none">Dato no disponible en este export</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="stitle">Promedio de venta por día de la semana</div>
+    <div class="ch-wrap h220"><canvas id="p-dias"></canvas></div>
+  </div>
+  <div class="section">
+    <div class="stitle">Venta por hora (en millones $)</div>
+    <div class="ch-wrap h220"><canvas id="p-hora"></canvas></div>
+  </div>
+  <div class="section">
+    <div class="stitle">Variantes Biggie</div>
+    <div class="ch-wrap h160" id="p-biggie-wrap"><canvas id="p-biggie"></canvas></div>
+    <div id="p-biggie-empty" class="no-data" style="display:none">Sin datos disponibles</div>
+  </div>
+  <div class="section" id="p-pagos-section" style="display:none">
+    <div class="stitle">Medios de Pago</div>
+    <div class="g2" style="align-items:start">
+      <div class="ch-wrap h220"><canvas id="p-pagos"></canvas></div>
+      <div id="p-pagos-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONSOLIDADO ── -->
+<div class="tab-pane" id="tab-cons">
+  <div class="section">
+    <div class="stitle">Burgers — ambos locales</div>
+    <div class="ch-wrap h300"><canvas id="k-burg"></canvas></div>
+    <div id="k-burger-delta"></div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Promedio de venta por día de la semana</div>
+      <div class="ch-wrap h220"><canvas id="k-dias"></canvas></div>
+    </div>
+    <div class="section">
+      <div class="stitle">Venta por hora (millones $)</div>
+      <div class="ch-wrap h220"><canvas id="k-hora"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="stitle">Tamaños combinados</div>
+    <div class="ch-wrap h180" id="k-tam-wrap"><canvas id="k-tam"></canvas></div>
+    <div id="k-tam-note" class="note"></div>
+  </div>
+  <div class="section" id="k-pagos-section" style="display:none">
+    <div class="stitle">Medios de Pago — Consolidado</div>
+    <div class="g2" style="align-items:start">
+      <div class="ch-wrap h220"><canvas id="k-pagos"></canvas></div>
+      <div id="k-pagos-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EVOLUCIÓN ── -->
+<div class="tab-pane" id="tab-evol">
+  <div class="section">
+    <div class="stitle">Facturación mensual — por local</div>
+    <div class="ch-wrap h280"><canvas id="e-ventas"></canvas></div>
+  </div>
+  <div class="g2">
+    <div class="section">
+      <div class="stitle">Burgers vendidas / mes</div>
+      <div class="ch-wrap h220"><canvas id="e-burgers"></canvas></div>
+    </div>
+    <div class="section">
+      <div class="stitle">Ticket promedio / mes</div>
+      <div class="ch-wrap h220"><canvas id="e-ticket"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="stitle">Evolución por burger — top 6 consolidado</div>
+    <div class="ch-wrap h300"><canvas id="e-btrend"></canvas></div>
+  </div>
+</div>
+
+<div class="footer" id="footer-info">Smash Club · Mendoza · Generado por Claude</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATOS — actualizados automáticamente por generar_datos_dashboard.py
+// ##MESES_DATA_START##
+const MESES = {
+      enero2026: {
+        label: 'Enero 2026', dias: 31, diasCount: [4, 4, 4, 5, 5, 5, 4],
+        ciudad: {
+          burgers: {'Crispy Bliss':822, 'Gollum Signature':644, 'John Bacon':513, 'L.A Americana':309, 'Cheese Burger':226, 'Sweet Alabama':193, 'Burnin Joe':123, 'Biggie':82, 'Joven':34, 'Denver':11},
+          jr:1227, doble:1502, xl:228, total:2957,
+          acompanante:{'Con Papas':2934, 'Sin Papas':20, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':3413, 'Pan Sin Gluten':59},
+          salsa:{'Salsa CDL':971, 'Cebolla Caramelizada':210, 'Sin Salsa / Otra':63},
+          ventaTotal:55685635,
+          totalDocs:2808,
+          ticketPromedio:19831,
+          ventaDias:[6562870, 6087809, 7019386, 5557228, 12494319, 10523591, 7440433],
+          horaLabels:[],
+          horaVentas:[]
+          ,biggie:{'L.A Americana':19, 'Sweet Alabama':17, 'Crispy Bliss':16, 'Cheese Burger':9}
+        },
+        puntilla: {
+          burgers: {'Crispy Bliss':1723, 'Gollum Signature':1525, 'John Bacon':1236, 'L.A Americana':807, 'Cheese Burger':638, 'Burnin Joe':332, 'Sweet Alabama':324, 'Biggie':120, 'Denver':40},
+          jr:2703, doble:3502, xl:540, total:6745,
+          acompanante:{'Con Papas':6010, 'Sin Papas':75, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':6840, 'Pan Sin Gluten':137},
+          salsa:{'Salsa CDL':2368, 'Cebolla Caramelizada':440, 'Sin Salsa / Otra':202},
+          ventaTotal:100399250,
+          totalDocs:3498,
+          ticketPromedio:28702,
+          ventaDias:[9972717, 9900870, 11032085, 11046045, 21412305, 22210279, 14824950],
+          horaLabels:[],
+          horaVentas:[]
+          ,biggie:{'L.A Americana':42, 'Crispy Bliss':28, 'Sweet Alabama':15, 'Cheese Burger':11, 'Burnin Joe':2}
+        }
+      },
+      febrero2026: {
+        label: 'Febrero 2026', dias: 28, diasCount: [4, 4, 4, 4, 4, 4, 4],
+        ciudad: {
+          burgers: {'Crispy Bliss':674, 'Gollum Signature':550, 'John Bacon':428, 'L.A Americana':241, 'Sweet Alabama':160, 'Cheese Burger':157, 'Burnin Joe':113, 'Joven':64, 'Biggie':62, 'Denver':7},
+          jr:1087, doble:1218, xl:151, total:2456,
+          acompanante:{'Con Papas':2348, 'Sin Papas':28, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':2731, 'Pan Sin Gluten':94},
+          salsa:{'Salsa CDL':812, 'Cebolla Caramelizada':164, 'Sin Salsa / Otra':58},
+          ventaTotal:49289743,
+          totalDocs:2367,
+          ticketPromedio:20824,
+          ventaDias:[7384154, 6627533, 5707219, 5367597, 8554908, 7654157, 7994175],
+          horaLabels:[],
+          horaVentas:[]
+          ,biggie:{'L.A Americana':24, 'Cheese Burger':8, 'Sweet Alabama':6, 'Crispy Bliss':5, 'Burnin Joe':1}
+        },
+        puntilla: {
+          burgers: {'Gollum Signature':1441, 'Crispy Bliss':1391, 'John Bacon':971, 'L.A Americana':677, 'Cheese Burger':577, 'Burnin Joe':259, 'Sweet Alabama':225, 'Biggie':82, 'Denver':18},
+          jr:2684, doble:2579, xl:378, total:5641,
+          acompanante:{'Con Papas':5349, 'Sin Papas':120, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':5574, 'Pan Sin Gluten':118},
+          salsa:{'Salsa CDL':2118, 'Cebolla Caramelizada':273, 'Sin Salsa / Otra':137},
+          ventaTotal:89570774,
+          totalDocs:3006,
+          ticketPromedio:29797,
+          ventaDias:[12477910, 10855960, 11280185, 7710860, 14554754, 15958715, 16732390],
+          horaLabels:[],
+          horaVentas:[]
+          ,biggie:{'L.A Americana':38, 'Crispy Bliss':15, 'Sweet Alabama':12, 'Cheese Burger':3, 'Burnin Joe':1, 'Denver':1}
+        }
+      },
+      marzo2026: {
+        label: 'Marzo 2026', dias: 31, diasCount: [5, 5, 4, 4, 4, 4, 5],
+        ciudad: {
+          burgers: {'Crispy Bliss':847, 'Gollum Signature':698, 'John Bacon':559, 'L.A Americana':391, 'Cheese Burger':286, 'PROMO CHEESE BURGER PEYA':191, 'Sweet Alabama':186, 'Burnin Joe':142, 'Biggie':97, 'Denver':6},
+          jr:1600, doble:1641, xl:162, total:3403,
+          acompanante:{'Con Papas':3040, 'Sin Papas':148, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':3146, 'Pan Sin Gluten':62},
+          salsa:{'Salsa CDL':444, 'Cebolla Caramelizada':223, 'Sin Salsa / Otra':12},
+          ventaTotal:61466320,
+          totalDocs:3014,
+          ticketPromedio:20394,
+          ventaDias:[8954832, 7813728, 5661676, 9310498, 11073855, 8924722, 9727009],
+          horaLabels:["9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h", "1h"],
+          horaVentas:[0.14, 0.483, 0.609, 2.706, 4.657, 3.704, 2.407, 1.796, 1.211, 1.249, 2.21, 5.201, 13.297, 14.717, 5.272, 1.802, 0.006]
+          ,biggie:{'L.A Americana':20, 'Gollum':10, 'Sweet Alabama':9, 'Crispy Bliss':7, 'Cheese Burger':4}
+          ,formasPago:{'PedidosYa':25022090, 'MercadoPago':20662815, 'Efectivo':9939555, 'Crédito':3816310, 'Débito':1855350, 'Otros':89800, 'MasDelivery':80400}
+        },
+        puntilla: {
+          burgers: {'Gollum Signature':1751, 'Crispy Bliss':1603, 'John Bacon':987, 'L.A Americana':780, 'Cheese Burger':678, 'Burnin Joe':317, 'Sweet Alabama':283, 'Biggie':99, 'Denver':35},
+          jr:2659, doble:3405, xl:469, total:6533,
+          acompanante:{'Con Papas':6471, 'Sin Papas':136, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':6433, 'Pan Sin Gluten':100},
+          salsa:{'Salsa CDL':1287, 'Cebolla Caramelizada':385, 'Sin Salsa / Otra':49},
+          ventaTotal:104562389,
+          totalDocs:3432,
+          ticketPromedio:30467,
+          ventaDias:[10583199, 12512130, 8808880, 10670625, 19830395, 21757420, 20399740],
+          horaLabels:["10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],
+          horaVentas:[0.008, 0.068, 1.469, 7.401, 8.033, 4.053, 1.03, 0.392, 0.69, 1.842, 12.084, 30.234, 23.782, 11.261, 2.215]
+          ,biggie:{'Crispy Bliss':14, 'L.A Americana':10, 'Sweet Alabama':6, 'Gollum':5, 'Cheese Burger':4, 'Burnin Joe':1}
+          ,formasPago:{'MercadoPago':37920990, 'PedidosYa':31256635, 'Efectivo':23592970, 'Débito':9021620, 'Crédito':2736180, 'Otros':25880, 'MasDelivery':11650}
+        }
+      },
+      abril2026: {
+        label: 'Abril 2026', dias: 30, diasCount: [4, 4, 5, 5, 4, 4, 4],
+        ciudad: {
+          burgers: {'Crispy Bliss':905, 'Gollum Signature':691, 'John Bacon':506, 'L.A Americana':404, 'Cheese Burger':272, 'Sweet Alabama':160, 'Burnin Joe':159, 'Hot Honey Ranch':93, 'Biggie':90, 'Denver':13, '7TH STREET':1},
+          jr:1404, doble:1721, xl:169, total:3294,
+          acompanante:{'Con Papas':2975, 'Sin Papas':302, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':3182, 'Pan Sin Gluten':111},
+          salsa:{'Salsa CDL':450, 'Cebolla Caramelizada':210, 'Sin Salsa / Otra':13},
+          ventaTotal:60650860,
+          totalDocs:2517,
+          ticketPromedio:24096,
+          ventaDias:[4811800, 6063365, 8311510, 11579920, 13015110, 9970690, 6898465],
+          horaLabels:["9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h", "1h"],
+          horaVentas:[0.153, 0.265, 0.601, 2.19, 6.019, 4.548, 1.922, 1.236, 0.977, 1.086, 1.772, 6.119, 14.951, 13.236, 4.959, 0.614, 0.002]
+          ,biggie:{'L.A Americana':36, 'Gollum':20, 'Sweet Alabama':16, 'Crispy Bliss':9, 'Cheese Burger':8, 'Burnin Joe':1}
+          ,formasPago:{'PedidosYa':24094600, 'MercadoPago':19619590, 'Efectivo':9274110, 'Crédito':3882240, 'Débito':2645340, 'MasDelivery':1017820, 'Otros':117160}
+        },
+        puntilla: {
+          burgers: {'Gollum Signature':1417, 'Crispy Bliss':1390, 'John Bacon':1011, 'L.A Americana':703, 'Cheese Burger':532, 'Burnin Joe':290, 'Sweet Alabama':252, 'Hot Honey Ranch':248, 'Biggie':113, 'Denver':21},
+          jr:2404, doble:3122, xl:451, total:5977,
+          acompanante:{'Con Papas':5881, 'Sin Papas':60, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':5872, 'Pan Sin Gluten':76},
+          salsa:{'Salsa CDL':931, 'Cebolla Caramelizada':403, 'Sin Salsa / Otra':18},
+          ventaTotal:99524169,
+          totalDocs:3047,
+          ticketPromedio:32663,
+          ventaDias:[4888325, 7870940, 13606105, 18521569, 22105490, 20194010, 12337730],
+          horaLabels:["10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],
+          horaVentas:[0.012, 0.008, 1.89, 7.283, 6.336, 2.587, 1.007, 0.784, 0.656, 3.075, 12.413, 29.958, 21.356, 10.487, 1.672]
+          ,biggie:{'L.A Americana':43, 'Crispy Bliss':29, 'Gollum':18, 'Sweet Alabama':11, 'Cheese Burger':11, 'Burnin Joe':1}
+          ,formasPago:{'MercadoPago':35164890, 'PedidosYa':25197309, 'Efectivo':22367080, 'Débito':11373250, 'MasDelivery':4002740, 'Crédito':1418900}
+        }
+      },
+      mayo2026: {
+        label: 'Mayo 2026', dias: 31, diasCount: [4, 4, 4, 4, 5, 5, 5],
+        ciudad: {
+          burgers: {'Crispy Bliss':1063, 'Gollum Signature':783, 'John Bacon':467, 'L.A Americana':408, 'Cheese Burger':325, 'Sweet Alabama':187, 'Burnin Joe':147, '7TH STREET':136, 'Biggie':101, 'Denver':14, 'Hot Honey Ranch':2},
+          jr:1526, doble:1914, xl:193, total:3633,
+          acompanante:{'Con Papas':3257, 'Sin Papas':309, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':3453, 'Pan Sin Gluten':127},
+          salsa:{'Salsa CDL':508, 'Cebolla Caramelizada':232, 'Sin Salsa / Otra':27},
+          ventaTotal:64821873,
+          totalDocs:2580,
+          ticketPromedio:25125,
+          ventaDias:[4860980, 5011745, 4972990, 13008235, 16100005, 11576600, 9291318],
+          horaLabels:["9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],
+          horaVentas:[0.197, 0.404, 0.628, 2.545, 5.581, 4.647, 1.956, 1.863, 1.356, 1.483, 2.618, 7.718, 14.605, 12.837, 5.884, 0.499]
+          ,biggie:{'L.A Americana':46, 'Gollum':17, 'Crispy Bliss':16, 'Sweet Alabama':10, 'Cheese Burger':8, 'Burnin Joe':4}
+          ,formasPago:{'PedidosYa':26022660, 'MercadoPago':20058280, 'Efectivo':8657710, 'Crédito':2884065, 'Débito':2423660, 'MasDelivery':2321750, 'Otros':100320}
+        },
+        puntilla: {
+          burgers: {'Crispy Bliss':1642, 'Gollum Signature':1630, 'John Bacon':829, 'L.A Americana':762, 'Cheese Burger':560, 'Sweet Alabama':280, 'Burnin Joe':240, '7TH STREET':190, 'Biggie':115, 'Denver':34, 'Hot Honey Ranch':1},
+          jr:2447, doble:3353, xl:483, total:6283,
+          acompanante:{'Con Papas':5938, 'Sin Papas':202, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':6087, 'Pan Sin Gluten':105},
+          salsa:{'Salsa CDL':1054, 'Cebolla Caramelizada':431, 'Sin Salsa / Otra':109},
+          ventaTotal:102467220,
+          totalDocs:3222,
+          ticketPromedio:31802,
+          ventaDias:[7032450, 6459885, 8137957, 15748160, 21699714, 25004600, 18384454],
+          horaLabels:["11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],
+          horaVentas:[0.048, 2.194, 7.789, 6.842, 3.006, 1.198, 0.658, 1.007, 3.884, 16.148, 28.121, 20.453, 9.056, 2.073]
+          ,biggie:{'L.A Americana':34, 'Crispy Bliss':28, 'Gollum':26, 'Sweet Alabama':15, 'Cheese Burger':11, 'Burnin Joe':1}
+          ,formasPago:{'MercadoPago':31138775, 'PedidosYa':27596835, 'Efectivo':19765950, 'Débito':11675050, 'MasDelivery':7874350, 'Crédito':845800}
+        }
+      },
+      junio2026: {
+        label: 'Junio 2026', dias: 30, diasCount: [5, 5, 4, 4, 4, 4, 4],
+        ciudad: {
+          burgers: {'Crispy Bliss':762, 'Gollum Signature':660, 'John Bacon':398, 'L.A Americana':354, 'Emmy':252, 'Cheese Burger':237, 'Sweet Alabama':163, 'Burnin Joe':124, 'Biggie':104, 'Denver':18},
+          jr:1334, doble:1586, xl:152, total:3072,
+          acompanante:{'Con Papas':2752, 'Sin Papas':247, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':2925, 'Pan Sin Gluten':102},
+          salsa:{'Salsa CDL':416, 'Cebolla Caramelizada':181, 'Sin Salsa / Otra':28},
+          ventaTotal:57905274,
+          totalDocs:2252,
+          ticketPromedio:25713,
+          ventaDias:[8289790, 8745374, 5703909, 7494857, 12878521, 9111141, 5681682],
+          horaLabels:["9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h", "8h"],
+          horaVentas:[0.093, 0.276, 0.929, 2.631, 5.713, 4.458, 1.855, 1.139, 1.638, 1.073, 2.247, 7.042, 13.717, 11.07, 3.67, 0.348, 0.007]
+          ,biggie:{'L.A Americana':39, 'Crispy Bliss':25, 'Sweet Alabama':12, 'Gollum':12, 'Cheese Burger':5, 'Burnin Joe':1}
+        },
+        puntilla: {
+          burgers: {'Gollum Signature':1264, 'Crispy Bliss':1233, 'John Bacon':734, 'L.A Americana':562, 'Emmy':438, 'Cheese Burger':364, 'Sweet Alabama':207, 'Burnin Joe':165, 'Biggie':83, 'Denver':25},
+          jr:1845, doble:2853, xl:377, total:5075,
+          acompanante:{'Con Papas':4720, 'Sin Papas':240, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':4922, 'Pan Sin Gluten':96},
+          salsa:{'Salsa CDL':800, 'Cebolla Caramelizada':301, 'Sin Salsa / Otra':145},
+          ventaTotal:87691153,
+          totalDocs:2671,
+          ticketPromedio:32831,
+          ventaDias:[8046531, 8825054, 7446871, 10312490, 20534090, 19280033, 13246083],
+          horaLabels:["12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],
+          horaVentas:[2.323, 8.181, 5.973, 3.166, 1.685, 0.484, 0.983, 2.768, 12.045, 23.481, 17.436, 8.328, 0.839]
+          ,biggie:{'L.A Americana':32, 'Crispy Bliss':18, 'Gollum':15, 'Sweet Alabama':6, 'Cheese Burger':5, 'Burnin Joe':3}
+        }
+      },
+      julio2026: {
+        label: 'Julio 2026', dias: 31, diasCount: [4, 4, 5, 5, 5, 4, 4],
+        ciudad: {
+          burgers: {'Crispy Bliss':831, 'Gollum Signature':673, 'John Bacon':441, 'L.A Americana':381, 'BLUE VELVET':317, 'Sweet Alabama':253, 'Cheese Burger':213, 'Biggie':125, 'Burnin Joe':78, 'Denver':24, 'Emmy':9, 'SMASH TASTY':1},
+          jr:1491, doble:1780, xl:75, total:3346,
+          acompanante:{'Con Papas':2999, 'Sin Papas':259, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':3235, 'Pan Sin Gluten':49},
+          salsa:{'Salsa CDL':357, 'Cebolla Caramelizada':252, 'Sin Salsa / Otra':12},
+          ventaTotal:62106292,
+          totalDocs:2206,
+          ticketPromedio:28153,
+          ventaDias:[6505002, 6016588, 10784095, 9387432, 12362780, 8617795, 8432600],
+          horaLabels:["9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"],
+          horaVentas:[0.041, 0.173, 0.761, 2.811, 5.364, 3.46, 2.024, 1.746, 1.091, 1.166, 2.457, 8.361, 14.771, 13.051, 4.844]
+          ,biggie:{'L.A Americana':45, 'Gollum':21, 'Crispy Bliss':18, 'Sweet Alabama':15, 'Cheese Burger':12}
+        },
+        puntilla: {
+          burgers: {'Crispy Bliss':1381, 'Gollum Signature':1246, 'John Bacon':903, 'L.A Americana':656, 'BLUE VELVET':645, 'Cheese Burger':502, 'Sweet Alabama':294, 'Biggie':96, 'Burnin Joe':80, 'Denver':27, 'Emmy':8},
+          jr:2265, doble:3294, xl:279, total:5838,
+          acompanante:{'Con Papas':5444, 'Sin Papas':237, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':5587, 'Pan Sin Gluten':136},
+          salsa:{'Salsa CDL':841, 'Cebolla Caramelizada':279, 'Sin Salsa / Otra':95},
+          ventaTotal:98762355,
+          totalDocs:2912,
+          ticketPromedio:33916,
+          ventaDias:[7728693, 9523786, 14833693, 12910487, 21653190, 17528393, 14584113],
+          horaLabels:["10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "0h"],
+          horaVentas:[0.02, 0.161, 2.573, 6.073, 5.795, 2.584, 1.886, 0.933, 1.469, 3.102, 13.915, 25.297, 20.341, 8.297, 6.335]
+          ,biggie:{'L.A Americana':34, 'Crispy Bliss':23, 'Gollum':14, 'Sweet Alabama':11, 'Cheese Burger':8}
+        }
+      },
+      agosto2026: {
+        label: 'Agosto 2026', dias: 31, diasCount: [4, 4, 4, 4, 5, 5, 5],
+        ciudad: {
+          burgers: {'Crispy Bliss':895, 'Gollum Signature':619, 'John Bacon':449, 'SMASH TASTY':358, 'L.A Americana':328, 'Sweet Alabama':266, 'Cheese Burger':233, 'Biggie':111, 'BLUE VELVET':45, 'Denver':28},
+          jr:1400, doble:1823, xl:110, total:3333,
+          acompanante:{'Con Papas':2966, 'Sin Papas':280, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':3211, 'Pan Sin Gluten':83},
+          salsa:{'Salsa CDL':354, 'Cebolla Caramelizada':218, 'Sin Salsa / Otra':8},
+          ventaTotal:64995018,
+          totalDocs:2859,
+          ticketPromedio:22733,
+          ventaDias:[7805770, 6231583, 6755480, 6702071, 12822805, 14133821, 10543488],
+          horaLabels:[],
+          horaVentas:[]
+        },
+        puntilla: {
+          burgers: {'Crispy Bliss':1351, 'Gollum Signature':1101, 'John Bacon':849, 'SMASH TASTY':845, 'L.A Americana':649, 'Cheese Burger':541, 'Sweet Alabama':391, 'Biggie':81, 'Denver':38, 'BLUE VELVET':11},
+          jr:2238, doble:3340, xl:278, total:5856,
+          acompanante:{'Con Papas':5350, 'Sin Papas':263, 'Aros de Cebolla':0},
+          pan:{'Pan Regular':5578, 'Pan Sin Gluten':164},
+          salsa:{'Salsa CDL':714, 'Cebolla Caramelizada':318, 'Sin Salsa / Otra':53},
+          ventaTotal:100998768,
+          totalDocs:3473,
+          ticketPromedio:29081,
+          ventaDias:[10037754, 7983438, 8348740, 8620186, 21854726, 24913856, 19240068],
+          horaLabels:[],
+          horaVentas:[]
+        }
+      },
+};
+// ##MESES_DATA_END##
+// ═══════════════════════════════════════════════════════
+// ESTADO
+// ═══════════════════════════════════════════════════════
+const DIAS_LABELS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+// Divide cada suma semanal por la cantidad de ese día en el período → promedio por día
+function avgPerDia(vals, counts) {
+  if (!vals || !counts) return vals || [];
+  return vals.map((v, i) => counts[i] > 0 ? Math.round(v / counts[i]) : 0);
+}
+const C = {purple:'#412d7d',yellow:'#f6d01e',green:'#6ebd89',red:'#e05a5a',orange:'#f0943d',blue:'#5b9bd5',teal:'#2ec4b6',pink:'#e884a0'};
+
+const _mesKeys = Object.keys(MESES);
+let currentMes = _mesKeys[_mesKeys.length - 1];
+let currentTab = 'ciudad';
+let currentSnap = null;   // null = última snapshot (datos principales)
+let charts = {};
+
+// ── Calendar / Period helpers ─────────────────────────────────────────────────
+const MESES_NUM = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+function getMesYear(key){
+  const m=key.match(/^([a-záéíóú]+)(\d{4})$/i);
+  return m?{mes:MESES_NUM[m[1].toLowerCase()]||1,year:parseInt(m[2])}:null;
+}
+function getDiasInRange(year,mes,fromDay,toDay){
+  const cnt=[0,0,0,0,0,0,0];
+  for(let d=fromDay;d<=toDay;d++) cnt[(new Date(year,mes-1,d).getDay()+6)%7]++;
+  return cnt;
+}
+// Compute differential between two snap data objects for one local
+function snapDiff(snapB,snapA,locKey,mainLoc){
+  const b=snapB[locKey], a=snapA?snapA[locKey]:null;
+  // Build result starting with structural/static fields from main month data
+  const d={
+    horaLabels: b.horaLabels||mainLoc.horaLabels,
+    sizes_incomplete: mainLoc.sizes_incomplete,
+    acompanante_note: mainLoc.acompanante_note,
+    pan_note: mainLoc.pan_note,
+    // Fields not present in snaps → empty (they can't be differenced)
+    acompanante:{'Con Papas':0,'Sin Papas':0,'Aros de Cebolla':0},
+    pan:{'Pan Regular':0,'Pan Sin Gluten':0},
+    salsa:null, biggie:null, formasPago:null,
+    // Differentiable snap fields
+    burgers:{}, jr:0, doble:0, xl:0, total:0,
+    ventaTotal:0, totalDocs:0, ticketPromedio:0,
+    ventaDias: b.ventaDias?[...b.ventaDias]:[...mainLoc.ventaDias],
+    horaVentas: b.horaVentas?[...b.horaVentas]:[...mainLoc.horaVentas],
+  };
+  if(!a){
+    // First period: snap[B] is cumulative from day 1 — use it directly
+    d.burgers={...(b.burgers||{})};
+    d.jr=b.jr||0; d.doble=b.doble||0; d.xl=b.xl||0; d.total=b.total||0;
+    d.ventaTotal=b.ventaTotal||0; d.totalDocs=b.totalDocs||0;
+    if(b.ventaDias) d.ventaDias=[...b.ventaDias];
+    if(b.horaVentas) d.horaVentas=[...b.horaVentas];
+  } else {
+    // Differential: snap[B] - snap[A]
+    Object.entries(b.burgers||{}).forEach(([k,v])=>{ const df=v-(a.burgers?.[k]||0); if(df>0) d.burgers[k]=df; });
+    d.jr=(b.jr||0)-(a.jr||0); d.doble=(b.doble||0)-(a.doble||0); d.xl=(b.xl||0)-(a.xl||0);
+    d.total=(b.total||0)-(a.total||0); d.ventaTotal=(b.ventaTotal||0)-(a.ventaTotal||0);
+    d.totalDocs=(b.totalDocs||0)-(a.totalDocs||0);
+    if(b.ventaDias) d.ventaDias=b.ventaDias.map((v,i)=>Math.max(0,v-(a.ventaDias?.[i]||0)));
+    if(b.horaVentas) d.horaVentas=b.horaVentas.map((v,i)=>Math.max(0,v-(a.horaVentas?.[i]||0)));
+  }
+  d.ticketPromedio=d.totalDocs>0?Math.round(d.ventaTotal/d.totalDocs):d.total>0?Math.round(d.ventaTotal/d.total):0;
+  return d;
+}
+
+// ── Snapshot helpers ──────────────────────────────────────────────────────────
+function getActiveSnapData(m) {
+  if (currentSnap && m.snaps && m.snaps[currentSnap]) {
+    const snapDays = Object.keys(m.snaps).map(Number).sort((a,b)=>a-b);
+    const snapIdx  = snapDays.indexOf(currentSnap);
+    const prevSnapDay = snapIdx > 0 ? snapDays[snapIdx-1] : null;
+    const snapB = m.snaps[currentSnap];
+    const snapA = prevSnapDay ? m.snaps[prevSnapDay] : null;
+    const fromDay = prevSnapDay ? prevSnapDay + 1 : 1;
+    const toDay   = currentSnap;
+    const diffDays = toDay - fromDay + 1;
+    const my = getMesYear(currentMes);
+    const diasCount = my ? getDiasInRange(my.year, my.mes, fromDay, toDay) : (snapB.diasCount||m.diasCount);
+    return {
+      dias: diffDays,
+      diasCount,
+      ciudad:   snapDiff(snapB, snapA, 'ciudad',   m.ciudad),
+      puntilla: snapDiff(snapB, snapA, 'puntilla', m.puntilla),
+      _isDiff: true, _fromDay: fromDay, _toDay: toDay,
+    };
+  }
+  return { dias: m.dias, diasCount: m.diasCount, ciudad: m.ciudad, puntilla: m.puntilla,
+           _isDiff: false, _fromDay: 1, _toDay: m.dias };
+}
+
+function buildCalendar(m) {
+  const bar = document.getElementById('snapBar');
+  const snaps = m.snaps;
+  if (!snaps || Object.keys(snaps).length === 0) {
+    bar.style.display = 'none';
+    currentSnap = null;
+    return;
+  }
+  const snapDaysArr = Object.keys(snaps).map(Number).sort((a,b)=>a-b);
+  const snapSet = new Set(snapDaysArr);
+  const my = getMesYear(currentMes);
+  if (!my) { bar.style.display = 'none'; return; }
+  const { year, mes } = my;
+  // Use the month's declared dias (may not equal calendar days if partial month)
+  const daysInMonth = new Date(year, mes, 0).getDate();  // real calendar days
+  const firstDow = (new Date(year, mes-1, 1).getDay() + 6) % 7; // 0=Mon
+  const isFullMonth = (currentSnap === null);
+
+  // Period label for selected range
+  let periodInfo = '';
+  if (!isFullMonth && currentSnap && snaps[currentSnap]) {
+    const idx = snapDaysArr.indexOf(currentSnap);
+    const prevDay = idx > 0 ? snapDaysArr[idx-1] : 0;
+    const fromDay = prevDay + 1;
+    periodInfo = fromDay === currentSnap ? `Día ${currentSnap}` : `${fromDay}–${currentSnap}`;
+  }
+
+  const DOW = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+  let html = `<div class="cal-hdr-row">
+    <button class="cal-full-btn${isFullMonth?' active':''}" onclick="selectCalendarFull()">Mes completo</button>
+    ${periodInfo ? `<span class="cal-period-info">📅 Días ${periodInfo}</span>` : ''}
+  </div><div class="cal-grid">`;
+  DOW.forEach(d => { html += `<div class="cal-dow">${d}</div>`; });
+  for (let i = 0; i < firstDow; i++) html += `<div class="cal-day"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const hasDat = snapSet.has(d);
+    const isAct  = (d === currentSnap);
+    const cls    = 'cal-day' + (hasDat ? ' snap' : '') + (isAct ? ' active' : '');
+    const onclick = hasDat ? `onclick="selectCalendarDay(${d})"` : '';
+    html += `<div class="${cls}" ${onclick}>${d}</div>`;
+  }
+  html += `</div>`;
+  bar.innerHTML = html;
+  bar.style.display = 'block';
+}
+
+function selectCalendarDay(day) {
+  currentSnap = day;
+  buildCalendar(MESES[currentMes]);
+  Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
+  charts = {};
+  updateKPIs();
+  buildTab(currentTab);
+}
+
+function selectCalendarFull() {
+  currentSnap = null;
+  buildCalendar(MESES[currentMes]);
+  Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
+  charts = {};
+  updateKPIs();
+  buildTab(currentTab);
+}
+
+// ═══════════════════════════════════════════════════════
+// TENDENCIAS
+// ═══════════════════════════════════════════════════════
+function getPrevMes(){
+  const keys=Object.keys(MESES), idx=keys.indexOf(currentMes);
+  return idx>0 ? MESES[keys[idx-1]] : null;
+}
+function trendBadge(cur, prev, label='vs mismo período'){
+  if(!prev||prev===0) return '';
+  const pct=((cur-prev)/prev*100).toFixed(1);
+  const cls=pct>0?'up':pct<0?'dn':'flat';
+  const arrow=pct>0?'↑':pct<0?'↓':'→';
+  const sign=pct>0?'+':'';
+  return `<div class="trend ${cls}">${arrow} ${sign}${pct}% ${label}</div>`;
+}
+function buildBurgerDelta(loc, prevLoc, elemId){
+  const el=document.getElementById(elemId);
+  if(!el) return;
+  if(!prevLoc){el.innerHTML='';return;}
+  const keys=Object.keys(MESES), prevKey=keys[keys.indexOf(currentMes)-1];
+  const prevLabel=MESES[prevKey]?.label||'';
+  const deltas=Object.entries(loc.burgers)
+    .map(([name,qty])=>({name,delta:qty-(prevLoc.burgers[name]||0)}))
+    .filter(x=>x.delta!==0).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,5);
+  if(!deltas.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="delta-box"><div class="delta-title">Cambios vs ${prevLabel}</div>${
+    deltas.map(d=>`<div class="delta-row"><span class="delta-name">${d.name}</span><span class="delta-val ${d.delta>0?'pos':'neg'}">${d.delta>0?'+':''}${d.delta} uds</span></div>`).join('')
+  }</div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// MEDIOS DE PAGO
+// ═══════════════════════════════════════════════════════
+const PAGOS_COLORS = {
+  'PedidosYa':   '#f0943d',
+  'MercadoPago': '#009ee3',
+  'Efectivo':    '#6ebd89',
+  'Débito':      '#2ec4b6',
+  'Crédito':     '#412d7d',
+  'MasDelivery': '#e05a5a',
+  'Otros':       '#aaaaaa',
+};
+
+function buildFormasPago(prefix, fp) {
+  const sec = document.getElementById(prefix + '-pagos-section');
+  if (!fp || Object.keys(fp).length === 0) {
+    if (sec) sec.style.display = 'none';
+    return;
+  }
+  if (sec) sec.style.display = 'block';
+
+  const sorted = Object.entries(fp).sort((a, b) => b[1] - a[1]);
+  const labels = sorted.map(x => x[0]);
+  const values = sorted.map(x => x[1]);
+  const total  = values.reduce((a, b) => a + b, 0);
+  const colors = labels.map(l => PAGOS_COLORS[l] || '#999');
+
+  makeChart(prefix + '-pagos', {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 10 }, padding: 6, boxWidth: 11 } },
+        tooltip: { callbacks: { label: ctx => {
+          const pct = (ctx.parsed / total * 100).toFixed(1);
+          const amt = '$' + (ctx.parsed / 1e6).toFixed(2) + 'M';
+          return ` ${ctx.label}: ${pct}% (${amt})`;
+        }}}
+      }
+    }
+  });
+
+  const listEl = document.getElementById(prefix + '-pagos-list');
+  if (listEl) {
+    listEl.innerHTML = labels.map((l, i) => {
+      const pct = (values[i] / total * 100).toFixed(1);
+      const amt = '$' + (values[i] / 1e6).toFixed(2) + 'M';
+      return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:12px">
+        <div style="width:11px;height:11px;border-radius:50%;background:${colors[i]};flex-shrink:0"></div>
+        <span style="flex:1;color:#444;font-weight:600">${l}</span>
+        <span style="font-weight:800;color:#412d7d;min-width:38px;text-align:right">${pct}%</span>
+        <span style="color:#888;font-size:10px;min-width:55px;text-align:right">${amt}</span>
+      </div>`;
+    }).join('');
+  }
+}
+
+function buildFormasPagoConsolidado(c, p) {
+  const combined = {};
+  [c.formasPago || {}, p.formasPago || {}].forEach(fp => {
+    Object.entries(fp).forEach(([k, v]) => { combined[k] = (combined[k] || 0) + v; });
+  });
+  buildFormasPago('k', combined);
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function fmt(n){ return n>=1e6 ? '$'+(n/1e6).toFixed(1)+'M' : n>=1000 ? '$'+(n/1000).toFixed(0)+'K' : '$'+n; }
+function fmtN(n){ return n.toLocaleString('es-AR'); }
+function destroyChart(id){ if(charts[id]){ try{charts[id].destroy()}catch(e){} delete charts[id]; } }
+function makeChart(id, cfg){ destroyChart(id); const el=document.getElementById(id); if(!el)return; charts[id]=new Chart(el,cfg); }
+
+const defOpts = (title='') => ({
+  responsive:true, maintainAspectRatio:false,
+  plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y??ctx.parsed}` }},
+    title: title?{display:true,text:title,color:'#666',font:{size:11}}:{display:false} },
+  scales:{}
+});
+
+// ═══════════════════════════════════════════════════════
+// CHART BUILDERS
+// ═══════════════════════════════════════════════════════
+function barH(id, rawLabels, rawVals, color){
+  const pairs = rawLabels.map((l,i)=>({l,v:rawVals[i]})).sort((a,b)=>b.v-a.v);
+  makeChart(id,{
+    type:'bar',
+    data:{labels:pairs.map(x=>x.l),datasets:[{data:pairs.map(x=>x.v),backgroundColor:color||C.purple,borderRadius:4}]},
+    options:{...defOpts(), indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} uds`}}},
+      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#888',font:{size:10}}},
+              y:{ticks:{color:'#444',font:{size:11}}}}}
+  });
+}
+
+function donut(id, labels, data, colors){
+  const total = data.reduce((a,b)=>a+b,0);
+  if(!total){ return null; }
+  makeChart(id,{
+    type:'doughnut',
+    data:{labels, datasets:[{data, backgroundColor:colors, borderWidth:2, borderColor:'#fff'}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:12}},
+        tooltip:{callbacks:{label:ctx=>{
+          const pct = (ctx.parsed/total*100).toFixed(1);
+          return ` ${ctx.label}: ${ctx.parsed} (${pct}%)`;
+        }}}}}
+  });
+  return true;
+}
+
+function barVentas(id, labels, values, color){
+  makeChart(id,{
+    type:'bar',
+    data:{labels, datasets:[{data:values, backgroundColor:color||C.purple,borderRadius:4}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>' $'+(ctx.parsed.y/1e6).toFixed(2)+'M'}}},
+      scales:{x:{ticks:{color:'#666',font:{size:10}}},y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+}
+
+function lineHora(id, labels, values, color){
+  makeChart(id,{
+    type:'line',
+    data:{labels, datasets:[{data:values, borderColor:color||C.purple, backgroundColor:((color||C.purple)+'22'),
+      fill:true, tension:0.4, pointRadius:3, pointBackgroundColor:color||C.purple}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>` $${ctx.parsed.y.toFixed(2)}M`}}},
+      scales:{x:{ticks:{color:'#666',font:{size:9},maxRotation:45}},
+              y:{ticks:{callback:v=>'$'+v.toFixed(1)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// KPI UPDATE — se actualiza según el tab activo
+// ═══════════════════════════════════════════════════════
+function updateKPIs(){
+  const m=MESES[currentMes], prevM=getPrevMes();
+  const snapData=getActiveSnapData(m);
+  const c=snapData.ciudad, p=snapData.puntilla;
+  const activeDias=snapData.dias;  // días del período activo (snap o mes completo)
+  let totalB,totalV,totalDocs,tabLabel,prevV=0,prevB=0,prevTicketVal=0;
+
+  const tab=(currentTab==='evol')?'cons':currentTab;
+
+  if(tab==='ciudad'){
+    totalB=c.total; totalV=c.ventaTotal; totalDocs=c.totalDocs||0; tabLabel='📍 Ciudad';
+    if(prevM){ const pd=prevM.ciudad; prevV=pd.ventaTotal; prevB=pd.total;
+      prevTicketVal=pd.totalDocs>0?Math.round(pd.ventaTotal/pd.totalDocs):Math.round(pd.ventaTotal/pd.total); }
+  } else if(tab==='puntilla'){
+    totalB=p.total; totalV=p.ventaTotal; totalDocs=p.totalDocs||0; tabLabel='📍 La Puntilla';
+    if(prevM){ const pd=prevM.puntilla; prevV=pd.ventaTotal; prevB=pd.total;
+      prevTicketVal=pd.totalDocs>0?Math.round(pd.ventaTotal/pd.totalDocs):Math.round(pd.ventaTotal/pd.total); }
+  } else {
+    totalB=c.total+p.total; totalV=c.ventaTotal+p.ventaTotal; totalDocs=(c.totalDocs||0)+(p.totalDocs||0);
+    tabLabel=currentTab==='evol'?'📈 Evolución':'📍 Ambos locales';
+    if(prevM){ const pC=prevM.ciudad,pP=prevM.puntilla; prevV=pC.ventaTotal+pP.ventaTotal; prevB=pC.total+pP.total;
+      const pD=(pC.totalDocs||0)+(pP.totalDocs||0);
+      prevTicketVal=pD>0?Math.round(prevV/pD):Math.round(prevV/prevB); }
+  }
+
+  // Mismo-período adjustment: prorate previous month's cumulative metrics
+  // by the ratio of active days to previous-month total days.
+  // Ticket promedio (an average, not a cumulative) is NOT adjusted.
+  if(prevM && prevM.dias > 0){
+    const dayRatio = activeDias / prevM.dias;
+    prevV = Math.round(prevV * dayRatio);
+    prevB = Math.round(prevB * dayRatio);
+  }
+
+  // Detect differential mode (specific calendar period selected)
+  const isDiff = snapData._isDiff || false;
+
+  // Only treat as "snap active" for partial periods (not the latest/full-month snap).
+  // This preserves diasLaborales behavior when viewing the full period.
+  const latestSnapDay = m.snaps ? Math.max(...Object.keys(m.snaps).map(Number)) : m.dias;
+  const isPartialSnap = !isDiff && currentSnap && m.snaps && m.snaps[currentSnap] && (activeDias < latestSnapDay);
+
+  // diasRef: differential/partial → activeDias; full period → diasLaborales if available.
+  const diasRef = (isDiff || isPartialSnap) ? activeDias :
+    (tab==='ciudad'?(c.diasLaborales||activeDias):tab==='puntilla'?(p.diasLaborales||activeDias):activeDias);
+  const ticket=totalDocs>0?Math.round(totalV/totalDocs):Math.round(totalV/totalB);
+  const factDia=Math.round(totalV/diasRef);
+  const ticketLabel=totalDocs>0?'Ticket promedio':'Precio prom/burger';
+
+  // Period label
+  const MES_SHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const mesShort=(()=>{ const my=getMesYear(currentMes); return my?MES_SHORT[my.mes-1]:''; })();
+  const periodoLabel = isDiff
+    ? (snapData._fromDay===snapData._toDay
+       ? `Día ${snapData._fromDay} de ${mesShort}`
+       : `${snapData._fromDay}–${snapData._toDay} de ${mesShort} (${activeDias}d)`)
+    : isPartialSnap ? `1–${activeDias} de ${m.dias}`
+    : `${activeDias} días`;
+
+  // Suppress trend badges in differential mode (partial-period vs full-month comparisons mislead)
+  const pV = isDiff ? 0 : prevV, pB = isDiff ? 0 : prevB, pT = isDiff ? 0 : prevTicketVal;
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi g"><div class="kv">${fmt(totalV)}</div><div class="kl">Facturación total</div>${trendBadge(totalV,pV)}</div>
+    <div class="kpi y"><div class="kv">${fmt(factDia)}</div><div class="kl">Facturación / día</div></div>
+    <div class="kpi"><div class="kv">${fmt(ticket)}</div><div class="kl">${ticketLabel}</div>${trendBadge(ticket,pT,'vs mes ant.')}</div>
+    <div class="kpi"><div class="kv">${fmtN(totalB)}</div><div class="kl">Burgers totales</div>${trendBadge(totalB,pB)}</div>
+    <div class="kpi wide g"><div class="kv">${Math.round(totalB/diasRef)}</div><div class="kl">Burgers / día</div></div>
+  `;
+  document.getElementById('footer-info').textContent=`Smash Club · Mendoza · ${m.label} · ${periodoLabel} · ${tabLabel}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// TAB BUILDERS
+// ═══════════════════════════════════════════════════════
+function buildCiudad(){
+  const _snapDataC = getActiveSnapData(MESES[currentMes]);
+  const loc = _snapDataC.ciudad;
+  const _diasCount = _snapDataC.diasCount;
+  const prev = getPrevMes();
+  const bKeys = Object.keys(loc.burgers), bVals = Object.values(loc.burgers);
+
+  // Burgers
+  barH('c-burg', bKeys, bVals, C.purple);
+  buildBurgerDelta(loc, currentSnap===null ? prev?.ciudad : null, 'c-burger-delta');
+
+  // Tamaños
+  if(loc.jr > 0 || loc.doble > 0 || loc.xl > 0){
+    donut('c-tam',['JR','Doble','XL'],[loc.jr,loc.doble,loc.xl],[C.green,C.purple,C.yellow]);
+    document.getElementById('c-tam-note').textContent = `JR ${loc.jr} · Doble ${loc.doble} · XL ${loc.xl}`;
+  }
+
+  // Acompañante
+  const ac = loc.acompanante;
+  const acTotal = Object.values(ac).reduce((a,b)=>a+b,0);
+  if(acTotal > 0){
+    const acKeys = Object.keys(ac).filter(k=>ac[k]>0);
+    donut('c-acomp', acKeys, acKeys.map(k=>ac[k]), [C.purple,C.yellow,C.green]);
+    document.getElementById('c-acomp-note').textContent = `Con Papas ${ac['Con Papas']} · Sin Papas ${ac['Sin Papas']}`;
+  } else {
+    document.getElementById('c-acomp-note').textContent = 'Dato no disponible en este export';
+  }
+
+  // Pan
+  const pan = loc.pan;
+  const panTotal = (pan['Pan Regular']||0) + (pan['Pan Sin Gluten']||0);
+  if(panTotal > 0){
+    donut('c-pan',['Pan Regular','Pan Sin Gluten'],[pan['Pan Regular'],pan['Pan Sin Gluten']],[C.purple,C.green]);
+    document.getElementById('c-pan-note').textContent = `Regular ${pan['Pan Regular']} · Sin Gluten ${pan['Pan Sin Gluten']}`;
+  } else {
+    destroyChart('c-pan');
+    document.getElementById('c-pan-note').textContent = currentSnap ? 'Detalle no disponible para este período' : '';
+  }
+
+  // Salsa
+  if(loc.salsa){
+    const s = loc.salsa;
+    donut('c-salsa',['Salsa CDL','Cebolla Caramelizada','Sin Salsa'],[s['Salsa CDL'],s['Cebolla Caramelizada'],s['Sin Salsa / Otra']],[C.purple,C.yellow,C.teal]);
+    document.getElementById('c-salsa-wrap').style.display='block';
+    document.getElementById('c-salsa-empty').style.display='none';
+  } else {
+    document.getElementById('c-salsa-wrap').style.display='none';
+    document.getElementById('c-salsa-empty').style.display='block';
+  }
+
+  // Ventas por día (promedio por ocurrencia de cada día de la semana)
+  barVentas('c-dias', DIAS_LABELS, avgPerDia(loc.ventaDias, _diasCount), C.purple);
+
+  // Ventas por hora
+  lineHora('c-hora', loc.horaLabels, loc.horaVentas, C.purple);
+
+  // Biggie
+  const bigKeys = Object.keys(loc.biggie||{});
+  if(bigKeys.length > 0){
+    barH('c-biggie', bigKeys, bigKeys.map(k=>loc.biggie[k]), C.green);
+    document.getElementById('c-biggie-wrap').style.display='block';
+    document.getElementById('c-biggie-empty').style.display='none';
+  } else {
+    document.getElementById('c-biggie-wrap').style.display='none';
+    document.getElementById('c-biggie-empty').style.display='block';
+  }
+
+  // Medios de pago
+  buildFormasPago('c', loc.formasPago);
+}
+
+function buildPuntilla(){
+  const _snapDataP = getActiveSnapData(MESES[currentMes]);
+  const loc = _snapDataP.puntilla;
+  const _diasCountP = _snapDataP.diasCount;
+  const prev = getPrevMes();
+  const bKeys = Object.keys(loc.burgers), bVals = Object.values(loc.burgers);
+
+  // Burgers
+  barH('p-burg', bKeys, bVals, '#5c4ba0');
+  buildBurgerDelta(loc, currentSnap===null ? prev?.puntilla : null, 'p-burger-delta');
+
+  // Tamaños
+  if(!loc.sizes_incomplete && (loc.jr > 0 || loc.doble > 0)){
+    donut('p-tam',['JR','Doble','XL'],[loc.jr,loc.doble,loc.xl],[C.green,C.purple,C.yellow]);
+    document.getElementById('p-tam-note').textContent = `JR ${loc.jr} · Doble ${loc.doble} · XL ${loc.xl}`;
+    document.getElementById('p-tam-wrap').style.display='block';
+    document.getElementById('p-tam-empty').style.display='none';
+  } else {
+    document.getElementById('p-tam-wrap').style.display='none';
+    document.getElementById('p-tam-empty').style.display='block';
+  }
+
+  // Acompañante
+  const ac = loc.acompanante;
+  const acTotal = Object.values(ac).reduce((a,b)=>a+b,0);
+  if(acTotal > 0){
+    const acKeys = Object.keys(ac).filter(k=>ac[k]>0);
+    donut('p-acomp', acKeys, acKeys.map(k=>ac[k]), [C.purple,C.yellow,C.green]);
+    document.getElementById('p-acomp-wrap').style.display='block';
+    document.getElementById('p-acomp-empty').style.display='none';
+  } else {
+    document.getElementById('p-acomp-wrap').style.display='none';
+    document.getElementById('p-acomp-empty').style.display='block';
+  }
+
+  // Pan
+  const pan = loc.pan;
+  if(pan['Pan Regular'] > 0 || pan['Pan Sin Gluten'] > 0){
+    donut('p-pan',['Pan Regular','Pan Sin Gluten'],[pan['Pan Regular'],pan['Pan Sin Gluten']],[C.purple,C.green]);
+    document.getElementById('p-pan-wrap').style.display='block';
+    document.getElementById('p-pan-empty').style.display='none';
+  } else {
+    document.getElementById('p-pan-wrap').style.display='none';
+    document.getElementById('p-pan-empty').style.display='block';
+  }
+
+  // Salsa
+  if(loc.salsa){
+    const s = loc.salsa;
+    donut('p-salsa',['Salsa CDL','Cebolla Caramelizada','Sin Salsa'],[s['Salsa CDL'],s['Cebolla Caramelizada'],s['Sin Salsa / Otra']],[C.purple,C.yellow,C.teal]);
+    document.getElementById('p-salsa-wrap').style.display='block';
+    document.getElementById('p-salsa-empty').style.display='none';
+  } else {
+    document.getElementById('p-salsa-wrap').style.display='none';
+    document.getElementById('p-salsa-empty').style.display='block';
+  }
+
+  // Días y horas (promedio por día de la semana)
+  barVentas('p-dias', DIAS_LABELS, avgPerDia(loc.ventaDias, _diasCountP), '#5c4ba0');
+  lineHora('p-hora', loc.horaLabels, loc.horaVentas, '#5c4ba0');
+
+  // Biggie
+  const bigKeys = Object.keys(loc.biggie||{});
+  if(bigKeys.length > 0){
+    barH('p-biggie', bigKeys, bigKeys.map(k=>loc.biggie[k]), C.green);
+    document.getElementById('p-biggie-wrap').style.display='block';
+    document.getElementById('p-biggie-empty').style.display='none';
+  } else {
+    document.getElementById('p-biggie-wrap').style.display='none';
+    document.getElementById('p-biggie-empty').style.display='block';
+  }
+
+  // Medios de pago
+  buildFormasPago('p', loc.formasPago);
+}
+
+function buildConsolidado(){
+  const m = MESES[currentMes];
+  const snapData = getActiveSnapData(m);
+  const c = snapData.ciudad, p = snapData.puntilla;
+  const prev = getPrevMes();
+
+  // Burgers combinadas
+  const allBurgers = {};
+  Object.entries(c.burgers).forEach(([k,v])=>{ allBurgers[k]=(allBurgers[k]||0)+v; });
+  Object.entries(p.burgers).forEach(([k,v])=>{ allBurgers[k]=(allBurgers[k]||0)+v; });
+  const bKeys = Object.keys(allBurgers), bVals = Object.values(allBurgers);
+  barH('k-burg', bKeys, bVals, C.purple);
+
+  if(prev){
+    const prevCons={burgers:{}};
+    Object.entries(prev.ciudad.burgers).forEach(([k,v])=>{prevCons.burgers[k]=(prevCons.burgers[k]||0)+v;});
+    Object.entries(prev.puntilla.burgers).forEach(([k,v])=>{prevCons.burgers[k]=(prevCons.burgers[k]||0)+v;});
+    buildBurgerDelta({burgers:allBurgers}, prevCons, 'k-burger-delta');
+  }
+
+  // Ventas por día — promedio por día de la semana
+  const _avgC = avgPerDia(c.ventaDias, snapData.diasCount);
+  const _avgP = avgPerDia(p.ventaDias, snapData.diasCount);
+  makeChart('k-dias',{
+    type:'bar',
+    data:{
+      labels:DIAS_LABELS,
+      datasets:[
+        {label:'Ciudad', data:_avgC, backgroundColor:C.purple, borderRadius:3},
+        {label:'Puntilla', data:_avgP, backgroundColor:C.green, borderRadius:3}
+      ]
+    },
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+        tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${(ctx.parsed.y/1e6).toFixed(2)}M prom.`}}},
+      scales:{x:{stacked:false,ticks:{color:'#666',font:{size:9}}},
+              y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Horas consolidadas — unir labels
+  const cHMap={}, pHMap={};
+  c.horaLabels.forEach((l,i)=>{ cHMap[l]=c.horaVentas[i]; });
+  p.horaLabels.forEach((l,i)=>{ pHMap[l]=p.horaVentas[i]; });
+  const allHLabels = [...new Set([...c.horaLabels,...p.horaLabels])].sort((a,b)=>{
+    const na=parseInt(a), nb=parseInt(b);
+    return (na<9?na+24:na)-(nb<9?nb+24:nb);
+  });
+  const consVals = allHLabels.map(l=>(cHMap[l]||0)+(pHMap[l]||0));
+  lineHora('k-hora', allHLabels, consVals, C.purple);
+
+  // Tamaños consolidados
+  const tamWrap = document.getElementById('k-tam-wrap');
+  const tamNote = document.getElementById('k-tam-note');
+  const hasSize = !p.sizes_incomplete;
+  if(hasSize){
+    const jrT=c.jr+p.jr, dobleT=c.doble+p.doble, xlT=c.xl+p.xl;
+    donut('k-tam',['JR','Doble','XL'],[jrT,dobleT,xlT],[C.green,C.purple,C.yellow]);
+    tamNote.textContent = `JR ${jrT} · Doble ${dobleT} · XL ${xlT}`;
+    tamWrap.style.display='block';
+  } else {
+    tamNote.textContent = 'Tamaños de La Puntilla no disponibles para este mes. Re-exportar con modificadores $0 activado.';
+    tamWrap.style.display='none';
+  }
+
+  // Medios de pago consolidado
+  buildFormasPagoConsolidado(c, p);
+}
+
+// ═══════════════════════════════════════════════════════
+// EVOLUCIÓN MES A MES
+// ═══════════════════════════════════════════════════════
+function buildEvolucion(){
+  const keys=Object.keys(MESES);
+  const labels=keys.map(k=>MESES[k].label);
+
+  // Facturación mensual por local
+  makeChart('e-ventas',{type:'bar',data:{labels,datasets:[
+    {label:'Ciudad',data:keys.map(k=>MESES[k].ciudad.ventaTotal),backgroundColor:C.purple,borderRadius:5},
+    {label:'La Puntilla',data:keys.map(k=>MESES[k].puntilla.ventaTotal),backgroundColor:C.green,borderRadius:5}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${(ctx.parsed.y/1e6).toFixed(1)}M`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{callback:v=>'$'+(v/1e6).toFixed(0)+'M',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Burgers vendidas por mes
+  makeChart('e-burgers',{type:'bar',data:{labels,datasets:[
+    {label:'Ciudad',data:keys.map(k=>MESES[k].ciudad.total),backgroundColor:C.purple,borderRadius:5},
+    {label:'La Puntilla',data:keys.map(k=>MESES[k].puntilla.total),backgroundColor:C.green,borderRadius:5}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y} uds`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Ticket promedio por mes
+  const ticketData=loc=>keys.map(k=>{const d=MESES[k][loc];return d.totalDocs>0?Math.round(d.ventaTotal/d.totalDocs):Math.round(d.ventaTotal/d.total);});
+  makeChart('e-ticket',{type:'line',data:{labels,datasets:[
+    {label:'Ciudad',data:ticketData('ciudad'),borderColor:C.purple,backgroundColor:C.purple+'33',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:C.purple},
+    {label:'La Puntilla',data:ticketData('puntilla'),borderColor:C.green,backgroundColor:C.green+'33',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:C.green}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8,boxWidth:10}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString('es-AR')}`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'K',color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+
+  // Top 6 burgers — evolución consolidada
+  const totales={};
+  keys.forEach(k=>{
+    [...Object.entries(MESES[k].ciudad.burgers),...Object.entries(MESES[k].puntilla.burgers)]
+      .forEach(([n,v])=>{totales[n]=(totales[n]||0)+v;});
+  });
+  const top6=Object.entries(totales).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]);
+  const lc=[C.purple,C.green,C.orange,C.teal,C.pink,'#f7b731'];
+  makeChart('e-btrend',{type:'line',data:{labels,datasets:top6.map((burger,i)=>({
+    label:burger,
+    data:keys.map(k=>(MESES[k].ciudad.burgers[burger]||0)+(MESES[k].puntilla.burgers[burger]||0)),
+    borderColor:lc[i],backgroundColor:'transparent',fill:false,tension:0.3,
+    pointRadius:5,pointBackgroundColor:lc[i],borderWidth:2
+  }))},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:10,boxWidth:10,usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y} uds`}}},
+    scales:{x:{ticks:{color:'#666',font:{size:10}}},
+            y:{ticks:{color:'#888',font:{size:9}},grid:{color:'rgba(0,0,0,.05)'}}}}
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ═══════════════════════════════════════════════════════
+function buildTab(tab){
+  if(tab==='ciudad') buildCiudad();
+  else if(tab==='puntilla') buildPuntilla();
+  else if(tab==='evol') buildEvolucion();
+  else buildConsolidado();
+}
+
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+  currentTab = tab;
+  updateKPIs();
+  buildTab(tab);
+}
+
+function changeMes(key){
+  currentMes = key;
+  currentSnap = null;  // reset snap on month change
+  document.querySelectorAll('.mes-btn').forEach(b=>b.classList.toggle('active', b.dataset.mes===key));
+  Object.keys(charts).forEach(id=>{ try{charts[id].destroy()}catch(e){} });
+  charts = {};
+  buildCalendar(MESES[key]);
+  updateKPIs();
+  buildTab(currentTab);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function init(){
+  const mesBar = document.getElementById('mesBar');
+  mesBar.innerHTML = Object.entries(MESES).map(([key,m])=>
+    `<button class="mes-btn${key===currentMes?' active':''}" data-mes="${key}" onclick="changeMes('${key}')">${m.label}</button>`
+  ).join('');
+  buildCalendar(MESES[currentMes]);
+  updateKPIs();
+  buildCiudad();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
