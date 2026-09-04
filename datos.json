@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-02T13:10:07",
+  "generado": "2026-09-04T11:45:33",
   "meses": {
     "enero2026": {
       "label": "Enero 2026",
@@ -1258,7 +1258,7 @@
         "xl": 111,
         "total": 3354,
         "acompanante": {
-          "Con Papas": 2985,
+          "Con Papas": 2984,
           "Sin Papas": 282,
           "Aros de Cebolla": 0
         },
@@ -1273,7 +1273,7 @@
         },
         "ventaTotal": 64995018,
         "totalDocs": 2877,
-        "ticketPromedio": 22591,
+        "ticketPromedio": 22593,
         "ventaDias": [
           7805770,
           6231583,
@@ -1317,7 +1317,7 @@
         },
         "ventaTotal": 100998768,
         "totalDocs": 3474,
-        "ticketPromedio": 29073,
+        "ticketPromedio": 29071,
         "ventaDias": [
           10037754,
           7983438,
@@ -1330,12 +1330,12 @@
       }
     },
     "septiembre2026": {
-      "label": "Septiembre 2026 (1-1)",
-      "dias": 1,
+      "label": "Septiembre 2026 (1-2)",
+      "dias": 2,
       "diasCount": [
         0,
         1,
-        0,
+        1,
         0,
         0,
         0,
@@ -1343,40 +1343,42 @@
       ],
       "ciudad": {
         "burgers": {
-          "Gollum Signature": 17,
-          "Crispy Bliss": 12,
-          "Cheese Burger": 9,
-          "John Bacon": 8,
-          "Sweet Alabama": 3,
-          "L.A Americana": 3,
-          "CHIMI BR": 2
+          "Crispy Bliss": 35,
+          "Gollum Signature": 26,
+          "Cheese Burger": 16,
+          "John Bacon": 15,
+          "L.A Americana": 11,
+          "CHIMI BR": 10,
+          "Sweet Alabama": 7,
+          "Biggie": 7,
+          "SMASH TASTY": 4
         },
-        "jr": 18,
-        "doble": 34,
-        "xl": 2,
-        "total": 54,
+        "jr": 52,
+        "doble": 75,
+        "xl": 4,
+        "total": 131,
         "acompanante": {
-          "Con Papas": 48,
-          "Sin Papas": 4,
+          "Con Papas": 118,
+          "Sin Papas": 10,
           "Aros de Cebolla": 0
         },
         "pan": {
-          "Pan Regular": 50,
-          "Pan Sin Gluten": 2
+          "Pan Regular": 123,
+          "Pan Sin Gluten": 5
         },
         "salsa": {
-          "Salsa CDL": 11,
-          "Cebolla Caramelizada": 4,
+          "Salsa CDL": 15,
+          "Cebolla Caramelizada": 8,
           "Sin Salsa / Otra": 0
         },
-        "ventaTotal": 1146365,
-        "totalDocs": 135,
-        "ticketPromedio": 8492,
+        "ventaTotal": 2826595,
+        "totalDocs": 275,
+        "ticketPromedio": 10279,
         "ventaDias": [
           0,
           3111230,
-          96800,
-          0,
+          4032465,
+          47280,
           0,
           0,
           0
@@ -1391,6 +1393,7 @@
           "15h",
           "16h",
           "17h",
+          "18h",
           "19h",
           "20h",
           "21h",
@@ -1400,60 +1403,66 @@
         ],
         "horaVentas": [
           0.026,
-          0.02,
-          0.063,
-          0.169,
-          0.545,
-          0.216,
-          0.09,
-          0.028,
-          0.052,
-          0.019,
-          0.139,
-          0.669,
-          0.839,
-          0.215,
+          0.032,
+          0.098,
+          0.333,
+          0.858,
+          0.597,
+          0.157,
+          0.192,
+          0.109,
+          0.007,
+          0.161,
+          0.697,
+          1.722,
+          1.707,
+          0.376,
           0.118
-        ]
+        ],
+        "biggie": {
+          "Crispy Bliss": 3,
+          "Gollum": 2,
+          "L.A Americana": 1
+        }
       },
       "puntilla": {
         "burgers": {
-          "Crispy Bliss": 28,
-          "CHIMI BR": 25,
-          "Gollum Signature": 25,
-          "L.A Americana": 12,
-          "John Bacon": 12,
-          "SMASH TASTY": 7,
-          "Sweet Alabama": 7,
-          "Cheese Burger": 6,
-          "Biggie": 1
+          "CHIMI BR": 56,
+          "Crispy Bliss": 51,
+          "Gollum Signature": 47,
+          "John Bacon": 33,
+          "L.A Americana": 26,
+          "Sweet Alabama": 15,
+          "Cheese Burger": 12,
+          "SMASH TASTY": 8,
+          "Biggie": 3
         },
-        "jr": 55,
-        "doble": 63,
-        "xl": 5,
-        "total": 123,
+        "jr": 93,
+        "doble": 149,
+        "xl": 9,
+        "total": 251,
         "acompanante": {
-          "Con Papas": 97,
-          "Sin Papas": 7,
+          "Con Papas": 216,
+          "Sin Papas": 11,
           "Aros de Cebolla": 0
         },
         "pan": {
-          "Pan Regular": 120,
-          "Pan Sin Gluten": 3
+          "Pan Regular": 242,
+          "Pan Sin Gluten": 7
         },
         "salsa": {
-          "Salsa CDL": 19,
-          "Cebolla Caramelizada": 4,
-          "Sin Salsa / Otra": 2
+          "Salsa CDL": 29,
+          "Cebolla Caramelizada": 11,
+          "Sin Salsa / Otra": 3
         },
-        "ventaTotal": 2061665,
-        "totalDocs": 135,
-        "ticketPromedio": 15272,
+        "ventaTotal": 4364380,
+        "totalDocs": 275,
+        "ticketPromedio": 15870,
         "ventaDias": [
           0,
           3111230,
-          96800,
-          0,
+          4032465,
+          47280,
           0,
           0,
           0
@@ -1468,6 +1477,7 @@
           "15h",
           "16h",
           "17h",
+          "18h",
           "19h",
           "20h",
           "21h",
@@ -1477,19 +1487,20 @@
         ],
         "horaVentas": [
           0.026,
-          0.02,
-          0.063,
-          0.169,
-          0.545,
-          0.216,
-          0.09,
-          0.028,
-          0.052,
-          0.019,
-          0.139,
-          0.669,
-          0.839,
-          0.215,
+          0.032,
+          0.098,
+          0.333,
+          0.858,
+          0.597,
+          0.157,
+          0.192,
+          0.109,
+          0.007,
+          0.161,
+          0.697,
+          1.722,
+          1.707,
+          0.376,
           0.118
         ],
         "biggie": {
