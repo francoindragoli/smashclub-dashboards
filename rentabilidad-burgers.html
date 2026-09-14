@@ -137,7 +137,7 @@ tr:hover td:first-child{background:var(--sf2);}
 <div class="panel" id="panel-desc">
   <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:16px 18px;margin-bottom:16px;">
     <div style="font-family:'Passion One',sans-serif;font-size:18px;letter-spacing:1px;color:#f6d01e;margin-bottom:4px;">Simulador de Descuentos</div>
-    <div style="font-size:11px;color:#7a6fa0;">Elegí el tipo de descuento, el valor, y tildá los productos a los que aplica</div>
+    <div style="font-size:11px;color:#7a6fa0;" id="desc-subtitle">Elegí el tipo de descuento, el valor, y tildá los productos a los que aplica</div>
     <!-- Tipo de descuento -->
     <div style="display:flex;align-items:center;gap:10px;margin-top:14px;">
       <span style="font-size:12px;color:#e8e4f0;">Tipo:</span>
@@ -145,6 +145,8 @@ tr:hover td:first-child{background:var(--sf2);}
         style="background:#412d7d;border:1px solid #6040a0;border-radius:6px;color:#f6d01e;font-family:'Passion One',sans-serif;font-size:13px;padding:5px 14px;cursor:pointer;">% Porcentaje</button>
       <button id="btn-fix" onclick="setDescMode('fix')"
         style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-family:'Passion One',sans-serif;font-size:13px;padding:5px 14px;cursor:pointer;">$ Importe fijo</button>
+      <button id="btn-nv" onclick="setDescMode('nv')"
+        style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-family:'Passion One',sans-serif;font-size:13px;padding:5px 14px;cursor:pointer;">Nuevo valor</button>
     </div>
     <!-- Valor -->
     <div style="display:flex;align-items:center;gap:16px;margin-top:12px;flex-wrap:wrap;">
@@ -277,22 +279,32 @@ function setDescMode(m){
   const pre=document.getElementById('desc-prefix');
   const suf=document.getElementById('desc-suffix');
   const presets=document.getElementById('desc-presets');
-  document.getElementById('btn-pct').style.background=m==='pct'?'#412d7d':'#1a1530';
-  document.getElementById('btn-pct').style.borderColor=m==='pct'?'#6040a0':'#2e2655';
-  document.getElementById('btn-pct').style.color=m==='pct'?'#f6d01e':'#e8e4f0';
-  document.getElementById('btn-fix').style.background=m==='fix'?'#412d7d':'#1a1530';
-  document.getElementById('btn-fix').style.borderColor=m==='fix'?'#6040a0':'#2e2655';
-  document.getElementById('btn-fix').style.color=m==='fix'?'#f6d01e':'#e8e4f0';
+  const sub=document.getElementById('desc-subtitle');
+  ['pct','fix','nv'].forEach(k=>{
+    const btn=document.getElementById('btn-'+k);
+    const active=k===m;
+    btn.style.background=active?'#412d7d':'#1a1530';
+    btn.style.borderColor=active?'#6040a0':'#2e2655';
+    btn.style.color=active?'#f6d01e':'#e8e4f0';
+  });
   if(m==='pct'){
     inp.max=50;inp.step=1;sl.max=50;sl.step=1;
     if(parseFloat(inp.value)>50){inp.value=50;sl.value=50;}
     pre.style.display='none';suf.style.display='';
     presets.innerHTML=['10%','15%','20%','25%'].map((v,i)=>`<button onclick="setDesc(${[10,15,20,25][i]})" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:5px 10px;cursor:pointer;">${v}</button>`).join('');
-  } else {
+    sub.textContent='Aplicá un porcentaje de descuento sobre el precio actual';
+  } else if(m==='fix'){
     inp.max=5000;inp.step=100;sl.max=5000;sl.step=100;
     pre.style.display='';suf.style.display='none';
     presets.innerHTML=['$500','$1000','$2000','$3000'].map((v,i)=>`<button onclick="setDesc(${[500,1000,2000,3000][i]})" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:5px 10px;cursor:pointer;">${v}</button>`).join('');
     if(parseFloat(inp.value)<=50){inp.value=1000;sl.value=1000;}
+    sub.textContent='Restá un importe fijo en pesos del precio actual';
+  } else {
+    inp.max=30000;inp.step=500;sl.max=30000;sl.step=500;
+    pre.style.display='';suf.style.display='none';
+    presets.innerHTML=['$10000','$12000','$15000','$18000'].map((v,i)=>`<button onclick="setDesc(${[10000,12000,15000,18000][i]})" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:5px 10px;cursor:pointer;">${v}</button>`).join('');
+    if(parseFloat(inp.value)<=50||parseFloat(inp.value)<=5000){inp.value=15000;sl.value=15000;}
+    sub.textContent='Establecé el precio final de venta y calculá la rentabilidad resultante';
   }
   renderDesc();
 }
@@ -317,12 +329,17 @@ function renderDesc(){
   const data=D.burgers_local;
   const fmtP=n=>'$'+fmt(n);
 
+  function precioFinal(b){
+    const sel=descSel[b.nombre]!==false;
+    if(!sel) return b.precio_civa;
+    if(descMode==='pct') return b.precio_civa*(1-val/100);
+    if(descMode==='fix') return b.precio_civa-val;
+    return val; // 'nv': precio nuevo fijo
+  }
   // KPIs — weighted by unidades, only selected
   let sumOrig=0,sumDesc=0,sumCosto=0,sumUds=0;
   data.forEach(b=>{
-    const sel=descSel[b.nombre]!==false;
-    const descAmt=sel?(descMode==='pct'?b.precio_civa*val/100:val):0;
-    const pd=b.precio_civa-descAmt;
+    const pd=precioFinal(b);
     sumOrig+=b.precio_civa*b.unidades;
     sumDesc+=pd*b.unidades;
     sumCosto+=b.costo_civa*b.unidades;
@@ -346,8 +363,7 @@ function renderDesc(){
     rows+=`<tr><td colspan="7" style="background:#231d3e;color:#f6d01e;font-family:'Passion One',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;">${fam}</td></tr>`;
     grp.forEach(b=>{
       const sel=descSel[b.nombre]!==false;
-      const descAmt=sel?(descMode==='pct'?b.precio_civa*val/100:val):0;
-      const pd=b.precio_civa-descAmt;
+      const pd=precioFinal(b);
       const gd=pd-b.costo_civa;
       const rd=(1-b.costo_civa/pd)*100;
       const clr=rd>=55?'#6ebd89':rd>=45?'#f6d01e':'#f87171';
@@ -363,10 +379,11 @@ function renderDesc(){
       </tr>`;
     });
   });
+  const col2lbl=descMode==='nv'?'Precio nuevo':(descMode==='fix'?'Con descuento':'Con descuento');
   document.getElementById('desc-tbl').innerHTML=`<thead><tr>
     <th></th><th>Burger</th>
     <th class="r">Precio orig.</th>
-    <th class="r">Con descuento</th>
+    <th class="r">${col2lbl}</th>
     <th class="r">Costo c/IVA</th>
     <th class="r">Ganancia</th>
     <th class="r">Rentabilidad</th>
