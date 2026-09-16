@@ -121,6 +121,7 @@ tr:hover td:first-child{background:var(--sf2);}
   <div class="tab" onclick="showTab('extras')">Extras</div>
   <div class="tab" onclick="showTab('ing')">Insumos</div>
   <div class="tab" onclick="showTab('evo')">Evolución Precios</div>
+  <div class="tab" onclick="showTab('desc')">Descuentos</div>
 </div>
 
 <div class="panel active" id="panel-local">
@@ -133,6 +134,43 @@ tr:hover td:first-child{background:var(--sf2);}
 </div>
 <div class="panel" id="panel-extras"><div class="tbl-wrap"><table id="te"></table></div></div>
 <div class="panel" id="panel-ing"><div class="tbl-wrap"><table id="ti"></table></div></div>
+<div class="panel" id="panel-desc">
+  <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:16px 18px;margin-bottom:16px;">
+    <div style="font-family:'Passion One',sans-serif;font-size:18px;letter-spacing:1px;color:#f6d01e;margin-bottom:4px;">Simulador de Descuentos</div>
+    <div style="font-size:11px;color:#7a6fa0;" id="desc-subtitle">Elegí el tipo de descuento, el valor, y tildá los productos a los que aplica</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:#e8e4f0;">Tipo:</span>
+      <button id="btn-pct" onclick="setDescMode('pct')" style="background:#412d7d;border:1px solid #6040a0;border-radius:6px;color:#f6d01e;font-family:'Passion One',sans-serif;font-size:13px;padding:5px 14px;cursor:pointer;">% Porcentaje</button>
+      <button id="btn-fix" onclick="setDescMode('fix')" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-family:'Passion One',sans-serif;font-size:13px;padding:5px 14px;cursor:pointer;">$ Importe fijo</button>
+      <button id="btn-nv" onclick="setDescMode('nv')" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-family:'Passion One',sans-serif;font-size:13px;padding:5px 14px;cursor:pointer;">Nuevo valor</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="desc-prefix" style="font-size:20px;font-family:'Passion One',sans-serif;color:#f6d01e;display:none;">$</span>
+        <input id="desc-input" type="number" min="0" max="50" step="1" value="15"
+          style="width:90px;background:#1a1530;border:1px solid #412d7d;border-radius:6px;color:#f6d01e;font-family:'Passion One',sans-serif;font-size:20px;text-align:center;padding:4px 8px;outline:none;"
+          oninput="document.getElementById('desc-slider').value=this.value;renderDesc()">
+        <span id="desc-suffix" style="font-size:20px;font-family:'Passion One',sans-serif;color:#f6d01e;">%</span>
+      </div>
+      <input id="desc-slider" type="range" min="0" max="50" step="1" value="15"
+        style="flex:1;min-width:120px;accent-color:#f6d01e;"
+        oninput="document.getElementById('desc-input').value=this.value;renderDesc()">
+      <div id="desc-presets" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:#e8e4f0;">Aplicar a:</span>
+      <button onclick="toggleAllDesc(true)" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:4px 10px;cursor:pointer;">✓ Todos</button>
+      <button onclick="toggleAllDesc(false)" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:4px 10px;cursor:pointer;">✕ Ninguno</button>
+    </div>
+    <div style="display:flex;gap:20px;margin-top:12px;flex-wrap:wrap;" id="desc-kpis"></div>
+  </div>
+  <div style="margin-bottom:8px;font-size:10px;color:#7a6fa0;">
+    <span style="color:#6ebd89;">■</span> Rentabilidad OK (&gt;55%)&nbsp;&nbsp;
+    <span style="color:#f6d01e;">■</span> Atención (45–55%)&nbsp;&nbsp;
+    <span style="color:#f87171;">■</span> Crítica (&lt;45%)
+  </div>
+  <div class="tbl-wrap"><table id="desc-tbl"></table></div>
+</div>
 <div class="panel" id="panel-evo">
   <div class="evo-header">
     <div class="evo-title">Evolución de Costos de Insumos</div>
@@ -203,13 +241,14 @@ document.getElementById('hm').innerHTML=`Actualizado: ${D.generado}<br>CSV: ${D.
   window._mesLabel=_mesLabel;
 })();
 
-const TABS=['local','py','extras','ing','evo'];
+const TABS=['local','py','extras','ing','evo','desc'];
 function showTab(t){
   TABS.forEach(id=>{
     document.getElementById('panel-'+id).classList.toggle('active',id===t);
   });
-  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.textContent.trim()===
-    ({local:'Local',py:'Pedidos Ya',extras:'Extras',ing:'Insumos',evo:'Evolución Precios'})[t]));
+  const names={local:'Local',py:'Pedidos Ya',extras:'Extras',ing:'Insumos',evo:'Evolución Precios',desc:'Descuentos'};
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.textContent.trim()===names[t]));
+  if(t==='desc') renderDesc();
 }
 
 // Helpers
@@ -218,6 +257,121 @@ function rc(r){return r>=65?VL:r>=55?AM:'#e8342a';}
 function fmt(n){return n.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:0});}
 function pct(n,b){return b?((n-b)/b*100):0;}
 function pctStr(n,b){const p=pct(n,b);const s=(p>0?'+':'')+p.toFixed(1)+'%';return `<span style="color:${p>0?'#e8342a':p<0?'#6ebd89':'#888'}">${s}</span>`;}
+
+// ─── DESCUENTOS ────────────────────────────────────────────────────────────
+let descMode='pct';
+let descSel={};
+
+function initDescSel(){
+  D.burgers_local.forEach(b=>{if(descSel[b.nombre]===undefined)descSel[b.nombre]=true;});
+}
+
+function setDescMode(m){
+  descMode=m;
+  const inp=document.getElementById('desc-input');
+  const sl=document.getElementById('desc-slider');
+  const pre=document.getElementById('desc-prefix');
+  const suf=document.getElementById('desc-suffix');
+  const sub=document.getElementById('desc-subtitle');
+  ['pct','fix','nv'].forEach(k=>{
+    const btn=document.getElementById('btn-'+k);
+    const active=k===m;
+    btn.style.background=active?'#412d7d':'#1a1530';
+    btn.style.borderColor=active?'#6040a0':'#2e2655';
+    btn.style.color=active?'#f6d01e':'#e8e4f0';
+  });
+  if(m==='pct'){
+    inp.max=50;inp.step=1;sl.max=50;sl.step=1;
+    if(parseFloat(inp.value)>50){inp.value=50;sl.value=50;}
+    pre.style.display='none';suf.style.display='';
+    document.getElementById('desc-presets').innerHTML=['10%','15%','20%','25%'].map((v,i)=>`<button onclick="setDesc(${[10,15,20,25][i]})" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:5px 10px;cursor:pointer;">${v}</button>`).join('');
+    sub.textContent='Aplicá un porcentaje de descuento sobre el precio actual';
+  } else if(m==='fix'){
+    inp.max=5000;inp.step=100;sl.max=5000;sl.step=100;
+    pre.style.display='';suf.style.display='none';
+    document.getElementById('desc-presets').innerHTML=['$500','$1000','$2000','$3000'].map((v,i)=>`<button onclick="setDesc(${[500,1000,2000,3000][i]})" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:5px 10px;cursor:pointer;">${v}</button>`).join('');
+    if(parseFloat(inp.value)<=50){inp.value=1000;sl.value=1000;}
+    sub.textContent='Restá un importe fijo en pesos del precio actual';
+  } else {
+    inp.max=30000;inp.step=500;sl.max=30000;sl.step=500;
+    pre.style.display='';suf.style.display='none';
+    document.getElementById('desc-presets').innerHTML=['$10000','$12000','$15000','$18000'].map((v,i)=>`<button onclick="setDesc(${[10000,12000,15000,18000][i]})" style="background:#1a1530;border:1px solid #2e2655;border-radius:6px;color:#e8e4f0;font-size:11px;padding:5px 10px;cursor:pointer;">${v}</button>`).join('');
+    if(parseFloat(inp.value)<=5000){inp.value=15000;sl.value=15000;}
+    sub.textContent='Establecé el precio final de venta y calculá la rentabilidad resultante';
+  }
+  renderDesc();
+}
+
+function setDesc(v){document.getElementById('desc-input').value=v;document.getElementById('desc-slider').value=v;renderDesc();}
+function toggleAllDesc(v){initDescSel();Object.keys(descSel).forEach(k=>descSel[k]=v);renderDesc();}
+function toggleDesc(nombre){initDescSel();descSel[nombre]=!descSel[nombre];renderDesc();}
+
+function renderDesc(){
+  initDescSel();
+  const val=parseFloat(document.getElementById('desc-input').value)||0;
+  const data=D.burgers_local;
+  const fmtP=n=>'$'+fmt(n);
+
+  function precioFinal(b){
+    const sel=descSel[b.nombre]!==false;
+    if(!sel) return b.precio_civa;
+    if(descMode==='pct') return b.precio_civa*(1-val/100);
+    if(descMode==='fix') return b.precio_civa-val;
+    return val;
+  }
+
+  let sumOrig=0,sumDesc=0,sumCosto=0,sumUds=0;
+  data.forEach(b=>{
+    const pd=precioFinal(b);
+    sumOrig+=b.precio_civa*b.unidades;
+    sumDesc+=pd*b.unidades;
+    sumCosto+=b.costo_civa*b.unidades;
+    sumUds+=b.unidades;
+  });
+  const rentOrig=sumOrig>0?(1-sumCosto/sumOrig)*100:0;
+  const rentDesc=sumDesc>0?(1-sumCosto/sumDesc)*100:0;
+  const kpis=[
+    {l:'Precio pond. s/desc',v:fmtP(sumOrig/sumUds),c:'#e8e4f0'},
+    {l:'Precio pond. c/desc',v:fmtP(sumDesc/sumUds),c:'#f6d01e'},
+    {l:'Rent. pond. s/desc',v:rentOrig.toFixed(1)+'%',c:rc(rentOrig)},
+    {l:'Rent. pond. c/desc',v:rentDesc.toFixed(1)+'%',c:rc(rentDesc)},
+  ];
+  document.getElementById('desc-kpis').innerHTML=kpis.map(k=>`<div style="background:#1a1530;border-radius:8px;padding:8px 14px;border:1px solid #2e2655;text-align:center;min-width:110px;"><div style="font-family:'Passion One',sans-serif;font-size:18px;color:${k.c}">${k.v}</div><div style="font-size:9px;color:#7a6fa0;text-transform:uppercase;letter-spacing:.8px;margin-top:2px">${k.l}</div></div>`).join('');
+
+  const col2lbl=descMode==='nv'?'Precio nuevo':'Con descuento';
+  let rows='';
+  const fams=[...new Set(data.map(b=>b.familia))];
+  fams.forEach(fam=>{
+    const grp=data.filter(b=>b.familia===fam);
+    rows+=`<tr><td colspan="7" style="background:#231d3e;color:#f6d01e;font-family:'Passion One',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;">${fam}</td></tr>`;
+    grp.forEach(b=>{
+      const sel=descSel[b.nombre]!==false;
+      const pd=precioFinal(b);
+      const gd=pd-b.costo_civa;
+      const rd=(1-b.costo_civa/pd)*100;
+      const clr=rd>=55?'#6ebd89':rd>=45?'#f6d01e':'#f87171';
+      const chk=`<input type="checkbox" ${sel?'checked':''} onchange="toggleDesc('${b.nombre.replace(/'/g,"\\'")}')">`;
+      rows+=`<tr class="tr" style="${sel?'':'opacity:.45'}">
+        <td style="width:28px;text-align:center;">${chk}</td>
+        <td>${b.nombre}</td>
+        <td class="r">${fmtP(b.precio_civa)}</td>
+        <td class="r" style="color:${sel?'#f6d01e':'#7a6fa0'}">${fmtP(pd)}</td>
+        <td class="r" style="color:#7a6fa0">${fmtP(b.costo_civa)}</td>
+        <td class="r" style="color:${gd>=0?'#6ebd89':'#f87171'}">${fmtP(gd)}</td>
+        <td class="r"><span style="color:${clr};font-weight:600">${rd.toFixed(1)}%</span></td>
+      </tr>`;
+    });
+  });
+  document.getElementById('desc-tbl').innerHTML=`<thead><tr>
+    <th></th><th>Burger</th>
+    <th class="r">Precio orig.</th>
+    <th class="r">${col2lbl}</th>
+    <th class="r">Costo c/IVA</th>
+    <th class="r">Ganancia</th>
+    <th class="r">Rentabilidad</th>
+  </tr></thead><tbody>${rows}</tbody>`;
+}
+(()=>{setDescMode('pct');})();
 
 // ─── TABLAS BURGERS ────────────────────────────────────────────────────────
 (()=>{
