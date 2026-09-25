@@ -379,12 +379,12 @@ function renderDesc(){
   ['local','py'].forEach(canal=>{
     const data=D['burgers_'+canal];
     const isPY = canal==='py';
-    const cols = isPY ? 8 : 7;  // PY tiene columna extra "Precio Carta"
+    const cols = isPY ? 9 : 8;  // PY tiene columna extra "Precio Carta"
     let h;
     if(isPY){
-      h=`<thead><tr><th>Producto</th><th title="Precio publicado en PedidosYa (precio local +10%)">Precio Carta</th><th title="Precio que percibimos después de la comisión de PY">Precio Neto</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+      h=`<thead><tr><th>Producto</th><th title="Precio publicado en PedidosYa (precio local +10%)">Precio Carta</th><th title="Precio que percibimos después de la comisión de PY">Precio Neto</th><th>Costo s/IVA</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
     } else {
-      h=`<thead><tr><th>Producto</th><th>Precio</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+      h=`<thead><tr><th>Producto</th><th>Precio</th><th>Costo s/IVA</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
     }
     fams.forEach(fam=>{
       const rows=data.filter(b=>b.familia===fam);
@@ -396,6 +396,7 @@ function renderDesc(){
             <td>${b.nombre}</td>
             <td style="color:#f6d01e;font-weight:bold">${fmt(b.precio_cliente_civa||0)}</td>
             <td>${fmt(b.precio_civa)}</td>
+            <td style="color:#7a6fa0">${fmt(b.costo_siva)}</td>
             <td>${fmt(b.costo_civa)}</td>
             <td>${fmt(b.ganancia_civa)}</td>
             <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
@@ -407,6 +408,7 @@ function renderDesc(){
           h+=`<tr>
             <td class="bl" onclick="showReceta('${safeNombre}')"><span class="bln">${b.nombre}</span></td>
             <td>${fmt(b.precio_civa)}</td>
+            <td style="color:#7a6fa0">${fmt(b.costo_siva)}</td>
             <td>${fmt(b.costo_civa)}</td>
             <td>${fmt(b.ganancia_civa)}</td>
             <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
@@ -418,7 +420,7 @@ function renderDesc(){
     });
     if(D.rent_ponderada_local){
       const rp=canal==='local'?D.rent_ponderada_local:D.rent_ponderada_py;
-      const spanLeft = isPY ? 5 : 4;
+      const spanLeft = isPY ? 6 : 5;
       const spanRight = isPY ? 3 : 3;
       if(rp!=null) h+=`<tr class="fr"><td colspan="${spanLeft}">Rentabilidad ponderada por ventas</td><td colspan="${spanRight}"><span style="color:${rc(rp)};font-weight:bold">${rp.toFixed(1)}%</span></td></tr>`;
     }
