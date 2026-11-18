@@ -78,6 +78,32 @@ tr:hover td:first-child{background:var(--sf2);}
 .ev-badge .val{font-family:'Passion One',sans-serif;font-size:20px;color:var(--am);}
 
 .aumento{color:var(--vd);font-weight:600;} .sin-cambio{color:var(--mt);} .baja{color:#f87171;font-weight:600;}
+/* EVENTOS */
+.ev-section{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.ev-section-title{font-family:'Passion One',sans-serif;font-size:16px;letter-spacing:1px;color:var(--am);margin-bottom:12px;}
+.ev-table{width:100%;border-collapse:collapse;}
+.ev-table th{font-family:'Passion One',sans-serif;font-weight:400;font-size:11px;letter-spacing:1px;color:var(--mt);text-transform:uppercase;padding:6px 8px;text-align:right;border-bottom:1px solid var(--bd);}
+.ev-table th:first-child{text-align:left;}
+.ev-table td{padding:6px 8px;border-bottom:1px solid rgba(46,38,85,.5);vertical-align:middle;text-align:right;}
+.ev-table td:first-child{text-align:left;}
+.ev-inp{background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:13px;padding:4px 8px;text-align:right;width:80px;outline:none;}
+.ev-inp:focus{border-color:var(--am);}
+.ev-sel{background:var(--sf2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);font-size:12px;padding:4px 6px;outline:none;width:100%;}
+.ev-sel:focus{border-color:var(--am);}
+.ev-btn-add{background:rgba(246,208,30,.1);border:1px solid rgba(246,208,30,.3);border-radius:6px;color:var(--am);font-family:'Passion One',sans-serif;font-size:13px;padding:6px 14px;cursor:pointer;letter-spacing:.5px;}
+.ev-btn-add:hover{background:rgba(246,208,30,.18);}
+.ev-btn-rm{background:none;border:none;color:var(--mt);font-size:16px;cursor:pointer;padding:2px 6px;border-radius:3px;line-height:1;}
+.ev-btn-rm:hover{color:#f87171;}
+.ev-toggle{display:inline-flex;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;overflow:hidden;}
+.ev-toggle button{background:none;border:none;color:var(--mt);font-family:'Passion One',sans-serif;font-size:12px;letter-spacing:.5px;padding:6px 14px;cursor:pointer;}
+.ev-toggle button.active{background:var(--am);color:#0e0b1a;}
+.ev-resumen{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:4px;}
+@media(min-width:600px){.ev-resumen{grid-template-columns:repeat(3,1fr);}}
+.ev-res-card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;text-align:center;}
+.ev-res-card.highlight{border-color:var(--am);}
+.ev-res-label{font-size:9px;color:var(--mt);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.ev-res-val{font-family:'Passion One',sans-serif;font-size:20px;color:var(--tx);}
+.ev-res-val.am{color:var(--am);} .ev-res-val.vd{color:var(--vd);} .ev-res-val.red{color:#f87171;}
 @media(max-width:480px){.logo-t{font-size:22px;}.kpis{gap:6px;}.kv{font-size:20px;}.hdr{padding:10px 12px;}.panel{padding:8px;}}
 /* MODAL RECETA */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;align-items:center;justify-content:center;padding:12px;}
@@ -122,6 +148,7 @@ tr:hover td:first-child{background:var(--sf2);}
   <div class="tab" onclick="showTab('ing')">Insumos</div>
   <div class="tab" onclick="showTab('evo')">Evolución Precios</div>
   <div class="tab" onclick="showTab('desc')">Ajuste de Precios</div>
+  <div class="tab" onclick="showTab('eventos')">Eventos</div>
 </div>
 
 <div class="panel active" id="panel-local">
@@ -187,6 +214,101 @@ tr:hover td:first-child{background:var(--sf2);}
   <div class="evo-grid" id="evo-cards"></div>
 </div>
 
+<!-- Panel Eventos -->
+<div class="panel" id="panel-eventos">
+  <!-- BURGERS -->
+  <div class="ev-section">
+    <div class="ev-section-title">Burgers <span style="font-size:11px;color:var(--mt);font-family:'Segoe UI',sans-serif;font-weight:400;letter-spacing:0">(sin papas)</span></div>
+    <div class="tbl-wrap" style="margin-bottom:10px">
+      <table class="ev-table" id="ev-burgers-tbl">
+        <thead><tr>
+          <th style="min-width:160px">Burger</th>
+          <th>Cant.</th>
+          <th>Costo Unit. s/IVA</th>
+          <th>Costo Total s/IVA</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="ev-burgers-body"></tbody>
+      </table>
+    </div>
+    <button class="ev-btn-add" onclick="evAddBurger()">+ Agregar Burger</button>
+  </div>
+
+  <!-- PAPAS -->
+  <div class="ev-section">
+    <div class="ev-section-title">Papas <span style="font-size:11px;color:var(--mt);font-family:'Segoe UI',sans-serif;font-weight:400;letter-spacing:0">(porciones Sure Crisp + caja)</span></div>
+    <table class="ev-table">
+      <thead><tr><th>Porciones</th><th>Costo Unit. s/IVA</th><th>Costo Total s/IVA</th></tr></thead>
+      <tbody><tr>
+        <td><input class="ev-inp" id="ev-papas-qty" type="number" min="0" value="0" oninput="evCalc()"></td>
+        <td class="nm" id="ev-papas-unit">—</td>
+        <td class="nv" id="ev-papas-total">$0</td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <!-- GASTOS FIJOS -->
+  <div class="ev-section">
+    <div class="ev-section-title">Gastos Fijos</div>
+    <div class="tbl-wrap">
+      <table class="ev-table">
+        <thead><tr>
+          <th>Concepto</th>
+          <th>Cant.</th>
+          <th>Precio Unit. ($)</th>
+          <th>Total</th>
+        </tr></thead>
+        <tbody id="ev-gastos-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INGRESOS -->
+  <div class="ev-section">
+    <div class="ev-section-title">Ingresos</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:var(--mt)">Modo:</span>
+      <div class="ev-toggle">
+        <button id="ev-ing-btn-total" class="active" onclick="evSetIngMode('total')">Monto Total</button>
+        <button id="ev-ing-btn-unit" onclick="evSetIngMode('unit')">Precio Unitario</button>
+      </div>
+    </div>
+    <div id="ev-ing-total-row" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:var(--tx)">Total del evento:</span>
+      <span style="font-size:16px;color:var(--mt)">$</span>
+      <input class="ev-inp" id="ev-ing-total" type="number" min="0" value="0" style="width:140px;font-size:15px;" oninput="evCalc()">
+    </div>
+    <div id="ev-ing-unit-row" style="display:none;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--tx);min-width:160px">Precio por burger c/IVA:</span>
+        <span style="color:var(--mt)">$</span>
+        <input class="ev-inp" id="ev-ing-price-burger" type="number" min="0" value="0" oninput="evCalc()">
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--tx);min-width:160px">Precio por porción papas c/IVA:</span>
+        <span style="color:var(--mt)">$</span>
+        <input class="ev-inp" id="ev-ing-price-papas" type="number" min="0" value="0" oninput="evCalc()">
+      </div>
+      <div style="font-size:12px;color:var(--mt);margin-top:2px">
+        Total calculado: <span id="ev-ing-unit-calc" style="color:var(--am);font-family:'Passion One',sans-serif;font-size:16px;">$0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="ev-section">
+    <div class="ev-section-title">Resumen P&amp;L</div>
+    <div class="ev-resumen">
+      <div class="ev-res-card"><div class="ev-res-label">Costo Variable</div><div class="ev-res-val" id="ev-r-cv">$0</div></div>
+      <div class="ev-res-card"><div class="ev-res-label">Gastos Fijos</div><div class="ev-res-val" id="ev-r-gf">$0</div></div>
+      <div class="ev-res-card"><div class="ev-res-label">Total Costos</div><div class="ev-res-val am" id="ev-r-tc">$0</div></div>
+      <div class="ev-res-card"><div class="ev-res-label">Ingresos</div><div class="ev-res-val" id="ev-r-ing">$0</div></div>
+      <div class="ev-res-card highlight"><div class="ev-res-label">Ganancia Bruta</div><div class="ev-res-val" id="ev-r-gan">$0</div></div>
+      <div class="ev-res-card highlight"><div class="ev-res-label">Rentabilidad</div><div class="ev-res-val" id="ev-r-rent">—</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Sub-modal salsa -->
 <div class="modal-overlay" id="sauce-overlay" style="z-index:110">
   <div class="modal-card" style="max-width:520px">
@@ -246,12 +368,12 @@ document.getElementById('hm').innerHTML=`Actualizado: ${D.generado}<br>CSV: ${D.
   window._mesLabel=_mesLabel;
 })();
 
-const TABS=['local','py','extras','ing','evo','desc'];
+const TABS=['local','py','extras','ing','evo','desc','eventos'];
 function showTab(t){
   TABS.forEach(id=>{
     document.getElementById('panel-'+id).classList.toggle('active',id===t);
   });
-  const names={local:'Local',py:'Pedidos Ya',extras:'Extras',ing:'Insumos',evo:'Evolución Precios',desc:'Descuentos'};
+  const names={local:'Local',py:'Pedidos Ya',extras:'Extras',ing:'Insumos',evo:'Evolución Precios',desc:'Ajuste de Precios',eventos:'Eventos'};
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.textContent.trim()===names[t]));
   if(t==='desc') renderDesc();
 }
@@ -670,6 +792,145 @@ const sc={x:{ticks:{color:'#7a6fa0',font:{size:10}},grid:{color:grid}},y:{ticks:
       plugins:{legend:{labels:{color:'#a09abf',font:{size:11}}},
         title:{display:true,text:'Rent. Local vs Pedidos Ya',color:'#e8e4f0',font:{size:11,weight:'bold'}}},
       scales:{...sc,y:{...sc.y,min:30,max:80}}}});
+})();
+
+// ─── EVENTOS ────────────────────────────────────────────────────────────────
+const EV_BURGER_COSTS = (() => {
+  const costs = {};
+  D.burgers_local.forEach(b => {
+    costs[b.nombre] = b.receta
+      .filter(r => !r.item.includes('Papas') && !r.item.includes('Caja'))
+      .reduce((s, r) => s + r.costo_siva, 0);
+  });
+  return costs;
+})();
+
+const EV_PAPAS_UNIT = (() => {
+  const b = D.burgers_local[0];
+  const papas = b.receta.find(r => r.item.includes('Papas'));
+  const caja = b.receta.find(r => r.item.includes('Caja'));
+  return (papas ? papas.costo_siva : 844.1) + (caja ? caja.costo_siva : 195);
+})();
+
+let evBurgerRows = [];
+let evGastosRows = [
+  {nombre:'Flete',qty:1,precio:0},
+  {nombre:'Garrafas',qty:1,precio:0},
+  {nombre:'Sueldos',qty:1,precio:0},
+  {nombre:'Nafta',qty:1,precio:0}
+];
+let evIngMode = 'total';
+
+function evFmt(n){return '$'+Math.round(n).toLocaleString('es-AR');}
+
+function evAddBurger(){
+  evBurgerRows.push({nombre:D.burgers_local[0].nombre,qty:1});
+  evRenderBurgers();
+  evCalc();
+}
+
+function evRemoveBurger(i){
+  evBurgerRows.splice(i,1);
+  evRenderBurgers();
+  evCalc();
+}
+
+function evRenderBurgers(){
+  const tbody=document.getElementById('ev-burgers-body');
+  const opts=D.burgers_local.map(b=>`<option value="${b.nombre}">${b.nombre}</option>`).join('');
+  if(!evBurgerRows.length){
+    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--mt);padding:14px;font-style:italic">Sin burgers. Hacé click en "+ Agregar Burger".</td></tr>';
+    return;
+  }
+  tbody.innerHTML=evBurgerRows.map((row,i)=>{
+    const cost=EV_BURGER_COSTS[row.nombre]||0;
+    const total=cost*row.qty;
+    const selOpts=D.burgers_local.map(b=>`<option value="${b.nombre}"${b.nombre===row.nombre?' selected':''}>${b.nombre}</option>`).join('');
+    return `<tr>
+      <td style="min-width:160px"><select class="ev-sel" onchange="evBurgerChange(${i},'nombre',this.value)">${selOpts}</select></td>
+      <td><input class="ev-inp" type="number" min="1" value="${row.qty}" style="width:60px" oninput="evBurgerChange(${i},'qty',+this.value)"></td>
+      <td class="nm" style="font-size:12px">${evFmt(cost)}</td>
+      <td class="nv" style="font-size:13px;font-weight:600">${evFmt(total)}</td>
+      <td><button class="ev-btn-rm" onclick="evRemoveBurger(${i})">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function evBurgerChange(i,field,val){
+  if(field==='qty') evBurgerRows[i].qty=isNaN(val)||val<0?0:val;
+  else evBurgerRows[i].nombre=val;
+  evRenderBurgers();
+  evCalc();
+}
+
+function evRenderGastos(){
+  const tbody=document.getElementById('ev-gastos-body');
+  tbody.innerHTML=evGastosRows.map((row,i)=>{
+    const total=row.qty*row.precio;
+    return `<tr>
+      <td style="font-weight:600;color:#fff">${row.nombre}</td>
+      <td><input class="ev-inp" type="number" min="0" value="${row.qty}" style="width:60px" oninput="evGastoChange(${i},'qty',+this.value)"></td>
+      <td><input class="ev-inp" type="number" min="0" value="${row.precio}" style="width:120px" placeholder="0" oninput="evGastoChange(${i},'precio',+this.value)"></td>
+      <td class="${total>0?'nv':'nm'}" id="ev-gt-${i}">${evFmt(total)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function evGastoChange(i,field,val){
+  evGastosRows[i][field]=isNaN(val)||val<0?0:val;
+  const total=evGastosRows[i].qty*evGastosRows[i].precio;
+  const el=document.getElementById('ev-gt-'+i);
+  if(el){el.textContent=evFmt(total);el.className=total>0?'nv':'nm';}
+  evCalc();
+}
+
+function evSetIngMode(mode){
+  evIngMode=mode;
+  ['total','unit'].forEach(m=>{
+    document.getElementById('ev-ing-btn-'+m).classList.toggle('active',m===mode);
+    document.getElementById('ev-ing-'+m+'-row').style.display=m===mode?(m==='unit'?'flex':'flex'):'none';
+  });
+  if(mode==='unit') document.getElementById('ev-ing-unit-row').style.flexDirection='column';
+  evCalc();
+}
+
+function evCalc(){
+  const cvBurgers=evBurgerRows.reduce((s,r)=>s+(EV_BURGER_COSTS[r.nombre]||0)*r.qty,0);
+  const papasQty=parseFloat(document.getElementById('ev-papas-qty').value)||0;
+  const cvPapas=papasQty*EV_PAPAS_UNIT;
+  const cvTotal=cvBurgers+cvPapas;
+  document.getElementById('ev-papas-unit').textContent=evFmt(EV_PAPAS_UNIT);
+  document.getElementById('ev-papas-total').textContent=evFmt(cvPapas);
+  const gfTotal=evGastosRows.reduce((s,r)=>s+r.qty*r.precio,0);
+  let ing=0;
+  if(evIngMode==='total'){
+    ing=parseFloat(document.getElementById('ev-ing-total').value)||0;
+  } else {
+    const pB=parseFloat(document.getElementById('ev-ing-price-burger').value)||0;
+    const pP=parseFloat(document.getElementById('ev-ing-price-papas').value)||0;
+    const totalBurgers=evBurgerRows.reduce((s,r)=>s+r.qty,0);
+    ing=pB*totalBurgers+pP*papasQty;
+    document.getElementById('ev-ing-unit-calc').textContent=evFmt(ing);
+  }
+  const totalCostos=cvTotal+gfTotal;
+  const ganancia=ing-totalCostos;
+  const rent=ing>0?(ganancia/ing*100):NaN;
+  document.getElementById('ev-r-cv').textContent=evFmt(cvTotal);
+  document.getElementById('ev-r-gf').textContent=evFmt(gfTotal);
+  document.getElementById('ev-r-tc').textContent=evFmt(totalCostos);
+  document.getElementById('ev-r-ing').textContent=evFmt(ing);
+  const ganEl=document.getElementById('ev-r-gan');
+  ganEl.textContent=evFmt(ganancia);
+  ganEl.className='ev-res-val '+(ganancia>=0?'vd':'red');
+  const rentEl=document.getElementById('ev-r-rent');
+  if(isNaN(rent)||ing===0){rentEl.textContent='—';rentEl.className='ev-res-val';}
+  else{rentEl.textContent=rent.toFixed(1)+'%';rentEl.className='ev-res-val '+(rent>=55?'vd':rent>=45?'am':'red');}
+}
+
+(()=>{
+  document.getElementById('ev-papas-unit').textContent=evFmt(EV_PAPAS_UNIT);
+  evRenderBurgers();
+  evRenderGastos();
 })();
 </script>
 </body>
