@@ -848,17 +848,24 @@ function evRenderBurgers(){
     const selOpts=D.burgers_local.map(b=>`<option value="${b.nombre}"${b.nombre===row.nombre?' selected':''}>${b.nombre}</option>`).join('');
     return `<tr>
       <td style="min-width:160px"><select class="ev-sel" onchange="evBurgerChange(${i},'nombre',this.value)">${selOpts}</select></td>
-      <td><input class="ev-inp" type="number" min="1" value="${row.qty}" style="width:60px" oninput="evBurgerChange(${i},'qty',+this.value)"></td>
+      <td><input class="ev-inp" type="number" min="1" value="${row.qty}" style="width:60px" oninput="evBurgerQty(${i},+this.value)"></td>
       <td class="nm" style="font-size:12px">${evFmt(cost)}</td>
-      <td class="nv" style="font-size:13px;font-weight:600">${evFmt(total)}</td>
+      <td class="nv" id="ev-bt-${i}" style="font-size:13px;font-weight:600">${evFmt(total)}</td>
       <td><button class="ev-btn-rm" onclick="evRemoveBurger(${i})">✕</button></td>
     </tr>`;
   }).join('');
 }
 
+function evBurgerQty(i,val){
+  evBurgerRows[i].qty=isNaN(val)||val<0?0:val;
+  const cost=EV_BURGER_COSTS[evBurgerRows[i].nombre]||0;
+  const el=document.getElementById('ev-bt-'+i);
+  if(el) el.textContent=evFmt(cost*evBurgerRows[i].qty);
+  evCalc();
+}
+
 function evBurgerChange(i,field,val){
-  if(field==='qty') evBurgerRows[i].qty=isNaN(val)||val<0?0:val;
-  else evBurgerRows[i].nombre=val;
+  evBurgerRows[i][field]=val;
   evRenderBurgers();
   evCalc();
 }
