@@ -218,14 +218,14 @@ tr:hover td:first-child{background:var(--sf2);}
 <div class="panel" id="panel-eventos">
   <!-- BURGERS -->
   <div class="ev-section">
-    <div class="ev-section-title">Burgers <span style="font-size:11px;color:var(--mt);font-family:'Segoe UI',sans-serif;font-weight:400;letter-spacing:0">(sin papas)</span></div>
+    <div class="ev-section-title">Burgers <span style="font-size:11px;color:var(--mt);font-family:'Segoe UI',sans-serif;font-weight:400;letter-spacing:0">(sin papas · sin bolsa · c/IVA)</span></div>
     <div class="tbl-wrap" style="margin-bottom:10px">
       <table class="ev-table" id="ev-burgers-tbl">
         <thead><tr>
           <th style="min-width:160px">Burger</th>
           <th>Cant.</th>
-          <th>Costo Unit. s/IVA</th>
-          <th>Costo Total s/IVA</th>
+          <th>Costo Unit. c/IVA</th>
+          <th>Costo Total c/IVA</th>
           <th></th>
         </tr></thead>
         <tbody id="ev-burgers-body"></tbody>
@@ -238,7 +238,7 @@ tr:hover td:first-child{background:var(--sf2);}
   <div class="ev-section">
     <div class="ev-section-title">Papas <span style="font-size:11px;color:var(--mt);font-family:'Segoe UI',sans-serif;font-weight:400;letter-spacing:0">(porciones Sure Crisp + caja)</span></div>
     <table class="ev-table">
-      <thead><tr><th>Porciones</th><th>Costo Unit. s/IVA</th><th>Costo Total s/IVA</th></tr></thead>
+      <thead><tr><th>Porciones</th><th>Costo Unit. c/IVA</th><th>Costo Total c/IVA</th></tr></thead>
       <tbody><tr>
         <td><input class="ev-inp" id="ev-papas-qty" type="number" min="0" value="0" oninput="evCalc()"></td>
         <td class="nm" id="ev-papas-unit">—</td>
@@ -799,8 +799,8 @@ const EV_BURGER_COSTS = (() => {
   const costs = {};
   D.burgers_local.forEach(b => {
     costs[b.nombre] = b.receta
-      .filter(r => !r.item.includes('Papas') && !r.item.includes('Caja'))
-      .reduce((s, r) => s + r.costo_siva, 0);
+      .filter(r => !r.item.includes('Papas') && !r.item.includes('Caja') && !r.item.includes('Bolsa'))
+      .reduce((s, r) => s + r.costo_civa, 0);
   });
   return costs;
 })();
@@ -809,7 +809,7 @@ const EV_PAPAS_UNIT = (() => {
   const b = D.burgers_local[0];
   const papas = b.receta.find(r => r.item.includes('Papas'));
   const caja = b.receta.find(r => r.item.includes('Caja'));
-  return (papas ? papas.costo_siva : 844.1) + (caja ? caja.costo_siva : 195);
+  return (papas ? papas.costo_civa : 1021) + (caja ? caja.costo_civa : 236);
 })();
 
 let evBurgerRows = [];
