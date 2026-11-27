@@ -105,6 +105,9 @@ tr:hover td:first-child{background:var(--sf2);}
 .ev-res-val{font-family:'Passion One',sans-serif;font-size:20px;color:var(--tx);}
 .ev-res-val.am{color:var(--am);} .ev-res-val.vd{color:var(--vd);} .ev-res-val.red{color:#f87171;}
 @media(max-width:480px){.logo-t{font-size:22px;}.kpis{gap:6px;}.kv{font-size:20px;}.hdr{padding:10px 12px;}.panel{padding:8px;}}
+.desc-input{width:52px;background:var(--sf2);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:12px;padding:3px 5px;text-align:center;outline:none;}
+.desc-input:focus{border-color:var(--am);}
+.desc-input::-webkit-inner-spin-button,.desc-input::-webkit-outer-spin-button{-webkit-appearance:none;}
 /* MODAL RECETA */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;align-items:center;justify-content:center;padding:12px;}
 .modal-overlay.open{display:flex;}
@@ -533,10 +536,10 @@ function renderDesc(){
   ['local','py'].forEach(canal=>{
     const data=D['burgers_'+canal];
     const isPY = canal==='py';
-    const cols = isPY ? 9 : 8;  // PY tiene columna extra "Precio Carta"
+    const cols = isPY ? 10 : 8;  // PY tiene columna extra "Precio Carta" + "% Desc."
     let h;
     if(isPY){
-      h=`<thead><tr><th>Producto</th><th title="Precio publicado en PedidosYa (precio local +10%)">Precio Carta</th><th title="Precio que percibimos después de la comisión de PY">Precio Neto</th><th>Costo s/IVA</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
+      h=`<thead><tr><th>Producto</th><th title="% de descuento para simulación de promo" style="text-align:center">% Desc.</th><th title="Precio publicado en PedidosYa (precio local +10%)">Precio Carta</th><th title="Precio que percibimos después de la comisión de PY">Precio Neto</th><th>Costo s/IVA</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
     } else {
       h=`<thead><tr><th>Producto</th><th>Precio</th><th>Costo s/IVA</th><th>Costo c/IVA</th><th>Ganancia</th><th>Rent. s/IVA</th><th>Unidades</th><th>Mix %</th></tr></thead><tbody>`;
     }
@@ -548,12 +551,13 @@ function renderDesc(){
         if(isPY){
           h+=`<tr>
             <td>${b.nombre}</td>
-            <td style="color:#f6d01e;font-weight:bold">${fmt(b.precio_cliente_civa||0)}</td>
-            <td>${fmt(b.precio_civa)}</td>
-            <td style="color:#7a6fa0">${fmt(b.costo_siva)}</td>
+            <td style="text-align:center;padding:5px 6px"><input type="number" class="desc-input" min="0" max="99" step="1" placeholder="0" oninput="recalcPY(this)"></td>
+            <td class="py-carta" data-orig="${b.precio_cliente_civa||0}" style="color:#f6d01e;font-weight:bold">${fmt(b.precio_cliente_civa||0)}</td>
+            <td class="py-neto" data-neto-civa="${b.precio_civa}">${fmt(b.precio_civa)}</td>
+            <td class="py-csto-s" style="color:#7a6fa0">${fmt(b.costo_siva)}</td>
             <td>${fmt(b.costo_civa)}</td>
-            <td>${fmt(b.ganancia_civa)}</td>
-            <td><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
+            <td class="py-gan" data-costo-siva="${b.costo_siva}">${fmt(b.ganancia_civa)}</td>
+            <td class="py-rent"><span style="color:${rc(b.rent_siva)};font-weight:bold">${b.rent_siva.toFixed(1)}%</span></td>
             <td>${b.unidades||'-'}</td>
             <td>${b.peso_pct?b.peso_pct+'%':'-'}</td>
           </tr>`;
@@ -574,13 +578,40 @@ function renderDesc(){
     });
     if(D.rent_ponderada_local){
       const rp=canal==='local'?D.rent_ponderada_local:D.rent_ponderada_py;
-      const spanLeft = isPY ? 6 : 5;
+      const spanLeft = isPY ? 7 : 5;
       const spanRight = isPY ? 3 : 3;
       if(rp!=null) h+=`<tr class="fr"><td colspan="${spanLeft}">Rentabilidad ponderada por ventas</td><td colspan="${spanRight}"><span style="color:${rc(rp)};font-weight:bold">${rp.toFixed(1)}%</span></td></tr>`;
     }
     document.getElementById('t'+canal[0]).innerHTML=h+'</tbody>';
   });
 })();
+
+function recalcPY(inp) {
+  const row = inp.closest('tr');
+  const d = Math.max(0, Math.min(99, parseFloat(inp.value) || 0));
+  const mult = 1 - d / 100;
+  const cartaOrig = parseFloat(row.querySelector('.py-carta').dataset.orig);
+  const netoOrigCiva = parseFloat(row.querySelector('.py-neto').dataset.netoCiva);
+  const costoSiva = parseFloat(row.querySelector('.py-gan').dataset.costoSiva);
+  const IVA = 1.21;
+  const newCarta = cartaOrig * mult;
+  const newNetoCiva = netoOrigCiva * mult;
+  const newNetoSiva = newNetoCiva / IVA;
+  const newGanSiva = newNetoSiva - costoSiva;
+  const newGanCiva = newGanSiva * IVA;
+  const newRent = newNetoSiva > 0 ? (newGanSiva / newNetoSiva * 100) : 0;
+  const cartaCell = row.querySelector('.py-carta');
+  if (d > 0) {
+    cartaCell.innerHTML = `<s style="color:#555;font-size:.82em">${fmt(cartaOrig)}</s> <span style="color:#f6d01e;font-weight:bold">${fmt(newCarta)}</span>`;
+  } else {
+    cartaCell.innerHTML = `<span style="color:#f6d01e;font-weight:bold">${fmt(cartaOrig)}</span>`;
+  }
+  row.querySelector('.py-neto').textContent = fmt(newNetoCiva);
+  row.querySelector('.py-gan').textContent = fmt(newGanCiva);
+  const rentSpan = row.querySelector('.py-rent span');
+  rentSpan.textContent = newRent.toFixed(1) + '%';
+  rentSpan.style.color = rc(newRent);
+}
 
 // ─── MODAL RECETA ──────────────────────────────────────────────────────────
 function showReceta(nombre) {
